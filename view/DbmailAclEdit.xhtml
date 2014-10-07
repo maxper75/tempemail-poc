@@ -1,0 +1,228 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailAcl" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailAclHome.managed ? messages['DbmailAcl.edit'] : messages['DbmailAcl.add']}</f:facet>
+
+
+            <s:decorate id="mailboxIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAcl.mailboxId.label']}</ui:define>
+                <h:inputText id="mailboxId"
+                       required="true"
+                       disabled="#{dbmailAclHome.managed}"
+                          value="#{dbmailAclHome.instance.id.mailboxId}">
+                    <a:ajax event="blur" render="mailboxIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="userIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAcl.userId.label']}</ui:define>
+                <h:inputText id="userId"
+                       required="true"
+                       disabled="#{dbmailAclHome.managed}"
+                          value="#{dbmailAclHome.instance.id.userId}">
+                    <a:ajax event="blur" render="userIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="administerFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Administer flag</ui:define>
+                <h:inputText id="administerFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.administerFlag}">
+                    <a:ajax event="blur" render="administerFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="createFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Create flag</ui:define>
+                <h:inputText id="createFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.createFlag}">
+                    <a:ajax event="blur" render="createFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailMailboxes it.i_node.tempemail.model.DbmailMailboxes-->
+		<s:decorate id="dbmailAclHome_dbmailMailboxes" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailAcl.dbmailMailboxes.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailAclHome.instance.dbmailMailboxes}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailMailboxes.select']}"
+							value="#{dbmailMailboxesList.resultList}" var="_dbmailMailboxes"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailMailboxes)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+		<s:decorate id="dbmailAclHome_dbmailUsers" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailAcl.dbmailUsers.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailAclHome.instance.dbmailUsers}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailUsers.select']}"
+							value="#{dbmailUsersList.resultList}" var="_dbmailUsers"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailUsers)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+
+            <s:decorate id="deleteFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Delete flag</ui:define>
+                <h:inputText id="deleteFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.deleteFlag}">
+                    <a:ajax event="blur" render="deleteFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="deletedFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Deleted flag</ui:define>
+                <h:inputText id="deletedFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.deletedFlag}">
+                    <a:ajax event="blur" render="deletedFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="expungeFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Expunge flag</ui:define>
+                <h:inputText id="expungeFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.expungeFlag}">
+                    <a:ajax event="blur" render="expungeFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="insertFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Insert flag</ui:define>
+                <h:inputText id="insertFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.insertFlag}">
+                    <a:ajax event="blur" render="insertFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="lookupFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Lookup flag</ui:define>
+                <h:inputText id="lookupFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.lookupFlag}">
+                    <a:ajax event="blur" render="lookupFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="postFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Post flag</ui:define>
+                <h:inputText id="postFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.postFlag}">
+                    <a:ajax event="blur" render="postFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="readFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Read flag</ui:define>
+                <h:inputText id="readFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.readFlag}">
+                    <a:ajax event="blur" render="readFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="seenFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Seen flag</ui:define>
+                <h:inputText id="seenFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.seenFlag}">
+                    <a:ajax event="blur" render="seenFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="writeFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Write flag</ui:define>
+                <h:inputText id="writeFlag"
+                       required="true"
+                          value="#{dbmailAclHome.instance.writeFlag}">
+                    <a:ajax event="blur" render="writeFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailAclHome.persist}"
+                       disabled="#{!dbmailAclHome.wired}"
+                       rendered="#{!dbmailAclHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailAclHome.update}"
+                       rendered="#{dbmailAclHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailAclHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailAclHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailAcl.xhtml"
+                rendered="#{dbmailAclHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailAclFrom ? 'DbmailAclList' : dbmailAclFrom}.xhtml"
+                rendered="#{!dbmailAclHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

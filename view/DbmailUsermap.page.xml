@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="dbmailUsermapFrom"/>
+   <param name="dbmailUsermapLogin" value="#{dbmailUsermapHome.dbmailUsermapId.login}"/>
+   <param name="dbmailUsermapSockAllow" value="#{dbmailUsermapHome.dbmailUsermapId.sockAllow}"/>
+   <param name="dbmailUsermapSockDeny" value="#{dbmailUsermapHome.dbmailUsermapId.sockDeny}"/>
+   <param name="dbmailUsermapUserid" value="#{dbmailUsermapHome.dbmailUsermapId.userid}"/>
+
+
+</page>

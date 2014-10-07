@@ -1,0 +1,125 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailSievescripts" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailSievescriptsHome.managed ? messages['DbmailSievescripts.edit'] : messages['DbmailSievescripts.add']}</f:facet>
+
+
+            <s:decorate id="idField" template="layout/edit.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <h:inputText id="id"
+                       required="true"
+                       disabled="#{dbmailSievescriptsHome.managed}"
+                          value="#{dbmailSievescriptsHome.instance.id}">
+                    <a:ajax event="blur" render="idField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="activeField" template="layout/edit.xhtml">
+                <ui:define name="label">Active</ui:define>
+                <h:inputText id="active"
+                       required="true"
+                          value="#{dbmailSievescriptsHome.instance.active}">
+                    <a:ajax event="blur" render="activeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+		<s:decorate id="dbmailSievescriptsHome_dbmailUsers" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailSievescripts.dbmailUsers.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailSievescriptsHome.instance.dbmailUsers}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailUsers.select']}"
+							value="#{dbmailUsersList.resultList}" var="_dbmailUsers"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailUsers)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+
+            <s:decorate id="nameField" template="layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <h:inputText id="name"
+                       required="true"
+                           size="100"
+                      maxlength="100"
+                          value="#{dbmailSievescriptsHome.instance.name}">
+                    <a:ajax event="blur" render="nameField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="scriptField" template="layout/edit.xhtml">
+                <ui:define name="label">Script</ui:define>
+                <h:inputTextarea id="script"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{dbmailSievescriptsHome.instance.script}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailSievescriptsHome.persist}"
+                       disabled="#{!dbmailSievescriptsHome.wired}"
+                       rendered="#{!dbmailSievescriptsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailSievescriptsHome.update}"
+                       rendered="#{dbmailSievescriptsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailSievescriptsHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailSievescriptsHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailSievescripts.xhtml"
+                rendered="#{dbmailSievescriptsHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailSievescriptsFrom ? 'DbmailSievescriptsList' : dbmailSievescriptsFrom}.xhtml"
+                rendered="#{!dbmailSievescriptsHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

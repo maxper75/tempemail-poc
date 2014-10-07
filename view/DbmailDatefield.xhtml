@@ -1,0 +1,66 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailDatefield.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="datefield" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailDatefield.datefield.label']}</ui:define>
+            <h:outputText value="#{dbmailDatefieldHome.instance.id.datefield}">
+                <f:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="physmessageId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailDatefield.physmessageId.label']}</ui:define>
+            <h:outputText value="#{dbmailDatefieldHome.instance.id.physmessageId}"/>
+        </s:decorate>
+        <s:decorate id="sortfield" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailDatefield.sortfield.label']}</ui:define>
+            <h:outputText value="#{dbmailDatefieldHome.instance.id.sortfield}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailDatefieldEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailDatefieldFrom ? 'DbmailDatefieldList' : dbmailDatefieldFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

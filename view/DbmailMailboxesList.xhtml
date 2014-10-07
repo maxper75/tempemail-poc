@@ -1,0 +1,250 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailMailboxesSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailMailboxes Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailMailboxes.name.label']}</ui:define>
+                <h:inputText id="name" value="#{dbmailMailboxesList.dbmailMailboxes.name}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailMailboxesList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailMailboxesList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailMailboxes.search.results']} (#{empty dbmailMailboxesList.resultList ? 0 : (dbmailMailboxesList.paginated ? dbmailMailboxesList.resultCount : dbmailMailboxesList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailMailboxesList">
+
+    <h:outputText value="The dbmailMailboxes search returned no results."
+               rendered="#{empty dbmailMailboxesList.resultList}"/>
+
+    <rich:dataTable id="dbmailMailboxesList"
+                var="_dbmailMailboxes"
+              value="#{dbmailMailboxesList.resultList}"
+           rendered="#{not empty dbmailMailboxesList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Mailbox idnr"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.mailboxIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.mailboxIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Answered flag"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.answeredFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.answeredFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Dbmail users user idnr"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.dbmailUsers.userIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.dbmailUsers.userIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Deleted flag"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.deletedFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.deletedFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Draft flag"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.draftFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.draftFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Flagged flag"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.flaggedFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.flaggedFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Name"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.name"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.name}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="No inferiors"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.noInferiors"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.noInferiors}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="No select"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.noSelect"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.noSelect}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Permission"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.permission"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.permission}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Recent flag"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.recentFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.recentFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Seen flag"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.seenFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.seenFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMailboxesList}"/>
+                    <ui:param name="propertyLabel" value="Seq"/>
+                    <ui:param name="propertyPath" value="dbmailMailboxes.seq"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMailboxes.seq}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailMailboxes' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailMailboxesViewId">
+                <f:param name="dbmailMailboxesMailboxIdnr"
+                        value="#{_dbmailMailboxes.mailboxIdnr}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailMailboxesEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailMailboxesEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailMailboxesMailboxIdnr"
+                        value="#{_dbmailMailboxes.mailboxIdnr}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailMailboxesList.xhtml"
+            rendered="#{dbmailMailboxesList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailMailboxesList.xhtml"
+            rendered="#{dbmailMailboxesList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailMailboxesList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailMailboxesList.xhtml"
+            rendered="#{dbmailMailboxesList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailMailboxesList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailMailboxesList.xhtml"
+            rendered="#{dbmailMailboxesList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailMailboxesList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailMailboxesEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailMailboxes">
+            <f:param name="dbmailMailboxesMailboxIdnr"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

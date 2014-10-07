@@ -1,0 +1,84 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailSubscription.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="mailboxId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailSubscription.mailboxId.label']}</ui:define>
+            <h:outputText value="#{dbmailSubscriptionHome.instance.id.mailboxId}"/>
+        </s:decorate>
+        <s:decorate id="userId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailSubscription.userId.label']}</ui:define>
+            <h:outputText value="#{dbmailSubscriptionHome.instance.id.userId}"/>
+        </s:decorate>
+
+
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailMailboxes it.i_node.tempemail.model.DbmailMailboxes-->
+        <s:decorate id="dbmailMailboxes" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailMailboxes']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailSubscriptionHome.instance.dbmailMailboxes)}"/>
+        </s:decorate>
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+        <s:decorate id="dbmailUsers" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailSubscriptionHome.instance.dbmailUsers)}"/>
+        </s:decorate>
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailSubscriptionEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailSubscriptionFrom ? 'DbmailSubscriptionList' : dbmailSubscriptionFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

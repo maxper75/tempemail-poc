@@ -1,0 +1,155 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailHeadervalue.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="id" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadervalue.id.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadervalueHome.instance.id}"/>
+        </s:decorate>
+
+
+        <s:decorate id="datefield" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadervalue.datefield.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadervalueHome.instance.datefield}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+
+
+        <s:decorate id="hash" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadervalue.hash.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadervalueHome.instance.hash}"/>
+        </s:decorate>
+
+
+        <s:decorate id="headervalue" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadervalue.headervalue.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadervalueHome.instance.headervalue}"/>
+        </s:decorate>
+
+
+        <s:decorate id="sortfield" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadervalue.sortfield.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadervalueHome.instance.sortfield}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailHeader.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailHeadersChildren">
+
+
+        <h:outputText value="There are no dbmailHeaders associated with this dbmailHeadervalue."
+                   rendered="#{empty dbmailHeadervalueHome.dbmailHeaders}"/>
+
+        <rich:dataTable value="#{dbmailHeadervalueHome.dbmailHeaders}"
+                       var="_dbmailHeader"
+                  rendered="#{not empty dbmailHeadervalueHome.dbmailHeaders}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailHeadersTable">
+            <rich:column sortBy="#{_dbmailHeader.id.headernameId}">
+                <f:facet name="header">#{messages['DbmailHeader.headernameId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.headernameId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailHeader.id.headervalueId}">
+                <f:facet name="header">#{messages['DbmailHeader.headervalueId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.headervalueId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailHeader.id.physmessageId}">
+                <f:facet name="header">#{messages['DbmailHeader.physmessageId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.physmessageId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailHeader"
+                     value="Select"
+                      view="/DbmailHeader.xhtml">
+                    <f:param name="dbmailHeaderHeadernameId"
+                            value="#{_dbmailHeader.id.headernameId}"/>
+                    <f:param name="dbmailHeaderHeadervalueId"
+                            value="#{_dbmailHeader.id.headervalueId}"/>
+                    <f:param name="dbmailHeaderPhysmessageId"
+                            value="#{_dbmailHeader.id.physmessageId}"/>
+                    <f:param name="dbmailHeaderFrom" value="DbmailHeadervalue"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailHeader"
+                view="/DbmailHeaderEdit.xhtml">
+            <f:param name="dbmailHeadervalueId"
+                    value="#{dbmailHeadervalueHome.instance.id}"/>
+            <f:param name="dbmailHeaderFrom" value="DbmailHeadervalue"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailHeadervalueEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailHeadervalueFrom ? 'DbmailHeadervalueList' : dbmailHeadervalueFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

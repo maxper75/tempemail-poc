@@ -1,0 +1,191 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailMessages" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailMessagesHome.managed ? messages['DbmailMessages.edit'] : messages['DbmailMessages.add']}</f:facet>
+
+
+            <s:decorate id="messageIdnrField" template="layout/edit.xhtml">
+                <ui:define name="label">Message idnr</ui:define>
+                <h:inputText id="messageIdnr"
+                       required="true"
+                       disabled="#{dbmailMessagesHome.managed}"
+                          value="#{dbmailMessagesHome.instance.messageIdnr}">
+                    <a:ajax event="blur" render="messageIdnrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="answeredFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Answered flag</ui:define>
+                <h:inputText id="answeredFlag"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.answeredFlag}">
+                    <a:ajax event="blur" render="answeredFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailMailboxes it.i_node.tempemail.model.DbmailMailboxes-->
+		<s:decorate id="dbmailMessagesHome_dbmailMailboxes" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailMessages.dbmailMailboxes.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailMessagesHome.instance.dbmailMailboxes}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailMailboxes.select']}"
+							value="#{dbmailMailboxesList.resultList}" var="_dbmailMailboxes"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailMailboxes)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+		<s:decorate id="dbmailMessagesHome_dbmailPhysmessage" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailMessages.dbmailPhysmessage.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailMessagesHome.instance.dbmailPhysmessage}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailPhysmessage.select']}"
+							value="#{dbmailPhysmessageList.resultList}" var="_dbmailPhysmessage"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailPhysmessage)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+
+            <s:decorate id="deletedFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Deleted flag</ui:define>
+                <h:inputText id="deletedFlag"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.deletedFlag}">
+                    <a:ajax event="blur" render="deletedFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="draftFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Draft flag</ui:define>
+                <h:inputText id="draftFlag"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.draftFlag}">
+                    <a:ajax event="blur" render="draftFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="flaggedFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Flagged flag</ui:define>
+                <h:inputText id="flaggedFlag"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.flaggedFlag}">
+                    <a:ajax event="blur" render="flaggedFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="recentFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Recent flag</ui:define>
+                <h:inputText id="recentFlag"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.recentFlag}">
+                    <a:ajax event="blur" render="recentFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="seenFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Seen flag</ui:define>
+                <h:inputText id="seenFlag"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.seenFlag}">
+                    <a:ajax event="blur" render="seenFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="statusField" template="layout/edit.xhtml">
+                <ui:define name="label">Status</ui:define>
+                <h:inputText id="status"
+                       required="true"
+                          value="#{dbmailMessagesHome.instance.status}">
+                    <a:ajax event="blur" render="statusField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="uniqueIdField" template="layout/edit.xhtml">
+                <ui:define name="label">Unique id</ui:define>
+                <h:inputText id="uniqueId"
+                       required="true"
+                           size="70"
+                      maxlength="70"
+                          value="#{dbmailMessagesHome.instance.uniqueId}">
+                    <a:ajax event="blur" render="uniqueIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailMessagesHome.persist}"
+                       disabled="#{!dbmailMessagesHome.wired}"
+                       rendered="#{!dbmailMessagesHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailMessagesHome.update}"
+                       rendered="#{dbmailMessagesHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailMessagesHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailMessagesHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailMessages.xhtml"
+                rendered="#{dbmailMessagesHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailMessagesFrom ? 'DbmailMessagesList' : dbmailMessagesFrom}.xhtml"
+                rendered="#{!dbmailMessagesHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

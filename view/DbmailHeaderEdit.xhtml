@@ -1,0 +1,143 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailHeader" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailHeaderHome.managed ? messages['DbmailHeader.edit'] : messages['DbmailHeader.add']}</f:facet>
+
+
+            <s:decorate id="headernameIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailHeader.headernameId.label']}</ui:define>
+                <h:inputText id="headernameId"
+                       required="true"
+                       disabled="#{dbmailHeaderHome.managed}"
+                          value="#{dbmailHeaderHome.instance.id.headernameId}">
+                    <a:ajax event="blur" render="headernameIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="headervalueIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailHeader.headervalueId.label']}</ui:define>
+                <h:inputText id="headervalueId"
+                       required="true"
+                       disabled="#{dbmailHeaderHome.managed}"
+                          value="#{dbmailHeaderHome.instance.id.headervalueId}">
+                    <a:ajax event="blur" render="headervalueIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="physmessageIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailHeader.physmessageId.label']}</ui:define>
+                <h:inputText id="physmessageId"
+                       required="true"
+                       disabled="#{dbmailHeaderHome.managed}"
+                          value="#{dbmailHeaderHome.instance.id.physmessageId}">
+                    <a:ajax event="blur" render="physmessageIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailHeadername it.i_node.tempemail.model.DbmailHeadername-->
+		<s:decorate id="dbmailHeaderHome_dbmailHeadername" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailHeader.dbmailHeadername.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailHeaderHome.instance.dbmailHeadername}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailHeadername.select']}"
+							value="#{dbmailHeadernameList.resultList}" var="_dbmailHeadername"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailHeadername)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailHeadervalue it.i_node.tempemail.model.DbmailHeadervalue-->
+		<s:decorate id="dbmailHeaderHome_dbmailHeadervalue" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailHeader.dbmailHeadervalue.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailHeaderHome.instance.dbmailHeadervalue}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailHeadervalue.select']}"
+							value="#{dbmailHeadervalueList.resultList}" var="_dbmailHeadervalue"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailHeadervalue)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+		<s:decorate id="dbmailHeaderHome_dbmailPhysmessage" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailHeader.dbmailPhysmessage.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailHeaderHome.instance.dbmailPhysmessage}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailPhysmessage.select']}"
+							value="#{dbmailPhysmessageList.resultList}" var="_dbmailPhysmessage"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailPhysmessage)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailHeaderHome.persist}"
+                       disabled="#{!dbmailHeaderHome.wired}"
+                       rendered="#{!dbmailHeaderHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailHeaderHome.update}"
+                       rendered="#{dbmailHeaderHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailHeaderHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailHeaderHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailHeader.xhtml"
+                rendered="#{dbmailHeaderHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailHeaderFrom ? 'DbmailHeaderList' : dbmailHeaderFrom}.xhtml"
+                rendered="#{!dbmailHeaderHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

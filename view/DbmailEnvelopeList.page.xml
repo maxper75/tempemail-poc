@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="firstResult" value="#{dbmailEnvelopeList.firstResult}"/>
+   <param name="sort" value="#{dbmailEnvelopeList.orderColumn}"/>
+   <param name="dir" value="#{dbmailEnvelopeList.orderDirection}"/>
+   <param name="logic" value="#{dbmailEnvelopeList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="envelope" value="#{dbmailEnvelopeList.dbmailEnvelope.envelope}"/>
+
+</page>

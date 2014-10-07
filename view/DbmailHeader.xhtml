@@ -1,0 +1,100 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailHeader.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="headernameId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeader.headernameId.label']}</ui:define>
+            <h:outputText value="#{dbmailHeaderHome.instance.id.headernameId}"/>
+        </s:decorate>
+        <s:decorate id="headervalueId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeader.headervalueId.label']}</ui:define>
+            <h:outputText value="#{dbmailHeaderHome.instance.id.headervalueId}"/>
+        </s:decorate>
+        <s:decorate id="physmessageId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeader.physmessageId.label']}</ui:define>
+            <h:outputText value="#{dbmailHeaderHome.instance.id.physmessageId}"/>
+        </s:decorate>
+
+
+
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailHeadername it.i_node.tempemail.model.DbmailHeadername-->
+        <s:decorate id="dbmailHeadername" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadername']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailHeaderHome.instance.dbmailHeadername)}"/>
+        </s:decorate>
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailHeadervalue it.i_node.tempemail.model.DbmailHeadervalue-->
+        <s:decorate id="dbmailHeadervalue" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadervalue']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailHeaderHome.instance.dbmailHeadervalue)}"/>
+        </s:decorate>
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+        <s:decorate id="dbmailPhysmessage" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPhysmessage']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailHeaderHome.instance.dbmailPhysmessage)}"/>
+        </s:decorate>
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailHeaderEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailHeaderFrom ? 'DbmailHeaderList' : dbmailHeaderFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

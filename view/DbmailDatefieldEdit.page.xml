@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
+      no-conversation-view-id="/DbmailDatefieldList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{dbmailDatefieldHome.wire}"/>
+
+   <param name="dbmailDatefieldFrom"/>
+   <param name="dbmailDatefieldDatefield" value="#{dbmailDatefieldHome.dbmailDatefieldId.datefield}"/>
+   <param name="dbmailDatefieldPhysmessageId" value="#{dbmailDatefieldHome.dbmailDatefieldId.physmessageId}"/>
+   <param name="dbmailDatefieldSortfield" value="#{dbmailDatefieldHome.dbmailDatefieldId.sortfield}"/>
+
+
+   <navigation from-action="#{dbmailDatefieldHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/DbmailDatefield.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{dbmailDatefieldHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/DbmailDatefield.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{dbmailDatefieldHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/DbmailDatefieldList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

@@ -1,0 +1,252 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailUsersSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailUsers Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsers.encryptionType.label']}</ui:define>
+                <h:inputText id="encryptionType" value="#{dbmailUsersList.dbmailUsers.encryptionType}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsers.passwd.label']}</ui:define>
+                <h:inputText id="passwd" value="#{dbmailUsersList.dbmailUsers.passwd}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsers.userid.label']}</ui:define>
+                <h:inputText id="userid" value="#{dbmailUsersList.dbmailUsers.userid}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailUsersList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailUsersList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailUsers.search.results']} (#{empty dbmailUsersList.resultList ? 0 : (dbmailUsersList.paginated ? dbmailUsersList.resultCount : dbmailUsersList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailUsersList">
+
+    <h:outputText value="The dbmailUsers search returned no results."
+               rendered="#{empty dbmailUsersList.resultList}"/>
+
+    <rich:dataTable id="dbmailUsersList"
+                var="_dbmailUsers"
+              value="#{dbmailUsersList.resultList}"
+           rendered="#{not empty dbmailUsersList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="User idnr"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.userIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.userIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Client idnr"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.clientIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.clientIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Curmail size"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.curmailSize"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.curmailSize}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Cursieve size"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.cursieveSize"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.cursieveSize}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Encryption type"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.encryptionType"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.encryptionType}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Last login"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.lastLogin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.lastLogin}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Maxmail size"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.maxmailSize"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.maxmailSize}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Maxsieve size"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.maxsieveSize"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.maxsieveSize}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Passwd"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.passwd"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.passwd}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Userid"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.userid"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.userid}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Dbmail auto notifications user idnr"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.dbmailAutoNotifications.userIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.dbmailAutoNotifications.userIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsersList}"/>
+                    <ui:param name="propertyLabel" value="Dbmail auto replies user idnr"/>
+                    <ui:param name="propertyPath" value="dbmailUsers.dbmailAutoReplies.userIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsers.dbmailAutoReplies.userIdnr}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailUsers' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailUsersViewId">
+                <f:param name="dbmailUsersUserIdnr"
+                        value="#{_dbmailUsers.userIdnr}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailUsersEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailUsersEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailUsersUserIdnr"
+                        value="#{_dbmailUsers.userIdnr}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailUsersList.xhtml"
+            rendered="#{dbmailUsersList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailUsersList.xhtml"
+            rendered="#{dbmailUsersList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailUsersList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailUsersList.xhtml"
+            rendered="#{dbmailUsersList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailUsersList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailUsersList.xhtml"
+            rendered="#{dbmailUsersList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailUsersList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailUsersEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailUsers">
+            <f:param name="dbmailUsersUserIdnr"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

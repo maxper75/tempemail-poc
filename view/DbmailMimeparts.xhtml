@@ -1,0 +1,162 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailMimeparts.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="id" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailMimeparts.id.label']}</ui:define>
+            <h:outputText value="#{dbmailMimepartsHome.instance.id}"/>
+        </s:decorate>
+
+
+        <s:decorate id="data" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailMimeparts.data.label']}</ui:define>
+            <h:outputText value="#{dbmailMimepartsHome.instance.data}"/>
+        </s:decorate>
+
+
+
+        <s:decorate id="hash" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailMimeparts.hash.label']}</ui:define>
+            <h:outputText value="#{dbmailMimepartsHome.instance.hash}"/>
+        </s:decorate>
+
+
+        <s:decorate id="size" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailMimeparts.size.label']}</ui:define>
+            <h:outputText value="#{dbmailMimepartsHome.instance.size}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailPartlists.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailPartlistsesChildren">
+
+
+        <h:outputText value="There are no dbmailPartlistses associated with this dbmailMimeparts."
+                   rendered="#{empty dbmailMimepartsHome.dbmailPartlistses}"/>
+
+        <rich:dataTable value="#{dbmailMimepartsHome.dbmailPartlistses}"
+                       var="_dbmailPartlists"
+                  rendered="#{not empty dbmailMimepartsHome.dbmailPartlistses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailPartlistsesTable">
+            <rich:column sortBy="#{_dbmailPartlists.id.isHeader}">
+                <f:facet name="header">#{messages['DbmailPartlists.isHeader.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.isHeader}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partDepth}">
+                <f:facet name="header">#{messages['DbmailPartlists.partDepth.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partDepth}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partId}">
+                <f:facet name="header">#{messages['DbmailPartlists.partId.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partKey}">
+                <f:facet name="header">#{messages['DbmailPartlists.partKey.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partKey}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partOrder}">
+                <f:facet name="header">#{messages['DbmailPartlists.partOrder.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partOrder}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.physmessageId}">
+                <f:facet name="header">#{messages['DbmailPartlists.physmessageId.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.physmessageId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailPartlists"
+                     value="Select"
+                      view="/DbmailPartlists.xhtml">
+                    <f:param name="dbmailPartlistsIsHeader"
+                            value="#{_dbmailPartlists.id.isHeader}"/>
+                    <f:param name="dbmailPartlistsPartDepth"
+                            value="#{_dbmailPartlists.id.partDepth}"/>
+                    <f:param name="dbmailPartlistsPartId"
+                            value="#{_dbmailPartlists.id.partId}"/>
+                    <f:param name="dbmailPartlistsPartKey"
+                            value="#{_dbmailPartlists.id.partKey}"/>
+                    <f:param name="dbmailPartlistsPartOrder"
+                            value="#{_dbmailPartlists.id.partOrder}"/>
+                    <f:param name="dbmailPartlistsPhysmessageId"
+                            value="#{_dbmailPartlists.id.physmessageId}"/>
+                    <f:param name="dbmailPartlistsFrom" value="DbmailMimeparts"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailPartlists"
+                view="/DbmailPartlistsEdit.xhtml">
+            <f:param name="dbmailMimepartsId"
+                    value="#{dbmailMimepartsHome.instance.id}"/>
+            <f:param name="dbmailPartlistsFrom" value="DbmailMimeparts"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailMimepartsEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailMimepartsFrom ? 'DbmailMimepartsList' : dbmailMimepartsFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

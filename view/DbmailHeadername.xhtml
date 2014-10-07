@@ -1,0 +1,126 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailHeadername.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="id" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadername.id.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadernameHome.instance.id}"/>
+        </s:decorate>
+
+
+
+        <s:decorate id="headername" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailHeadername.headername.label']}</ui:define>
+            <h:outputText value="#{dbmailHeadernameHome.instance.headername}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailHeader.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailHeadersChildren">
+
+
+        <h:outputText value="There are no dbmailHeaders associated with this dbmailHeadername."
+                   rendered="#{empty dbmailHeadernameHome.dbmailHeaders}"/>
+
+        <rich:dataTable value="#{dbmailHeadernameHome.dbmailHeaders}"
+                       var="_dbmailHeader"
+                  rendered="#{not empty dbmailHeadernameHome.dbmailHeaders}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailHeadersTable">
+            <rich:column sortBy="#{_dbmailHeader.id.headernameId}">
+                <f:facet name="header">#{messages['DbmailHeader.headernameId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.headernameId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailHeader.id.headervalueId}">
+                <f:facet name="header">#{messages['DbmailHeader.headervalueId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.headervalueId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailHeader.id.physmessageId}">
+                <f:facet name="header">#{messages['DbmailHeader.physmessageId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.physmessageId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailHeader"
+                     value="Select"
+                      view="/DbmailHeader.xhtml">
+                    <f:param name="dbmailHeaderHeadernameId"
+                            value="#{_dbmailHeader.id.headernameId}"/>
+                    <f:param name="dbmailHeaderHeadervalueId"
+                            value="#{_dbmailHeader.id.headervalueId}"/>
+                    <f:param name="dbmailHeaderPhysmessageId"
+                            value="#{_dbmailHeader.id.physmessageId}"/>
+                    <f:param name="dbmailHeaderFrom" value="DbmailHeadername"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailHeader"
+                view="/DbmailHeaderEdit.xhtml">
+            <f:param name="dbmailHeadernameId"
+                    value="#{dbmailHeadernameHome.instance.id}"/>
+            <f:param name="dbmailHeaderFrom" value="DbmailHeadername"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailHeadernameEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailHeadernameFrom ? 'DbmailHeadernameList' : dbmailHeadernameFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

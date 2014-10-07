@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema">
+    <datasource 
+        jndi-name="tempemailDatasource"
+        enabled="true" 
+        use-java-context="true" pool-name="tempemailDatasource_pool">
+        <connection-url>jdbc:postgresql://localhost/dbmail</connection-url>
+        <driver>postgresql-jdbc.jar</driver>
+        <security>
+		      <user-name>dbmail</user-name>
+		      <password></password>
+        </security>
+    </datasource>
+</datasources>

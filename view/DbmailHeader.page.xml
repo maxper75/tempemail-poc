@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="dbmailHeaderFrom"/>
+   <param name="dbmailHeaderHeadernameId" value="#{dbmailHeaderHome.dbmailHeaderId.headernameId}"/>
+   <param name="dbmailHeaderHeadervalueId" value="#{dbmailHeaderHome.dbmailHeaderId.headervalueId}"/>
+   <param name="dbmailHeaderPhysmessageId" value="#{dbmailHeaderHome.dbmailHeaderId.physmessageId}"/>
+   <param name="dbmailHeadernameFrom"/>
+   <param name="dbmailHeadernameId" value="#{dbmailHeadernameHome.dbmailHeadernameId}"/>
+
+   <param name="dbmailHeadervalueFrom"/>
+   <param name="dbmailHeadervalueId" value="#{dbmailHeadervalueHome.dbmailHeadervalueId}"/>
+
+   <param name="dbmailPhysmessageFrom"/>
+   <param name="dbmailPhysmessageId" value="#{dbmailPhysmessageHome.dbmailPhysmessageId}"/>
+
+
+
+</page>

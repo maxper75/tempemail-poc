@@ -1,0 +1,103 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailReferencesfield" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailReferencesfieldHome.managed ? messages['DbmailReferencesfield.edit'] : messages['DbmailReferencesfield.add']}</f:facet>
+
+
+            <s:decorate id="idField" template="layout/edit.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <h:inputText id="id"
+                       required="true"
+                       disabled="#{dbmailReferencesfieldHome.managed}"
+                          value="#{dbmailReferencesfieldHome.instance.id}">
+                    <a:ajax event="blur" render="idField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+		<s:decorate id="dbmailReferencesfieldHome_dbmailPhysmessage" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailReferencesfield.dbmailPhysmessage.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailReferencesfieldHome.instance.dbmailPhysmessage}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailPhysmessage.select']}"
+							value="#{dbmailPhysmessageList.resultList}" var="_dbmailPhysmessage"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailPhysmessage)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+
+            <s:decorate id="referencesfieldField" template="layout/edit.xhtml">
+                <ui:define name="label">Referencesfield</ui:define>
+                <h:inputTextarea id="referencesfield"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{dbmailReferencesfieldHome.instance.referencesfield}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailReferencesfieldHome.persist}"
+                       disabled="#{!dbmailReferencesfieldHome.wired}"
+                       rendered="#{!dbmailReferencesfieldHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailReferencesfieldHome.update}"
+                       rendered="#{dbmailReferencesfieldHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailReferencesfieldHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailReferencesfieldHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailReferencesfield.xhtml"
+                rendered="#{dbmailReferencesfieldHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailReferencesfieldFrom ? 'DbmailReferencesfieldList' : dbmailReferencesfieldFrom}.xhtml"
+                rendered="#{!dbmailReferencesfieldHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

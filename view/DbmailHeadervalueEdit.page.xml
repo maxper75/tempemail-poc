@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
+      no-conversation-view-id="/DbmailHeadervalueList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{dbmailHeadervalueHome.wire}"/>
+
+   <param name="dbmailHeadervalueFrom"/>
+   <param name="dbmailHeadervalueId" value="#{dbmailHeadervalueHome.dbmailHeadervalueId}"/>
+
+
+   <navigation from-action="#{dbmailHeadervalueHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/DbmailHeadervalue.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{dbmailHeadervalueHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/DbmailHeadervalue.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{dbmailHeadervalueHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/DbmailHeadervalueList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

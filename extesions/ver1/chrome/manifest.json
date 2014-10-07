@@ -1,0 +1,31 @@
+
+{
+	"manifest_version": 2,
+	"name":    "tempemail",
+	"version": "0.1",
+	"background": {
+	        "persistent": true,
+	        "scripts": ["background.js"]
+	},
+	"icons": {
+    		"16":"icon.png",
+		"48":"smile.png"
+    	},
+	"content_scripts": [{
+	        "matches": ["*://*/*"],
+	        "js":      ["injection.js"]
+	}],
+	"browser_action": {
+	        "default_title": "Test Extension",
+		"default_icon": "MilesSmile.png",
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+		"activeTab",
+		"contextMenus",
+		"http://*/*",
+		"https://*/*",
+		"http://*/",
+		"https://*/"
+	]	
+}

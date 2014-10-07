@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="dbmailMessagesFrom"/>
+   <param name="dbmailMessagesMessageIdnr" value="#{dbmailMessagesHome.dbmailMessagesMessageIdnr}"/>
+   <param name="dbmailMailboxesFrom"/>
+   <param name="dbmailMailboxesMailboxIdnr" value="#{dbmailMailboxesHome.dbmailMailboxesMailboxIdnr}"/>
+   <param name="dbmailUsersFrom"/>
+   <param name="dbmailUsersUserIdnr" value="#{dbmailUsersHome.dbmailUsersUserIdnr}"/>
+   <param name="dbmailAutoNotificationsFrom"/>
+   <param name="dbmailAutoNotificationsUserIdnr" value="#{dbmailAutoNotificationsHome.dbmailAutoNotificationsUserIdnr}"/>
+
+   <param name="dbmailAutoRepliesFrom"/>
+   <param name="dbmailAutoRepliesUserIdnr" value="#{dbmailAutoRepliesHome.dbmailAutoRepliesUserIdnr}"/>
+
+
+
+   <param name="dbmailPhysmessageFrom"/>
+   <param name="dbmailPhysmessageId" value="#{dbmailPhysmessageHome.dbmailPhysmessageId}"/>
+
+
+
+</page>

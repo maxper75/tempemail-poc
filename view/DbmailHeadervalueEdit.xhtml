@@ -1,0 +1,115 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailHeadervalue" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailHeadervalueHome.managed ? messages['DbmailHeadervalue.edit'] : messages['DbmailHeadervalue.add']}</f:facet>
+
+
+            <s:decorate id="idField" template="layout/edit.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <h:inputText id="id"
+                       required="true"
+                       disabled="#{dbmailHeadervalueHome.managed}"
+                          value="#{dbmailHeadervalueHome.instance.id}">
+                    <a:ajax event="blur" render="idField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="datefieldField" template="layout/edit.xhtml">
+                <ui:define name="label">Datefield</ui:define>
+                <rich:calendar id="datefield"
+                          value="#{dbmailHeadervalueHome.instance.datefield}" datePattern="dd/MM/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+
+            <s:decorate id="hashField" template="layout/edit.xhtml">
+                <ui:define name="label">Hash</ui:define>
+                <h:inputTextarea id="hash"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{dbmailHeadervalueHome.instance.hash}"/>
+            </s:decorate>
+
+
+            <s:decorate id="headervalueField" template="layout/edit.xhtml">
+                <ui:define name="label">Headervalue</ui:define>
+                <h:inputTextarea id="headervalue"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{dbmailHeadervalueHome.instance.headervalue}"/>
+            </s:decorate>
+
+
+            <s:decorate id="sortfieldField" template="layout/edit.xhtml">
+                <ui:define name="label">Sortfield</ui:define>
+                <h:inputTextarea id="sortfield"
+                               cols="80"
+                               rows="3"
+                              value="#{dbmailHeadervalueHome.instance.sortfield}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailHeadervalueHome.persist}"
+                       disabled="#{!dbmailHeadervalueHome.wired}"
+                       rendered="#{!dbmailHeadervalueHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailHeadervalueHome.update}"
+                       rendered="#{dbmailHeadervalueHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailHeadervalueHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailHeadervalueHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailHeadervalue.xhtml"
+                rendered="#{dbmailHeadervalueHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailHeadervalueFrom ? 'DbmailHeadervalueList' : dbmailHeadervalueFrom}.xhtml"
+                rendered="#{!dbmailHeadervalueHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

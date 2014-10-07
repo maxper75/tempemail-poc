@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['TempAlias.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="aliasIdnr" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['TempAlias.aliasIdnr.label']}</ui:define>
+            <h:outputText value="#{tempAliasHome.instance.aliasIdnr}"/>
+        </s:decorate>
+
+
+        <s:decorate id="alias" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['TempAlias.alias.label']}</ui:define>
+            <h:outputText value="#{tempAliasHome.instance.alias}"/>
+        </s:decorate>
+
+
+        <s:decorate id="clientIdnr" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['TempAlias.clientIdnr.label']}</ui:define>
+            <h:outputText value="#{tempAliasHome.instance.clientIdnr}"/>
+        </s:decorate>
+
+
+        <s:decorate id="deliverTo" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['TempAlias.deliverTo.label']}</ui:define>
+            <h:outputText value="#{tempAliasHome.instance.deliverTo}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/TempAliasEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty tempAliasFrom ? 'TempAliasList' : tempAliasFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

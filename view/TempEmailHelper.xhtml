@@ -1,0 +1,118 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		
+		
+		<h:form>
+			<a4j:poll id="poll" interval="1000"
+				action="#{tempEmailHelper.reloadContents}"
+				render="poll,dbmailMessagesList,timer"
+				rendered="#{not empty tempEmailHelper.mail}" />
+			
+			<s:div  id="timer">
+				<h:outputText value="Scadenza:" 
+					rendered="#{not empty tempEmailHelper.mail}"/>
+				<h:outputText value="#{tempEmailHelper.getMinute(tempEmailHelper.countDown()/60)}"
+					rendered="#{not empty tempEmailHelper.mail}">
+					<f:convertNumber pattern="###"/>
+				</h:outputText> 
+				<h:outputText value=" minuti #{tempEmailHelper.countDown()%60} secondi"
+					rendered="#{not empty tempEmailHelper.mail}"/> 
+			</s:div>
+			
+			<h:form>
+				<rich:collapsiblePanel header="tempEmailHelper">
+					<div>
+						<h:inputText value="#{tempEmailHelper.username}" />
+						<h:outputText value="inserire nome utente"
+							rendered="#{empty tempEmailHelper.username}" />
+					</div>
+					<br />
+
+					<h:outputText value="#{tempEmailHelper.text}"
+						rendered="#{not empty tempEmailHelper.text}" />
+
+					<div class="actionButtons">
+
+						<h:commandButton id="create" value="create email"
+							action="#{tempEmailHelper.createEmail}" propagation="none" />
+						<h:commandButton id="refresh" value="refresh"
+							action="#{tempEmailHelper.refreshing}" />
+
+						<h:commandButton id="delete" value="delete email"
+							action="#{tempEmailHelper.deleteEmail}" propagation="none" />
+					</div>
+				</rich:collapsiblePanel>
+				<br />
+				
+				<rich:panel>
+					
+				<f:facet name="header">#{messages['DbmailMessages.search.results']} (#{empty tempEmailHelper.messages ? 0 : (dbmailMessagesList.paginated ? tempEmailHelper.messages.size : tempEmailHelper.messages.size)})</f:facet>
+					
+					<div class="results" id="dbmailMessagesList">
+
+					<rich:dataTable id="dbmailMessagesList" var="_dbmailMessages"
+							value="#{tempEmailHelper.messages}"
+							style="width:100%;"
+							styleClass="#{empty tempEmailHelper.messages?'tableHidden':''}">
+							<h:column>
+								<f:facet name="header">
+									<ui:include src="layout/sort.xhtml">
+										<ui:param name="entityList" value="#{dbmailMessagesList}" />
+										<ui:param name="propertyLabel" value="Dbmail physmessage id" />
+										<ui:param name="propertyPath"
+										value="dbmailMessages.dbmailPhysmessage.id" /> 
+									</ui:include>
+								</f:facet>
+  								<h:outputText
+									value="#{_dbmailMessages.dbmailPhysmessage.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">
+									<ui:include src="layout/sort.xhtml">
+										<ui:param name="entityList" value="#{dbmailMessagesList}" />
+										<ui:param name="propertyLabel" value="Date" />
+										<ui:param name="propertyPath"
+										value="dbmailMessages.dbmailPhysmessage.internalDate" /> 
+									</ui:include>
+								</f:facet>
+  								<h:outputText
+									value="#{_dbmailMessages.dbmailPhysmessage.internalDate}" />
+							</h:column>
+  		 					<h:column>
+								<f:facet name="header">
+									<ui:include src="layout/sort.xhtml">
+										<ui:param name="entityList" value="#{dbmailMessagesList}" />
+										<ui:param name="propertyLabel" value="Subject" />
+										<ui:param name="propertyPath"
+										value="dbmailMessages.subject" /> 
+									</ui:include>
+								</f:facet>
+                                <s:link value="#{
+                                not empty tempEmailHelper.subjectMap.get(_dbmailMessages.dbmailPhysmessage.id).id.subjectfield
+                                ? tempEmailHelper.subjectMap.get(_dbmailMessages.dbmailPhysmessage.id).id.subjectfield 
+                                : 'nessun subject'
+                                }"
+                                		view="/TempEmailDetailHelper.xhtml">
+                   				  	<f:param name="messageId" value="#{_dbmailMessages.dbmailPhysmessage.id}"/>
+							
+				                </s:link>
+							</h:column> 
+
+  
+ 						</rich:dataTable>
+					</div>
+				</rich:panel>
+
+			</h:form>
+		</h:form>
+	</ui:define>
+</ui:composition>

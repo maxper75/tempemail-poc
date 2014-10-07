@@ -1,0 +1,206 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tempMailbox" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tempMailboxHome.managed ? messages['TempMailbox.edit'] : messages['TempMailbox.add']}</f:facet>
+
+
+            <s:decorate id="mailboxIdnrField" template="layout/edit.xhtml">
+                <ui:define name="label">Mailbox idnr</ui:define>
+                <h:inputText id="mailboxIdnr"
+                       required="true"
+                       disabled="#{tempMailboxHome.managed}"
+                          value="#{tempMailboxHome.instance.mailboxIdnr}">
+                    <a:ajax event="blur" render="mailboxIdnrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="answeredFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Answered flag</ui:define>
+                <h:inputText id="answeredFlag"
+                       required="true"
+                          value="#{tempMailboxHome.instance.answeredFlag}">
+                    <a:ajax event="blur" render="answeredFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+		<s:decorate id="tempMailboxHome_dbmailUsers" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['TempMailbox.dbmailUsers.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{tempMailboxHome.instance.dbmailUsers}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailUsers.select']}"
+							value="#{dbmailUsersList.resultList}" var="_dbmailUsers"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailUsers)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+
+            <s:decorate id="deletedFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Deleted flag</ui:define>
+                <h:inputText id="deletedFlag"
+                       required="true"
+                          value="#{tempMailboxHome.instance.deletedFlag}">
+                    <a:ajax event="blur" render="deletedFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="draftFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Draft flag</ui:define>
+                <h:inputText id="draftFlag"
+                       required="true"
+                          value="#{tempMailboxHome.instance.draftFlag}">
+                    <a:ajax event="blur" render="draftFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="flaggedFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Flagged flag</ui:define>
+                <h:inputText id="flaggedFlag"
+                       required="true"
+                          value="#{tempMailboxHome.instance.flaggedFlag}">
+                    <a:ajax event="blur" render="flaggedFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nameField" template="layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <h:inputTextarea id="name"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{tempMailboxHome.instance.name}"/>
+            </s:decorate>
+
+
+            <s:decorate id="noInferiorsField" template="layout/edit.xhtml">
+                <ui:define name="label">No inferiors</ui:define>
+                <h:inputText id="noInferiors"
+                       required="true"
+                          value="#{tempMailboxHome.instance.noInferiors}">
+                    <a:ajax event="blur" render="noInferiorsField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="noSelectField" template="layout/edit.xhtml">
+                <ui:define name="label">No select</ui:define>
+                <h:inputText id="noSelect"
+                       required="true"
+                          value="#{tempMailboxHome.instance.noSelect}">
+                    <a:ajax event="blur" render="noSelectField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="permissionField" template="layout/edit.xhtml">
+                <ui:define name="label">Permission</ui:define>
+                <h:inputText id="permission"
+                       required="true"
+                          value="#{tempMailboxHome.instance.permission}">
+                    <a:ajax event="blur" render="permissionField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="recentFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Recent flag</ui:define>
+                <h:inputText id="recentFlag"
+                       required="true"
+                          value="#{tempMailboxHome.instance.recentFlag}">
+                    <a:ajax event="blur" render="recentFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="seenFlagField" template="layout/edit.xhtml">
+                <ui:define name="label">Seen flag</ui:define>
+                <h:inputText id="seenFlag"
+                       required="true"
+                          value="#{tempMailboxHome.instance.seenFlag}">
+                    <a:ajax event="blur" render="seenFlagField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="seqField" template="layout/edit.xhtml">
+                <ui:define name="label">Seq</ui:define>
+                <h:inputText id="seq"
+                       required="true"
+                          value="#{tempMailboxHome.instance.seq}">
+                    <a:ajax event="blur" render="seqField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{tempMailboxHome.persist}"
+                       disabled="#{!tempMailboxHome.wired}"
+                       rendered="#{!tempMailboxHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{tempMailboxHome.update}"
+                       rendered="#{tempMailboxHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{tempMailboxHome.remove}"
+                      immediate="true"
+                       rendered="#{tempMailboxHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/TempMailbox.xhtml"
+                rendered="#{tempMailboxHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty tempMailboxFrom ? 'TempMailboxList' : tempMailboxFrom}.xhtml"
+                rendered="#{!tempMailboxHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

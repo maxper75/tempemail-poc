@@ -1,0 +1,319 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailAuthlogSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailAuthlog Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.dstIp.label']}</ui:define>
+                <h:inputText id="dstIp" value="#{dbmailAuthlogList.dbmailAuthlog.id.dstIp}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.service.label']}</ui:define>
+                <h:inputText id="service" value="#{dbmailAuthlogList.dbmailAuthlog.id.service}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.srcIp.label']}</ui:define>
+                <h:inputText id="srcIp" value="#{dbmailAuthlogList.dbmailAuthlog.id.srcIp}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.status.label']}</ui:define>
+                <h:inputText id="status" value="#{dbmailAuthlogList.dbmailAuthlog.id.status}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.userid.label']}</ui:define>
+                <h:inputText id="userid" value="#{dbmailAuthlogList.dbmailAuthlog.id.userid}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailAuthlogList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailAuthlogList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailAuthlog.search.results']} (#{empty dbmailAuthlogList.resultList ? 0 : (dbmailAuthlogList.paginated ? dbmailAuthlogList.resultCount : dbmailAuthlogList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailAuthlogList">
+
+    <h:outputText value="The dbmailAuthlog search returned no results."
+               rendered="#{empty dbmailAuthlogList.resultList}"/>
+
+    <rich:dataTable id="dbmailAuthlogList"
+                var="_dbmailAuthlog"
+              value="#{dbmailAuthlogList.resultList}"
+           rendered="#{not empty dbmailAuthlogList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Bytes rx"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.bytesRx"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.bytesRx}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Bytes tx"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.bytesTx"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.bytesTx}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Dst ip"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.dstIp"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.dstIp}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Dst port"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.dstPort"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.dstPort}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Id"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.id"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.id}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Login time"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.loginTime"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.loginTime}">
+                <f:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Logout time"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.logoutTime"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.logoutTime}">
+                <f:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Service"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.service"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.service}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Src ip"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.srcIp"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.srcIp}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Src port"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.srcPort"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.srcPort}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Status"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.status"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.status}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailAuthlogList}"/>
+                    <ui:param name="propertyLabel" value="Userid"/>
+                    <ui:param name="propertyPath" value="dbmailAuthlog.id.userid"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailAuthlog.id.userid}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailAuthlog' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailAuthlogViewId">
+                <f:param name="dbmailAuthlogBytesRx"
+                        value="#{_dbmailAuthlog.id.bytesRx}"/>
+                <f:param name="dbmailAuthlogBytesTx"
+                        value="#{_dbmailAuthlog.id.bytesTx}"/>
+                <f:param name="dbmailAuthlogDstIp"
+                        value="#{_dbmailAuthlog.id.dstIp}"/>
+                <f:param name="dbmailAuthlogDstPort"
+                        value="#{_dbmailAuthlog.id.dstPort}"/>
+                <f:param name="dbmailAuthlogId"
+                        value="#{_dbmailAuthlog.id.id}"/>
+                <f:param name="dbmailAuthlogLoginTime"
+                        value="#{_dbmailAuthlog.id.loginTime}"/>
+                <f:param name="dbmailAuthlogLogoutTime"
+                        value="#{_dbmailAuthlog.id.logoutTime}"/>
+                <f:param name="dbmailAuthlogService"
+                        value="#{_dbmailAuthlog.id.service}"/>
+                <f:param name="dbmailAuthlogSrcIp"
+                        value="#{_dbmailAuthlog.id.srcIp}"/>
+                <f:param name="dbmailAuthlogSrcPort"
+                        value="#{_dbmailAuthlog.id.srcPort}"/>
+                <f:param name="dbmailAuthlogStatus"
+                        value="#{_dbmailAuthlog.id.status}"/>
+                <f:param name="dbmailAuthlogUserid"
+                        value="#{_dbmailAuthlog.id.userid}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailAuthlogEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailAuthlogEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailAuthlogBytesRx"
+                        value="#{_dbmailAuthlog.id.bytesRx}"/>
+                <f:param name="dbmailAuthlogBytesTx"
+                        value="#{_dbmailAuthlog.id.bytesTx}"/>
+                <f:param name="dbmailAuthlogDstIp"
+                        value="#{_dbmailAuthlog.id.dstIp}"/>
+                <f:param name="dbmailAuthlogDstPort"
+                        value="#{_dbmailAuthlog.id.dstPort}"/>
+                <f:param name="dbmailAuthlogId"
+                        value="#{_dbmailAuthlog.id.id}"/>
+                <f:param name="dbmailAuthlogLoginTime"
+                        value="#{_dbmailAuthlog.id.loginTime}"/>
+                <f:param name="dbmailAuthlogLogoutTime"
+                        value="#{_dbmailAuthlog.id.logoutTime}"/>
+                <f:param name="dbmailAuthlogService"
+                        value="#{_dbmailAuthlog.id.service}"/>
+                <f:param name="dbmailAuthlogSrcIp"
+                        value="#{_dbmailAuthlog.id.srcIp}"/>
+                <f:param name="dbmailAuthlogSrcPort"
+                        value="#{_dbmailAuthlog.id.srcPort}"/>
+                <f:param name="dbmailAuthlogStatus"
+                        value="#{_dbmailAuthlog.id.status}"/>
+                <f:param name="dbmailAuthlogUserid"
+                        value="#{_dbmailAuthlog.id.userid}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailAuthlogList.xhtml"
+            rendered="#{dbmailAuthlogList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailAuthlogList.xhtml"
+            rendered="#{dbmailAuthlogList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailAuthlogList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailAuthlogList.xhtml"
+            rendered="#{dbmailAuthlogList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailAuthlogList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailAuthlogList.xhtml"
+            rendered="#{dbmailAuthlogList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailAuthlogList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailAuthlogEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailAuthlog">
+            <f:param name="dbmailAuthlogBytesRx"/>
+            <f:param name="dbmailAuthlogBytesTx"/>
+            <f:param name="dbmailAuthlogDstIp"/>
+            <f:param name="dbmailAuthlogDstPort"/>
+            <f:param name="dbmailAuthlogId"/>
+            <f:param name="dbmailAuthlogLoginTime"/>
+            <f:param name="dbmailAuthlogLogoutTime"/>
+            <f:param name="dbmailAuthlogService"/>
+            <f:param name="dbmailAuthlogSrcIp"/>
+            <f:param name="dbmailAuthlogSrcPort"/>
+            <f:param name="dbmailAuthlogStatus"/>
+            <f:param name="dbmailAuthlogUserid"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>
