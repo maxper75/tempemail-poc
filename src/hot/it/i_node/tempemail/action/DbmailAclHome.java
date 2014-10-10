@@ -1,6 +1,10 @@
 package it.i_node.tempemail.action;
 
-import it.i_node.tempemail.model.*;
+import it.i_node.tempemail.model.DbmailAcl;
+import it.i_node.tempemail.model.DbmailAclId;
+import it.i_node.tempemail.model.DbmailMailboxes;
+import it.i_node.tempemail.model.DbmailUsers;
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;

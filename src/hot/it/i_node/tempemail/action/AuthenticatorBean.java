@@ -1,6 +1,8 @@
 package it.i_node.tempemail.action;
 
 import javax.ejb.Stateless;
+
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;

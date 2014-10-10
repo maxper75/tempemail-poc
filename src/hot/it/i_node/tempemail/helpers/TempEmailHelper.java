@@ -37,6 +37,8 @@ import org.jboss.seam.util.RandomStringUtils;
 @Scope(ScopeType.SESSION)
 public class TempEmailHelper {
 
+	private static final String DEFAULT_DOMAIN_NAME = "pippopluto.com";
+	private String domainName = DEFAULT_DOMAIN_NAME;
 	private String username=null;							//username users
 	private String emailAddress=null;						//indirizzo mail
 	private String text=null;								//da utilizzare per messaggi di errore
@@ -62,7 +64,11 @@ public class TempEmailHelper {
 		if (username==null||username.isEmpty()) 
 			username=randomString();
 		
-		emailAddress=username+"@pippopluto.com";			
+		StringBuilder emailBuilder = new StringBuilder();
+		emailBuilder.append(username);
+		emailBuilder.append("@");
+		emailBuilder.append(getDomainName());
+		emailAddress=emailBuilder.toString();			
 		if(emailAddressIsValid())	{
 			// user
 			Date data=new Date();
@@ -106,7 +112,6 @@ public class TempEmailHelper {
 			return;
 		}		
 		if(!mail.getDbmailUsers().getUserid().isEmpty())	{
-			//username += "@pippopluto.com";
 			DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
 			EntityManager em=(EntityManager) Component.getInstance("entityManager");
 			try	{
@@ -450,153 +455,13 @@ public class TempEmailHelper {
 		this.alias = alias;
 	}
 
-	
-	
-/*	public DbmailMessages getMessageById(long messageId) {
-		EntityManager em = (EntityManager) Component.getInstance("entityManager");
-		DbmailMessages mess=em.createQuery("From DbmailMessages m where m.messageIdnr"
-				+ "= :messageid",DbmailMessages.class).setParameter("messageid", messageId).getSingleResult();
-		return mess;
-	}*/
-	//RISOLVE BUG  DI ACCESSO, PROBLEMA DI SICUREZZA
-
-/*	public void createEmail() {
-		if (!username.isEmpty()) 
-			username += "@pippopluto.com";
-		else
-			username = randomString()+"@pippopluto.com";
-		if (pass.isEmpty()) 
-			pass=randomString();
-		//controllo users gia utilizzato
-		if(usernameIsValid())	{
-			// user
-			DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
-			DbmailUsers users = usersHome.getInstance();
-			users.setUserid(username);
-			users.setPasswd(pass); 	
-			users.setLastLogin(new Date());
-			users.setEncryptionType("");
-			usersHome.persist();
-			//mailbox
-			TempMailboxHome mailboxesHome=(TempMailboxHome) Component.getInstance(TempMailboxHome.class);
-			TempMailbox mailboxes = mailboxesHome.getInstance();
-			mailboxes.setDbmailUsers(users);
-			mailboxes.setName("INBOX");
-			mailboxes.setPermission((short) 2);
-			mailboxes.setCreationDate(new Date());
-			mailboxes.setRefreshDate(new Date());
-			//salvataggio dati in dbmail MAILBOX
-			mailboxesHome.persist();
-			
-			//aggiungo la mail nella mappa con la data e setto id mailbox
-			mailboxId=mailboxes.getMailboxIdnr();
-			text="Utente "+username+" con password "+pass+" creato!";
-			System.out.println("create email");
-		}
-		else	{
-			text="Nome utente già utilizzato!";
-			System.out.println("create email:users already used");
-		}
+	public String getDomainName() {
+		return domainName;
 	}
 
-	public void deleteEmail()	{
-		boolean eliminato=false;
-		if(!username.isEmpty())	{
-			//username += "@pippopluto.com";
-			DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
-			DbmailMailboxesList mailboxesList=new DbmailMailboxesList();
-			for(DbmailMailboxes mail: mailboxesList.getResultList())
-				if(mail.getDbmailUsers().getUserid().equals(username))	{
-					usersHome.setDbmailUsersUserIdnr(mail.getDbmailUsers().getUserIdnr());
-					usersHome.remove();
-					username="";
-					eliminato=true;
-					messages=null;
-					text="Utente "+username+" con password eliminato!";
-					System.out.println("delete email");
-				}
-			if(!eliminato)	{
-				text="Utente non presente!";
-				System.out.println("delete mail:utente non presente");
-			}
-		}
-		else	{ 
-			text="Inserisci un nome!";
-			System.out.println("delete mail: inserisci un nome");
-		}
-	}	
-	
-	public void refreshing()	{
-		if(!usernameIsValid())	{
-			EntityManager em = (EntityManager) Component.getInstance("entityManager");
-			//setto il mailbox id se non lo conosco
-			TempMailbox mailbox = em.createQuery("From TempMailbox m where m.dbmailUsers.userid= :userid",TempMailbox.class).setParameter("userid",username).getSingleResult();
-			//aggiorno la refreshdate
-			setMailboxId(mailbox.getMailboxIdnr());
-			TempMailboxHome mailboxHome=(TempMailboxHome) Component.getInstance(TempMailboxHome.class);
-			mailbox.setRefreshDate(Calendar.getInstance().getTime());
-			mailboxHome.setInstance(mailbox);
-			mailboxHome.update();
-			System.out.println("refresh per id:"+mailboxId);
-			reloadContents();
-		}
-		else	{
-			text="username non valido!";
-			username="";
-			System.out.println("refreshing: user non valido");
-		}
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
-
-	public void reloadContents()	{
-		if(username!=null)	{
-			if(!username.isEmpty())	{
-				EntityManager em = (EntityManager) Component.getInstance("entityManager");
-				setMessages(em.createQuery("From DbmailMessages m where m.dbmailMailboxes.dbmailUsers.userid"
-						+ " = :userid",DbmailMessages.class).setParameter("userid",username).getResultList());
-				if(getMessages().size()==0)	{
-					text="nessun messaggio presente o user non presente!";
-					System.out.println("reload contents: nessun messaggio presente o user non presente!");
-				}
-				else	{
-					text="messaggi di "+username+" :";
-					System.out.println("messaggi di "+username);
-					createSubjectMap(reloadSubjects(username));
-				}
-			}	
-			else	{ 
-				text="inserisci un utente valido!";
-				System.out.println("reload contents: inserisci un utente valido!");
-			}
-		}
-	}
-	
-	
-
-	private void setCurrentMessage(long id)	{
-		for(DbmailMessages mess:messages)
-			if(mess.getDbmailPhysmessage().getId()==id)	{
-				message=mess;
-				System.out.println("message settato:"+message.getDbmailPhysmessage().getId());
-			}
-	}
-
-
-
-	public long countDown()	{
-		EntityManager em = (EntityManager) Component.getInstance("entityManager");
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(em.createQuery("From TempMailbox t where t.dbmailUsers.userid= :userid",TempMailbox.class).setParameter("userid",username).getSingleResult().getRefreshDate());
-		calendar.add(Calendar.MINUTE, 20);
-		Calendar today = Calendar.getInstance();
-	    System.out.println();
-	    long togo = (calendar.getTimeInMillis() - today.getTimeInMillis()) / 1000;
-	    if (togo>0)
-	    	return togo;
-	    return 0;
-	}
-*/
-
-
 	
 }
 
