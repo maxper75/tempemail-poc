@@ -3,18 +3,15 @@ package it.i_node.tempemail.model;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
+
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
@@ -23,15 +20,20 @@ public class AddressPuller {
 	Folder[] folders;
 
 	public AddressPuller() throws MessagingException, UnsupportedEncodingException{
+		
+		String imapORimaps = "imap";
+		String email = "d.pucci@i-node.it";
+		String password = "uuuV2Tk3";
+		String domain ="zimbra.i-node.it";
 
 		Properties props = System.getProperties();
-		props.setProperty("mail.store.protocol", "imap");
+		props.setProperty("mail.store.protocol",imapORimaps);
 
 		try{
 
 			Session session = Session.getInstance(props, null);
-			Store store = session.getStore("imap");
-			store.connect("zimbra.i-node.it", "d.pucci@i-node.it", "uuuV2Tk3");
+			Store store = session.getStore(imapORimaps);
+			store.connect(domain, email,password);
 			System.out.println(store);
 			folders = store.getDefaultFolder().list("*");
 

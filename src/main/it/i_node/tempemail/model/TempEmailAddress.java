@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -19,6 +21,16 @@ public class TempEmailAddress {
 	private String emailAddress;
 	private String name;
 	private Integer retentionDays;
+	
+	private TempMailbox tempMailbox;
+	
+	@ManyToOne
+	public TempMailbox getTempMailbox() {
+		return tempMailbox;
+	}
+	public void setTempMailbox(TempMailbox tempMailbox) {
+		this.tempMailbox = tempMailbox;
+	}
 	public String getEmailAddress() {
 		return emailAddress;
 	}

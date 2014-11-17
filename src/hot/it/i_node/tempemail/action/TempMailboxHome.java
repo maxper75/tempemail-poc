@@ -65,4 +65,9 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 						.getDbmailSubscriptions());
 	}
 
+	public List<TempEmailAddress> getTempEmailAddresses() {
+		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(
+				getInstance().getTempEmailAddresses());
+	}
+
 }
