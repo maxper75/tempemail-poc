@@ -11,7 +11,7 @@ public class TempEmailAddressFactory {
 			TempEmailAddress tempEmailAddress = new TempEmailAddress();
 			tempEmailAddress.setEmailAddress(iaddress.getAddress());
 			tempEmailAddress.setName(iaddress.getPersonal());
-			tempEmailAddress.setRetentionDays(((int)Math.random()*10)-1);
+			tempEmailAddress.setRetentionDays(((int)(Math.random()*10))-1);
 			return tempEmailAddress;
 		}
 		

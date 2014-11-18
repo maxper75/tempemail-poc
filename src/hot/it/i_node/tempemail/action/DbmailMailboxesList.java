@@ -24,3 +24,4 @@ public class DbmailMailboxesList extends EntityQuery<DbmailMailboxes> {
 		return dbmailMailboxes;
 	}
 }
+

@@ -94,8 +94,9 @@ public class SieveRulesFactory {
 		if(!deliverAddresses.isEmpty() && !discardAddresses.isEmpty())
 			stringBuilder.append(" , ");
 		if(!discardAddresses.isEmpty())
-			stringBuilder.append("require \"fileinto\";");
+			stringBuilder.append("\"fileinto\"");
 		stringBuilder.append("]");
+		stringBuilder.append(";");
 		
 		return stringBuilder.toString();
 	}
@@ -138,7 +139,7 @@ public class SieveRulesFactory {
 		stringBuilder.append("if address :is \"from\" [");
 		stringBuilder.append(listAddressesIntoString(retainAddresses));
 		stringBuilder.append("\n");
-		stringBuilder.append("] keep;");
+		stringBuilder.append("keep;");
 		return stringBuilder.toString();
 
 	}

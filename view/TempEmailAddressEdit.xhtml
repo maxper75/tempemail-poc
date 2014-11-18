@@ -1,0 +1,90 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="tempMailbox" styleClass="edit">
+
+			<rich:panel>
+				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] : messages['TempEmailAddress.add']}</f:facet>
+
+
+				<s:decorate id="TempEmailAddressNameField" template="layout/edit.xhtml">
+					<ui:define name="label">Name</ui:define>
+					<h:inputText id="TempEmailAddressName" required="true"
+						disabled="#{tempMailboxHome.managed}"
+						value="#{tempEmailAddressHome.instance.name}">
+						<a:ajax event="blur" render="TempEmailAddressNameField"
+							bypassUpdates="true" />
+					</h:inputText>
+				</s:decorate>
+
+
+				<s:decorate id="TempEmailAddressEmailAddressField" template="layout/edit.xhtml">
+					<ui:define name="label">Email address</ui:define>
+					<h:inputText id="TempEmailAddressEmailAddress" required="true"
+						value="#{tempEmailAddressHome.instance.emailAddress}">
+						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
+							bypassUpdates="true" />
+					</h:inputText>
+				</s:decorate>
+
+				<s:decorate id="RetantionPolicyField" template="layout/edit.xhtml">
+					<ui:define name="label">Retention Policy</ui:define>
+					<h:inputText id="RetantionPolicy" required="true"
+						value="#{tempEmailAddressHome.instance.retentionDays}">
+						<a:ajax event="blur" render="RetantionPolicyField"
+							bypassUpdates="true" />
+					</h:inputText>
+				</s:decorate>
+				<div style="clear: both">
+					<span class="required">*</span> #{messages['requiredFields']}
+				</div>
+
+			</rich:panel>
+
+			<div class="actionButtons">
+
+				<h:commandButton id="save" value="Save" action="#{tempEmailAddressHome.persist}">
+					<s:conversationId />
+				</h:commandButton>
+<!--
+
+			//attributi tag commandButton di Save		
+					disabled="#{!tempEmailAddressHome.wired}"
+					rendered="#{!tempEmailAddressHome.managed}"
+			//end attributi commandButton di Save		
+					
+					
+					
+				<h:commandButton id="update" value="Save"
+					action="#{tempMailboxHome.update}"
+					rendered="#{tempMailboxHome.managed}">
+					<s:conversationId />
+				</h:commandButton>
+ 
+				<h:commandButton id="delete" value="Delete"
+					action="#{tempMailboxHome.remove}" immediate="true"
+					rendered="#{tempMailboxHome.managed}" />
+
+				<s:button id="cancelEdit" value="Cancel" propagation="end"
+					view="/TempMailbox.xhtml" rendered="#{tempMailboxHome.managed}" />
+
+				<s:button id="cancelAdd" value="Cancel" propagation="end"
+					view="/#{empty tempMailboxFrom ? 'TempMailboxList' : tempMailboxFrom}.xhtml"
+					rendered="#{!tempMailboxHome.managed}" />
+ -->
+			</div>
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>

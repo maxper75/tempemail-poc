@@ -28,7 +28,7 @@ public class TempEmailAddressHome extends EntityHome<TempEmailAddress>{
 	@Override
 	protected TempEmailAddress createInstance() {
 		TempEmailAddress tea = new TempEmailAddress();
-		//tea;
+		
 		return tea;
 	}
 	public TempEmailAddress getDefinedInstance() {
