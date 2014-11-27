@@ -30,7 +30,7 @@ public class DbmailSievescripts implements java.io.Serializable {
 
 	public DbmailSievescripts() {
 	}
-
+	
 	public DbmailSievescripts(long id, DbmailUsers dbmailUsers, short active,
 			String name, String script) {
 		this.id = id;

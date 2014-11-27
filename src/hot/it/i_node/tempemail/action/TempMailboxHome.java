@@ -1,8 +1,12 @@
 package it.i_node.tempemail.action;
 
 import it.i_node.tempemail.model.*;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
@@ -12,7 +16,7 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 
 	@In(create = true)
 	DbmailUsersHome dbmailUsersHome;
-
+	
 	public void setTempMailboxMailboxIdnr(Long id) {
 		setId(id);
 	}
@@ -37,9 +41,16 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 	public void wire() {
 		getInstance();
 		DbmailUsers dbmailUsers = dbmailUsersHome.getDefinedInstance();
+		
+
+		
+		
 		if (dbmailUsers != null) {
 			getInstance().setDbmailUsers(dbmailUsers);
 		}
+
+		
+		
 	}
 
 	public boolean isWired() {

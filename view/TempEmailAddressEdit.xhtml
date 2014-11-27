@@ -13,35 +13,45 @@
 		<h:form id="tempMailbox" styleClass="edit">
 
 			<rich:panel>
-				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] : messages['TempEmailAddress.add']}</f:facet>
 
-
-				<s:decorate id="TempEmailAddressNameField" template="layout/edit.xhtml">
+				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
+				
+				<s:decorate id="mailboxIdnr"
+					template="layout/edit.xhtml">
+					<ui:define name="label">Mailbox Idnr : </ui:define>
+					<h:outputText value="#{tempEmailAddressHome.instance.tempMailbox.mailboxIdnr}"/>
+				</s:decorate>
+	
+				<s:decorate id="TempEmailAddressNameField"
+					template="layout/edit.xhtml">
 					<ui:define name="label">Name</ui:define>
 					<h:inputText id="TempEmailAddressName" required="true"
-						disabled="#{tempMailboxHome.managed}"
+						converterMessage="Name must be a String"
 						value="#{tempEmailAddressHome.instance.name}">
 						<a:ajax event="blur" render="TempEmailAddressNameField"
-							bypassUpdates="true" />
+							execute="@this" />
 					</h:inputText>
 				</s:decorate>
 
 
-				<s:decorate id="TempEmailAddressEmailAddressField" template="layout/edit.xhtml">
+				<s:decorate id="TempEmailAddressEmailAddressField"
+					template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
 					<h:inputText id="TempEmailAddressEmailAddress" required="true"
-						value="#{tempEmailAddressHome.instance.emailAddress}">
+						value="#{tempEmailAddressHome.instance.emailAddress}"
+						converterMessage="Email must be a String">
 						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
-							bypassUpdates="true" />
+							execute="@this" />
 					</h:inputText>
 				</s:decorate>
 
 				<s:decorate id="RetantionPolicyField" template="layout/edit.xhtml">
 					<ui:define name="label">Retention Policy</ui:define>
 					<h:inputText id="RetantionPolicy" required="true"
-						value="#{tempEmailAddressHome.instance.retentionDays}">
+						value="#{tempEmailAddressHome.instance.retentionDays}"
+						converterMessage="Retention Days must be a number">
 						<a:ajax event="blur" render="RetantionPolicyField"
-							bypassUpdates="true" />
+							execute="@this" />
 					</h:inputText>
 				</s:decorate>
 				<div style="clear: both">
@@ -52,35 +62,13 @@
 
 			<div class="actionButtons">
 
-				<h:commandButton id="save" value="Save" action="#{tempEmailAddressHome.persist}">
-					<s:conversationId />
-				</h:commandButton>
-<!--
-
-			//attributi tag commandButton di Save		
-					disabled="#{!tempEmailAddressHome.wired}"
-					rendered="#{!tempEmailAddressHome.managed}"
-			//end attributi commandButton di Save		
+			 <h:commandButton id="save" value="save" 
+					action="#{tempEmailAddressHome.persist}"/>
 					
 					
 					
-				<h:commandButton id="update" value="Save"
-					action="#{tempMailboxHome.update}"
-					rendered="#{tempMailboxHome.managed}">
-					<s:conversationId />
-				</h:commandButton>
- 
-				<h:commandButton id="delete" value="Delete"
-					action="#{tempMailboxHome.remove}" immediate="true"
-					rendered="#{tempMailboxHome.managed}" />
-
-				<s:button id="cancelEdit" value="Cancel" propagation="end"
-					view="/TempMailbox.xhtml" rendered="#{tempMailboxHome.managed}" />
-
-				<s:button id="cancelAdd" value="Cancel" propagation="end"
-					view="/#{empty tempMailboxFrom ? 'TempMailboxList' : tempMailboxFrom}.xhtml"
-					rendered="#{!tempMailboxHome.managed}" />
- -->
+			
+				
 			</div>
 		</h:form>
 

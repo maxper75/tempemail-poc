@@ -108,7 +108,7 @@
 	<classpathentry kind="lib" path="lib/jfreechart.jar"/>
 	<classpathentry kind="lib" path="lib/jgroups.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time.jar"/>
-	<classpathentry kind="lib" path="lib/jsf-impl.jar"/>
+	<classpathentry kind="lib" path="lib/jsf-impl.jar" sourcepath="/home/bcovella/.m2/repository/com/sun/faces/jsf-impl/2.1.7/jsf-impl-2.1.7-sources.jar"/>
 	<classpathentry kind="lib" path="lib/jsr250-api.jar"/>
 	<classpathentry kind="lib" path="lib/jsr305.jar"/>
 	<classpathentry kind="lib" path="lib/jta.jar"/>

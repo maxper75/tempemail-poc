@@ -1,22 +1,26 @@
 package it.i_node.tempemail.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 @Entity
 @Table
 @DiscriminatorValue("T")
 public class TempMailbox extends DbmailMailboxes {
+
 	private Date creationDate;
 	private Date refreshDate;
-	
-	private Set <TempEmailAddress> tempEmailAddresses = new HashSet<TempEmailAddress>();
+	private Set <TempEmailAddress> tempEmailAddresses = new HashSet<TempEmailAddress>(0);
 	
 	public Date getRefreshDate() {
 		return refreshDate;
@@ -30,14 +34,14 @@ public class TempMailbox extends DbmailMailboxes {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tempMailbox")
 	public Set<TempEmailAddress> getTempEmailAddresses() {
-		return tempEmailAddresses;
+		return this.tempEmailAddresses;
 	}
 	public void setTempEmailAddresses(Set<TempEmailAddress> tempEmailAddresses) {
 		this.tempEmailAddresses = tempEmailAddresses;
 	}
 
-	
-	
+
+
 }

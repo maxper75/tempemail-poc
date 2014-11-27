@@ -3,23 +3,24 @@ package it.i_node.tempemail.model;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-
-import javax.mail.*;
+import javax.mail.Address;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
-
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 public class AddressPuller {
 	Folder sent;
 	Folder[] folders;
 
-	public AddressPuller() throws MessagingException, UnsupportedEncodingException{
+	public AddressPuller() {
 		
 		String imapORimaps = "imap";
 		String email = "d.pucci@i-node.it";
@@ -94,11 +95,14 @@ public class AddressPuller {
 		} catch (javax.mail.MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
 
-	public static void main(String[] args) throws MessagingException, UnsupportedEncodingException{
+	public static void main(String[] args) {
 		AddressPuller a = new AddressPuller();
 		
 	}

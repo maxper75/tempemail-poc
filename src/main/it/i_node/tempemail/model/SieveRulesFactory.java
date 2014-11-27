@@ -13,6 +13,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import org.jboss.seam.annotations.Name;
+
+import com.google.common.base.Joiner;
+@Name("sieveRulesFactory")
 public class SieveRulesFactory {
 
 	/**Meaning of retain number
@@ -25,7 +29,7 @@ public class SieveRulesFactory {
 	private List <TempEmailAddress> discardAddresses; 
 	private List <TempEmailAddress> retainAddresses;
 
-	public String createSieveRule (List <TempEmailAddress> addresses,TempEmailAddress forwardAddress){
+	public String createSieveRule (List <TempEmailAddress> addresses,String forwardAddress){
 
 		deliverAddresses= new ArrayList <TempEmailAddress> ();
 		discardAddresses = new ArrayList <TempEmailAddress> (); 
@@ -34,6 +38,10 @@ public class SieveRulesFactory {
 		return createRule (deliverAddresses,discardAddresses,retainAddresses,forwardAddress);
 
 	}
+	public String createSieveRule (List <TempEmailAddress> addresses,TempEmailAddress forwardAddress){
+		return createSieveRule(addresses, forwardAddress.getEmailAddress());
+	}
+
 
 	private void addressesHandler(List <TempEmailAddress> add){
 
@@ -53,7 +61,7 @@ public class SieveRulesFactory {
 	}
 
 	private String createRule (List<TempEmailAddress> deliverAddresses,List<TempEmailAddress> discardAddresses,
-			List<TempEmailAddress> retainAddresses,TempEmailAddress forwardAddress) {
+			List<TempEmailAddress> retainAddresses,String forwardAddress) {
 		StringBuilder stringBuilder= new StringBuilder();
 
 		stringBuilder.append("## This rule has been created");
@@ -83,63 +91,86 @@ public class SieveRulesFactory {
 			stringBuilder.append("\n");
 			stringBuilder.append(rule4retain(retainAddresses));
 		}
+		stringBuilder.append("\n");
 		return stringBuilder.toString();
 	}
 	private String requireFeature(List<TempEmailAddress> deliverAddresses,	List<TempEmailAddress> discardAddresses) {
 		StringBuilder stringBuilder= new StringBuilder();
 		stringBuilder.append("require");
-		stringBuilder.append("[");
-		if(!deliverAddresses.isEmpty())
-			stringBuilder.append("\"redirect\"");
-		if(!deliverAddresses.isEmpty() && !discardAddresses.isEmpty())
-			stringBuilder.append(" , ");
+//		stringBuilder.append("[");
+//		if(!deliverAddresses.isEmpty())
+//			stringBuilder.append("\"redirect\"");
+//		if(!deliverAddresses.isEmpty() && !discardAddresses.isEmpty())
+//			stringBuilder.append(" , ");
 		if(!discardAddresses.isEmpty())
 			stringBuilder.append("\"fileinto\"");
-		stringBuilder.append("]");
+//		stringBuilder.append("]");
 		stringBuilder.append(";");
 		
 		return stringBuilder.toString();
 	}
-
-	private String listAddressesIntoString (List<TempEmailAddress> listAdd){
+	private String listAddressesIntoString (List<TempEmailAddress> Add){
+		List <String> onlyAddresses= new ArrayList<String>();
+		for(TempEmailAddress tea: Add)
+			onlyAddresses.add(tea.getEmailAddress());
+			
+		return listAddresses(onlyAddresses);
+	}
+	private String listAddresses (List<String> listAdd){
+		
 		StringBuilder stringBuilder= new StringBuilder();
-
-		for (TempEmailAddress tea: listAdd) {
-			stringBuilder.append("\"");
-			stringBuilder.append(tea.getEmailAddress());
-			stringBuilder.append("\",");
-		}
-		stringBuilder.append("\" \" ]");
+		stringBuilder.append("\"");
+		String addresses = Joiner.on("\",\"").join(listAdd);
+		stringBuilder.append(addresses);
+		stringBuilder.append("\"");
+		
 		return stringBuilder.toString();
 	}
 
 
-	private String rule4deliver(List<TempEmailAddress> deliverAddresses,TempEmailAddress forwardAddress) {
-		StringBuilder stringBuilder= new StringBuilder();
-		stringBuilder.append("if address :is \"from\" [");
-		stringBuilder.append(listAddressesIntoString(deliverAddresses));
+	private String rule4deliver(List<TempEmailAddress> deliverAddresses,String forwardAddress) {
+		StringBuilder stringBuilder = createIfRule(deliverAddresses);
+		stringBuilder.append("{");
+		stringBuilder.append(" redirect \""+ forwardAddress+"\";");
 		stringBuilder.append("\n");
-		stringBuilder.append(" redirect \" "+ forwardAddress.getEmailAddress()+"\";");
+		stringBuilder.append("stop;");
+		stringBuilder.append("\n");
+		stringBuilder.append("}");
+		
+		
 		return stringBuilder.toString();
 
 	}
 	private String rule4discard(List<TempEmailAddress> discardAddresses) {
-		StringBuilder stringBuilder= new StringBuilder();
-		stringBuilder.append("if address :is \"from\" [");
-		stringBuilder.append(listAddressesIntoString(discardAddresses));
-		stringBuilder.append("\n");
+		StringBuilder stringBuilder = createIfRule(discardAddresses);
+		stringBuilder.append("{");
 		stringBuilder.append("fileinto \"MAILBOX.discarded\";");
+		stringBuilder.append("\n");
+		stringBuilder.append("stop;");
+		stringBuilder.append("\n");
+		stringBuilder.append("}");
+		
 		//eventually to discard
 		//stringBuilder.append(" discard;");
 		return stringBuilder.toString();
 
 	}
-	private String rule4retain(List<TempEmailAddress> retainAddresses) {
+	private StringBuilder createIfRule(List<TempEmailAddress> discardAddresses) {
 		StringBuilder stringBuilder= new StringBuilder();
 		stringBuilder.append("if address :is \"from\" [");
-		stringBuilder.append(listAddressesIntoString(retainAddresses));
-		stringBuilder.append("\n");
+		stringBuilder.append(listAddressesIntoString(discardAddresses));
+		stringBuilder.append("]\n");
+		return stringBuilder;
+	}
+	private String rule4retain(List<TempEmailAddress> retainAddresses) {
+		StringBuilder stringBuilder = createIfRule(retainAddresses);
+		stringBuilder.append("{");
 		stringBuilder.append("keep;");
+		stringBuilder.append("\n");
+		stringBuilder.append("stop;");
+		stringBuilder.append("\n");
+		stringBuilder.append("}");
+		
 		return stringBuilder.toString();
 
 	}
