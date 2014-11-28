@@ -10,7 +10,8 @@ import org.jboss.seam.framework.EntityHome;
 @Name("tempEmailAddressHome")
 public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
 	@In(create = true)
-	TempMailboxHome tempMailboxHome;
+	private TempMailboxHome tempMailboxHome;
+	
 
 	public void setTempEmailAddressIdnr(Long id) {
 		setId(id);
@@ -30,7 +31,7 @@ public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
 		getInstance();
 		
 	}
-
+	
 	@Override
 	protected TempEmailAddress createInstance() {
 		TempEmailAddress tea = new TempEmailAddress();

@@ -5,33 +5,32 @@
 
 	<begin-conversation join="true" flush-mode="MANUAL" />
 
-	
+
 	<action execute="#{tempEmailAddressHome.wire}" />
+
 	<param name="tempMailboxMailboxIdnr" value="#{tempMailboxHome.tempMailboxMailboxIdnr}" />
+	
+	
 
 
 	<navigation from-action="#{tempEmailAddressHome.persist}">
 		<rule if-outcome="persisted">
-			<end-conversation /> 
-			<redirect view-id="/TempMailbox.xhtml" />
-		</rule> 
-	</navigation>
-	<navigation from-action="#{tempEmailAddressHome.instance.tempMailbox.tempEmailAddresses.add(tempEmailAddressHome.instance)}">
-			<redirect view-id="/TempMailbox.xhtml" />
-	</navigation>
-<!-- 	  <navigation from-action="#{tempEmailAddressHome.update}"> -->
-<!--       <rule if-outcome="updated"> -->
-<!--          <end-conversation/> -->
-<!--          <redirect view-id="/TempMailbox.xhtml"/> -->
-<!--       </rule> -->
-<!--    </navigation> -->
-<!--
-	<navigation from-action="#{dbmailAclHome.remove}">
-		<rule if-outcome="removed">
 			<end-conversation />
-			<redirect view-id="/DbmailAclList.xhtml" />
+			<redirect view-id="/TempMailbox.xhtml" />
 		</rule>
 	</navigation>
-	-->
+	<navigation
+		from-action="#{tempEmailAddressHome.instance.tempMailbox.tempEmailAddresses.add(tempEmailAddressHome.instance)}">
+		<redirect view-id="/TempMailbox.xhtml" />
+	</navigation>
+	<!-- <navigation from-action="#{tempEmailAddressHome.update}"> -->
+	<!-- <rule if-outcome="updated"> -->
+	<!-- <end-conversation/> -->
+	<!-- <redirect view-id="/TempMailbox.xhtml"/> -->
+	<!-- </rule> -->
+	<!-- </navigation> -->
+	<!-- <navigation from-action="#{dbmailAclHome.remove}"> <rule if-outcome="removed"> 
+		<end-conversation /> <redirect view-id="/DbmailAclList.xhtml" /> </rule> 
+		</navigation> -->
 
 </page>

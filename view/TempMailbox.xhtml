@@ -149,36 +149,29 @@
 						<rich:column sortBy="#{_tempEmailAddress.retentionDays}">
 							<f:facet name="header">#{messages['TempEmailAddresses.politicaConservazioni.label']}</f:facet>
 							<h:outputText value="#{_tempEmailAddress.retentionDays}" />
-							
 						</rich:column>
-						<rich:column >
-							<f:facet name="header">#{messages['TempEmailAddresses.options.label']}</f:facet>
-							<h:selectOneRadio >
-								<f:selectItem itemLabel="discard" itemValue="discard"  />
-								<f:selectItem itemLabel="deliver" itemValue="deliver" />
-								<f:selectItem itemLabel="retain" itemValue="retain" />
-								
-								
-							</h:selectOneRadio>
+						<rich:column sortBy="#{_tempEmailAddress.emailAddress}">
+							<f:facet name="header">#{messages['TempEmailAddresses.giorniConservazioni.label']}</f:facet>
+							<h:outputText value="This address will be retained for " />
+							<h:outputText value="#{tempEmailAddressHelper.retentionPolicy}" />
+							<h:outputText value=" days" />
 						</rich:column>
-						<rich:column >
-						<f:facet name="header">#{messages['TempEmailAddresses.Submit.label']}</f:facet>
-						<h:commandButton value="Submit" update="display" onclick="dlg.show()" />
-						<s:button value="edit tempEmailAddress"
-							view="/TempEmailAddress.xhtml"/>
+						<rich:column>
+							<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
+							<s:button value="edit tempEmailAddress"
+								view="/TempEmailAddress.xhtml">
+									<f:param name="tempEmailAddressId" value="#{tempEmailAddressHome.instance.id}" />
+							</s:button>
 						</rich:column>
 					</rich:dataTable>
 
 					<div class="actionButtons">
 						<h:commandButton action="#{tempMailboxHelper.generateSieveRule}"
 							value="Generate sieve rule" />
-
-
 						<s:button value="Add tempEmailAddress"
 							view="/TempEmailAddressEdit.xhtml">
 							<f:param name="tempMailboxMailboxIdnr"
 								value="#{tempMailboxHome.instance.mailboxIdnr}" />
-
 						</s:button>
 					</div>
 				</h:form>

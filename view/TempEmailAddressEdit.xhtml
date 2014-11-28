@@ -15,16 +15,16 @@
 			<rich:panel>
 
 				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
-				
-				<s:decorate id="mailboxIdnr"
-					template="layout/edit.xhtml">
+
+				<s:decorate id="mailboxIdnr" template="layout/edit.xhtml">
 					<ui:define name="label">Mailbox Idnr : </ui:define>
-					<h:outputText value="#{tempEmailAddressHome.instance.tempMailbox.mailboxIdnr}"/>
+					<h:outputText
+						value="#{tempEmailAddressHome.instance.tempMailbox.mailboxIdnr}" />
 				</s:decorate>
-	
+
 				<s:decorate id="TempEmailAddressNameField"
 					template="layout/edit.xhtml">
-					<ui:define name="label">Name</ui:define>
+					<ui:define name="label">Name:</ui:define>
 					<h:inputText id="TempEmailAddressName" required="true"
 						converterMessage="Name must be a String"
 						value="#{tempEmailAddressHome.instance.name}">
@@ -32,7 +32,6 @@
 							execute="@this" />
 					</h:inputText>
 				</s:decorate>
-
 
 				<s:decorate id="TempEmailAddressEmailAddressField"
 					template="layout/edit.xhtml">
@@ -45,13 +44,21 @@
 					</h:inputText>
 				</s:decorate>
 
-				<s:decorate id="RetantionPolicyField" template="layout/edit.xhtml">
+				<s:decorate id="RetentionPolicyField" template="layout/edit.xhtml">
 					<ui:define name="label">Retention Policy</ui:define>
-					<h:inputText id="RetantionPolicy" required="true"
-						value="#{tempEmailAddressHome.instance.retentionDays}"
-						converterMessage="Retention Days must be a number">
-						<a:ajax event="blur" render="RetantionPolicyField"
+
+					<h:selectOneRadio value="#{tempEmailAddressHelper.retentionPolicy}">
+						<f:selectItem itemLabel="discard" itemValue="0" />
+						<f:selectItem itemLabel="deliver" itemValue="-1" />
+						<f:selectItem itemLabel="retain" itemValue="1" />
+						<f:ajax event="change" render="RetentionPolicyValue"
 							execute="@this" />
+					</h:selectOneRadio>
+					<h:inputText id="RetentionPolicyValue" required="true"
+						value="#{tempEmailAddressHome.instance.retentionDays}"
+						converterMessage="Retention Days must be a number"
+						disabled="#{tempEmailAddressHelper.retentionPolicy!=1}">
+						<!-- inputText disabilitato quando retentionPolicy non è 1 -->
 					</h:inputText>
 				</s:decorate>
 				<div style="clear: both">
@@ -62,13 +69,9 @@
 
 			<div class="actionButtons">
 
-			 <h:commandButton id="save" value="save" 
-					action="#{tempEmailAddressHome.persist}"/>
-					
-					
-					
-			
-				
+				<h:commandButton id="save" value="save"
+					action="#{tempEmailAddressHome.persist}" />
+
 			</div>
 		</h:form>
 
