@@ -36,12 +36,16 @@
 				<s:decorate id="TempEmailAddressEmailAddressField"
 					template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
-					<h:inputText id="TempEmailAddressEmailAddress" required="true"
-						value="#{tempEmailAddressHome.instance.emailAddress}"
+					<h:inputText id="TempEmailAddressEmailAddress" 
+						value="#{tempEmailAddressHome.instance.emailAddress}" 
 						converterMessage="Email must be a String">
 						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
 							execute="@this" />
 					</h:inputText>
+					<!--
+					
+					validator="#{tempEmailAddressHelper.exsists(tempEmailAddressHome.instance.emailAddress)}"
+					validatorMessage="Email gia' esistente" -->
 				</s:decorate>
 
 				<s:decorate id="RetentionPolicyField" template="layout/edit.xhtml">
@@ -58,6 +62,7 @@
 						value="#{tempEmailAddressHome.instance.retentionDays}"
 						converterMessage="Retention Days must be a number"
 						disabled="#{tempEmailAddressHelper.retentionPolicy!=1}">
+						<f:ajax event="blur" execute="@this"></f:ajax>
 						<!-- inputText disabilitato quando retentionPolicy non è 1 -->
 					</h:inputText>
 				</s:decorate>
@@ -69,8 +74,16 @@
 
 			<div class="actionButtons">
 
-				<h:commandButton id="save" value="save"
-					action="#{tempEmailAddressHome.persist}" />
+				<h:commandButton id="save" value="Save"
+					action="#{tempEmailAddressHelper.persist}"
+					disabled="#{!tempEmailAddressHome.wired}"
+					rendered="#{!tempEmailAddressHome.managed}" />
+				<h:commandButton id="update" value="Save"
+					action="#{tempEmailAddressHelper.update}"
+					rendered="#{tempEmailAddressHome.managed}" />
+				<h:commandButton id="delete" value="Delete"
+					action="#{tempEmailAddressHelper.remove}" immediate="true"
+					rendered="#{tempEmailAddressHome.managed}" />
 
 			</div>
 		</h:form>

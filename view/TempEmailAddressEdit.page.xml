@@ -9,20 +9,32 @@
 	<action execute="#{tempEmailAddressHome.wire}" />
 
 	<param name="tempMailboxMailboxIdnr" value="#{tempMailboxHome.tempMailboxMailboxIdnr}" />
-	
+	<param name="tempEmailAddressId" value="#{tempEmailAddressHome.tempEmailAddressIdnr}" />
 	
 
 
-	<navigation from-action="#{tempEmailAddressHome.persist}">
+	<navigation from-action="#{tempEmailAddressHelper.persist}">
 		<rule if-outcome="persisted">
-			<end-conversation />
+			<end-conversation/>
 			<redirect view-id="/TempMailbox.xhtml" />
 		</rule>
 	</navigation>
-	<navigation
-		from-action="#{tempEmailAddressHome.instance.tempMailbox.tempEmailAddresses.add(tempEmailAddressHome.instance)}">
-		<redirect view-id="/TempMailbox.xhtml" />
+	<navigation from-action="#{tempEmailAddressHelper.update}">
+		<rule if-outcome="updated">
+			<end-conversation/>
+			<redirect view-id="/TempMailbox.xhtml" />
+		</rule>
 	</navigation>
+	<navigation from-action="#{tempEmailAddressHelper.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/TempMailbox.xhtml"/>
+      </rule>
+   </navigation>
+<!-- 	<navigation -->
+<!-- 		from-action="#{tempEmailAddressHome.instance.tempMailbox.tempEmailAddresses.add(tempEmailAddressHome.instance)}"> -->
+<!-- 		<redirect view-id="/TempMailbox.xhtml" /> -->
+<!-- 	</navigation> -->
 	<!-- <navigation from-action="#{tempEmailAddressHome.update}"> -->
 	<!-- <rule if-outcome="updated"> -->
 	<!-- <end-conversation/> -->

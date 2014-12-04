@@ -9,17 +9,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.engine.jdbc.ColumnNameCache;
 
-@Entity
+
+@Entity												
 @Table(name = "tempemailaddress", schema = "public")
+//uniqueConstraints=@UniqueConstraint(columnNames={"tempMailbox", "emailAddress"})
 public class TempEmailAddress implements java.io.Serializable {
 
 	private long id;
 	private String emailAddress;
 	private String name;
 	private Integer retentionDays;
+	
 	private TempMailbox tempMailbox;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,6 +45,7 @@ public class TempEmailAddress implements java.io.Serializable {
 	public void setTempMailbox(TempMailbox tempMailbox) {
 		this.tempMailbox = tempMailbox;
 	}
+//	@Column(unique = true)
 	public String getEmailAddress() {
 		return emailAddress;
 	}

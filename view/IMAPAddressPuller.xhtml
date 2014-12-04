@@ -1,0 +1,106 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<rich:tabPanel switchType="client">
+			<h:form id="tempMailbox" styleClass="edit">
+
+				<rich:panel>
+					<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
+					<s:decorate id="imap" template="layout/edit.xhtml">
+						<ui:define name="label">imap: </ui:define>
+						<h:selectOneRadio value="#{imapAddressPuller.imapORimaps}"
+							required="true">
+							<f:selectItem itemLabel="imap" itemValue="imap" />
+							<f:selectItem itemLabel="imaps" itemValue="imaps" />
+							<a:ajax event="blur" render="imap" execute="@this" />
+						</h:selectOneRadio>
+					</s:decorate>				
+
+					<s:decorate id="email" template="layout/edit.xhtml">
+						<ui:define name="label">Email: </ui:define>
+						<h:inputText value="#{imapAddressPuller.email}" required="true" >
+						<a:ajax event="blur" render="email" execute="@this" />
+						</h:inputText>
+
+					</s:decorate>
+					<s:decorate id="password" template="layout/edit.xhtml">
+						<ui:define name="label">Password : </ui:define>
+						<h:inputText value="#{imapAddressPuller.password}" required="true">
+						<a:ajax event="blur" render="password" execute="@this" />
+						</h:inputText>
+					</s:decorate>
+					<s:decorate id="domain" template="layout/edit.xhtml">
+						<ui:define name="label">Name server : </ui:define>
+						<h:inputText required="true" value="#{imapAddressPuller.domain}">
+						<a:ajax event="blur" render="domain" execute="@this" />
+						</h:inputText>
+					</s:decorate>
+					<div style="clear: both">
+						<span class="required">*</span> #{messages['requiredFields']}
+					</div>
+					<div>
+						<h:commandButton value="Import"
+							action="#{imapAddressPuller.addressesFromSentFolder()}" />
+					</div>
+
+				</rich:panel>
+			</h:form>
+
+			<rich:tab>
+				<f:facet name="header">
+					<h:panelGroup>#{messages['TempEmailAddresses.import.detail']}</h:panelGroup>
+				</f:facet>
+				<h:form styleClass="association"
+					id="ImportedTempEmailAddressesChildren">
+					<h:outputText value="TempEmailAddresses are not imported yet."
+						rendered="#{empty imapAddressPuller.recipient }" />
+
+					
+					<rich:dataTable value="#{imapAddressPuller.recipient}"
+						var="_tempEmailAddress"
+						rendered="#{not empty imapAddressPuller.recipient}"
+						rowClasses="rvgRowOne,rvgRowTwo" id="TempEmailAddressesTable">
+						<rich:column sortBy="#{_tempEmailAddress.name}">
+							<f:facet name="header">#{messages['TempEmailAddresses.nominativo.label']}</f:facet>
+							<h:outputText value="#{_tempEmailAddress.name}" />
+						</rich:column>
+						<rich:column sortBy="#{_tempEmailAddress.emailAddress}">
+							<f:facet name="header">#{messages['TempEmailAddresses.email.label']}</f:facet>
+							<h:outputText value="#{_tempEmailAddress.emailAddress}" />
+						</rich:column>
+						<rich:column sortBy="#{_tempEmailAddress.retentionDays}">
+							<f:facet name="header">#{messages['TempEmailAddresses.politicaConservazioni.label']}</f:facet>
+							<h:outputText
+								value="#{tempEmailAddressHelper.getRetentionPolicyString(_tempEmailAddress)}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
+							<s:button value="Add-N-Edit tempEmailAddress"
+								view="/TempEmailAddressEdit.xhtml">
+								<f:param name="tempEmailAddressId"
+									value="#{_tempEmailAddress.id}" />
+							</s:button>
+							<s:button value="delete tempEmailAddress"
+								view="/TempEmailAddressEdit.xhtml">
+								<f:param name="tempEmailAddressId"
+									value="#{_tempEmailAddress.id}" />
+							</s:button>
+						</rich:column>
+					</rich:dataTable>
+				</h:form>
+			</rich:tab>
+		</rich:tabPanel>
+
+	</ui:define>
+</ui:composition>
+
