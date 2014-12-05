@@ -1,0 +1,66 @@
+
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+	<ui:define name="body">
+
+		<rich:tabPanel switchType="client">
+			<h:form id="#{addressToPull}" styleClass="edit">
+
+				<rich:panel>
+					<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
+					<s:decorate id="imap" template="layout/edit.xhtml">
+						<ui:define name="label">imap: </ui:define>
+						<h:selectOneRadio value="#{tempEmailAddressHelper.utente.imapORimaps}"
+							required="true">
+							<f:selectItem itemLabel="imap" itemValue="imap" />
+							<f:selectItem itemLabel="imaps" itemValue="imaps" />
+							<a:ajax event="blur" render="imap" execute="@this" />
+						</h:selectOneRadio>
+					</s:decorate>
+
+					<s:decorate id="email" template="layout/edit.xhtml">
+						<ui:define name="label">Email: </ui:define>
+						<h:inputText value="#{tempEmailAddressHelper.utente.email}"
+							required="true">
+							<a:ajax event="blur" render="email" execute="@this" />
+						</h:inputText>
+
+					</s:decorate>
+					<s:decorate id="password" template="layout/edit.xhtml">
+						<ui:define name="label">Password : </ui:define>
+						<h:inputText value="#{tempEmailAddressHelper.utente.password}"
+							required="true">
+							<a:ajax event="blur" render="password" execute="@this" />
+						</h:inputText>
+					</s:decorate>
+					<s:decorate id="domain" template="layout/edit.xhtml">
+						<ui:define name="label">Name server : </ui:define>
+						<h:inputText required="true"
+							value="#{tempEmailAddressHelper.utente.serverName}">
+							<a:ajax event="blur" render="domain" execute="@this" />
+						</h:inputText>
+					</s:decorate>
+					<div style="clear: both">
+						<span class="required">*</span> #{messages['requiredFields']}
+					</div>
+					<div>
+						<h:commandButton  value="connect"
+							action="#{tempEmailAddressHelper.importAddresses}">
+							<f:param name="tempMailboxMailboxIdnr"
+								value="#{tempMailboxHome.tempMailboxMailboxIdnr}" />
+						</h:commandButton>
+
+
+					</div>
+				</rich:panel>
+			</h:form>
+		</rich:tabPanel>
+	</ui:define>
+</ui:composition>

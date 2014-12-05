@@ -36,8 +36,8 @@
 				<s:decorate id="TempEmailAddressEmailAddressField"
 					template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
-					<h:inputText id="TempEmailAddressEmailAddress" 
-						value="#{tempEmailAddressHome.instance.emailAddress}" 
+					<h:inputText id="TempEmailAddressEmailAddress"
+						value="#{tempEmailAddressHome.instance.emailAddress}"
 						converterMessage="Email must be a String">
 						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
 							execute="@this" />
@@ -84,6 +84,8 @@
 				<h:commandButton id="delete" value="Delete"
 					action="#{tempEmailAddressHelper.remove}" immediate="true"
 					rendered="#{tempEmailAddressHome.managed}" />
+				<s:button id="returnImport" value="Return to Import"
+					view="/IMAPAddressPuller.xhtml"/>
 
 			</div>
 		</h:form>

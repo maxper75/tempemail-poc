@@ -1,10 +1,13 @@
 package it.i_node.tempemail.helpers;
 
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
 import it.i_node.tempemail.action.TempEmailAddressHome;
+import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.model.AddressToPull;
 import it.i_node.tempemail.model.IMAPAddressPuller;
 import it.i_node.tempemail.model.TempEmailAddress;
 
@@ -25,11 +28,16 @@ public class TempEmailAddressHelper {
 	 * 
 	 */
 	private Integer retentionPolicy;
-	private String address;
-	private String imapORimaps ;
-	private String email ;
-	private String password ;
-	private String domain;
+	private Set <TempEmailAddress> add2import;
+	private AddressToPull utente;
+
+
+	public AddressToPull getUtente() {
+		return utente;
+	}
+	public void setUtente(AddressToPull utente) {
+		this.utente = utente;
+	}
 	@Create
 	public void init(){
 		//viene invocato dopo ogni creazione di una nuova TempEmailAddress instance
@@ -43,6 +51,12 @@ public class TempEmailAddressHelper {
 		else retentionPolicy= teah.getInstance().getRetentionDays();
 
 
+	}
+	public Set<TempEmailAddress> getAdd2import() {
+		return add2import;
+	}
+	public void setAdd2import(Set<TempEmailAddress> add2import) {
+		this.add2import = add2import;
 	}
 	public Integer getRetentionPolicy() {
 		return retentionPolicy;
@@ -58,15 +72,9 @@ public class TempEmailAddressHelper {
 
 		if(retentionPolicy<1)//0 oppure -1
 			teah.getInstance().setRetentionDays(retentionPolicy);
-		
-			
+
+
 		return teah.persist();
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
 	}
 	public String update(){
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
@@ -93,52 +101,17 @@ public class TempEmailAddressHelper {
 		}
 		return "retain";
 	}
-	public String getImapORimaps() {
-		return imapORimaps;
+	public boolean allRetentionDays(){
+		TempMailboxHome tmh = (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
+		for(TempEmailAddress tea: tmh.getInstance().getTempEmailAddresses())
+			if (tea.getRetentionDays()==null)
+				return false;
+		return true;
+
 	}
-	public void setImapORimaps(String imapORimaps) {
-		this.imapORimaps = imapORimaps;
+	public String importAddresses() throws MessagingException{
+		IMAPAddressPuller puller = new IMAPAddressPuller();
+		setAdd2import(puller.addressesFromSentFolder(utente));
+		return "imported";
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getDomain() {
-		return domain;
-	}
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
-//	public Map <String,TempEmailAddress> importValidAddresses() throws MessagingException{
-//		IMAPAddressPuller ap= new IMAPAddressPuller();
-//		ap.setDomain(domain);
-//		ap.setEmail(email);
-//		ap.setImapORimaps(imapORimaps);
-//		ap.setPassword(password);
-//		return ap.addressesFromSentFolder();
-//	}
-//	public String persistImportedValue () throws MessagingException{
-//		for (TempEmailAddress tea : importValidAddresses().values()){
-//			
-//		}
-//		return null;
-//	}
-//	
-	
-//	public boolean exsists(String tea,TempEmailAddressHome teah){
-//
-//		for(TempEmailAddress test: teah.getInstance().getTempMailbox().getTempEmailAddresses())
-//			if (test.getEmailAddress().equals(tea))
-//				return true;
-//			
-//		return false;
-//	}
 }
