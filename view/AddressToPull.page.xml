@@ -7,7 +7,7 @@
 
 
 	<navigation from-action="#{tempEmailAddressHelper.importAddresses}">
-		<rule if-outcome="imported">
+		<rule if-outcome="needRetention">
 			<end-conversation />
 			<redirect view-id="/IMAPAddressPuller.xhtml" />
 		</rule>

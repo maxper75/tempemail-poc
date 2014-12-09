@@ -10,62 +10,67 @@
 
 
 	<ui:define name="body">
-
-		<rich:tab>
-
-
-			<f:facet name="header">
-				<h:panelGroup>#{messages['TempEmailAddresses.imported.list']}</h:panelGroup>
-			</f:facet>
-			<h:form styleClass="association"
-				id="dbmailTempEmailAddressesChildren">
+		<rich:tabPanel switchType="client">
+			<rich:tab>
 
 
-				<rich:dataTable value="#{imapAddressPuller.recipients}"
-					var="_tempEmailAddress" rowClasses="rvgRowOne,rvgRowTwo"
-					id="TempEmailAddressesTable">
-					<rich:column sortBy="#{_tempEmailAddress.name}">
-						<f:facet name="header">#{messages['TempEmailAddresses.nominativo.label']}</f:facet>
-						<h:outputText value="#{_tempEmailAddress.name}" />
-					</rich:column>
-					<rich:column sortBy="#{_tempEmailAddress.emailAddress}">
-						<f:facet name="header">#{messages['TempEmailAddresses.email.label']}</f:facet>
-						<h:outputText value="#{_tempEmailAddress.emailAddress}" />
-					</rich:column>
-					<rich:column sortBy="#{_tempEmailAddress.retentionDays}">
-						<f:facet name="header">#{messages['TempEmailAddresses.politicaConservazioni.label']}</f:facet>
-						<h:outputText value="#{_tempEmailAddress.retentionDays}" />
-					</rich:column>
-					<rich:column>
+				<f:facet name="header">
+					<h:panelGroup>#{messages['TempEmailAddresses.imported.list']}</h:panelGroup>
+				</f:facet>
+				<h:form styleClass="association"
+					id="dbmailTempEmailAddressesChildren">
+
+
+					<rich:dataTable value="#{tempEmailAddressHelper.add2import}"
+						var="_tempEmailAddress" rowClasses="rvgRowOne,rvgRowTwo"
+						id="TempEmailAddressesTable">
+						<rich:column sortBy="#{_tempEmailAddress.name}">
+							<f:facet name="header">#{messages['TempEmailAddresses.nominativo.label']}</f:facet>
+							<h:outputText value="#{_tempEmailAddress.name}" />
+						</rich:column>
+						<rich:column sortBy="#{_tempEmailAddress.emailAddress}">
+							<f:facet name="header">#{messages['TempEmailAddresses.email.label']}</f:facet>
+							<h:outputText value="#{_tempEmailAddress.emailAddress}" />
+						</rich:column>
+						<rich:column sortBy="#{_tempEmailAddress.retentionDays}">
+							<f:facet name="header">#{messages['TempEmailAddresses.politicaConservazioni.label']}</f:facet>
+							<h:selectOneRadio
+								value="#{tempEmailAddressHelper.retentionPolicy}">
+								<f:selectItem itemLabel="discard" itemValue="0" />
+								<f:selectItem itemLabel="deliver" itemValue="-1" />
+								<f:selectItem itemLabel="retain" itemValue="1" />
+								<f:ajax event="change" render="RetentionPolicyValue"
+									execute="@this" />
+							</h:selectOneRadio>
+							<h:inputText id="RetentionPolicyValue" required="true"
+								value="#{tempEmailAddressHome.instance.retentionDays}"
+								converterMessage="Retention Days must be a number"
+								disabled="#{tempEmailAddressHelper.retentionPolicy!=1}">
+								<f:ajax event="blur" execute="@this"></f:ajax>
+								<!-- inputText disabilitato quando retentionPolicy non è 1 -->
+							</h:inputText>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">#{messages['TempEmailAddresses.Delete.label']}</f:facet>
+							<h:commandButton id="delete"
+								action="#{tempEmailAddressHelper.delete(_tempEmailAddress)}"
+								value="delete" />
+
+						</rich:column>
+
+					</rich:dataTable>
+
+
+					<div class="actionButtons">
 						<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
-						<s:button value="edit tempEmailAddress"
-							view="/TempEmailAddressEdit.xhtml">
-							<f:param name="tempEmailAddressId"
-								value="#{_tempEmailAddress.id}" />
-						</s:button>
-						<s:button value="delete tempEmailAddress"
-							view="/TempEmailAddressEdit.xhtml">
-							<f:param name="tempEmailAddressId"
-								value="#{_tempEmailAddress.id}" />
-						</s:button>
-					</rich:column>
-					<rich:column>
-						<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
-						<s:button value="Add-N-Edit tempEmailAddress"
-							view="/TempEmailAddressEdit.xhtml">
-							<f:param name="tempEmailAddressId"
-								value="#{_tempEmailAddress.id}" />
-						</s:button>
-						<s:button value="delete tempEmailAddress"
-							view="/TempEmailAddressEdit.xhtml">
-							<f:param name="tempEmailAddressId"
-								value="#{_tempEmailAddress.id}" />
-						</s:button>
-					</rich:column>
-				</rich:dataTable>
-
-			</h:form>
-		</rich:tab>
+						<h:commandButton id="save" value="Add all"
+							action="#{tempEmailAddressHelper.persistAll}"
+							disabled="#{!tempEmailAddressHome.wired}"
+							rendered="#{!tempEmailAddressHome.managed}" />
+					</div>
+				</h:form>
+			</rich:tab>
+		</rich:tabPanel>
 	</ui:define>
 </ui:composition>
 
