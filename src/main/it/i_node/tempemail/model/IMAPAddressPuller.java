@@ -28,6 +28,13 @@ public class IMAPAddressPuller {
 	public IMAPAddressPuller() {
 
 	}
+	/**
+	 * @param: Utente da cui importare gli address
+	 * @return: hashSet con tutti gli indirizzi( TempEmailAddress da importare
+	 * 											 e TempEmailAddress  già presenti nella TempMailbox con il valore di 
+	 * 														retentionDays già settato precedentemente) 
+	 */
+	
 	public Set<TempEmailAddress> addressesFromSentFolder (AddressToPull utente) throws MessagingException {
 		Properties props = System.getProperties();
 		props.setProperty("mail.store.protocol",utente.getImapORimaps());
@@ -58,19 +65,23 @@ public class IMAPAddressPuller {
 					if(recipient.getName()!=null && exsistingAddress.getName()== null ){
 						exsistingAddress.setName(recipient.getName());	
 					}
+					//aggiungo alla mappa l'indirizzo degli esistenti
+					address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
 
 				}
-				//	Altrimenti se non è già presente nella mailbox					
-				if (!address2tempEmail.containsKey(recipient.getEmailAddress())){
+				else{
+					//	Altrimenti se non è già presente nella mailbox					
+					if (!address2tempEmail.containsKey(recipient.getEmailAddress())){
 
-					recipient.setTempMailbox(tmh.getInstance());
-					address2tempEmail.put(recipient.getEmailAddress(),recipient);
+						recipient.setTempMailbox(tmh.getInstance());
+						address2tempEmail.put(recipient.getEmailAddress(),recipient);
 
-				}
-				else if (recipient.getName()!= null && address2tempEmail.get(recipient.getEmailAddress()).getName()== null)
-					address2tempEmail.get(recipient.getEmailAddress())
-					.setName(recipient.getName());		
-			}	    	   
+					}
+					else if (recipient.getName()!= null && address2tempEmail.get(recipient.getEmailAddress()).getName()== null)
+						address2tempEmail.get(recipient.getEmailAddress())
+						.setName(recipient.getName());		
+				}	
+			}
 		}
 		sent.close(false);
 		store.close();

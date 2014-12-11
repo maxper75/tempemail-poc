@@ -5,10 +5,7 @@ import org.jboss.seam.annotations.Name;
 
 
 public class AddressToPull {
-	// imapORimaps = "imap";
-	//email = "d.pucci@i-node.it"
-	//password = "uuuV2Tk3"
-	// domain ="zimbra.i-node.it"
+	
 	private String imapORimaps ;
 	private String email ;
 	private String password ;

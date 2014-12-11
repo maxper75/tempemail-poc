@@ -19,11 +19,15 @@
 				</f:facet>
 				<h:form styleClass="association"
 					id="dbmailTempEmailAddressesChildren">
+					<h:outputText
+						value="There are no TempEmailAddresses to import from this Mailbox."
+						rendered="#{empty tempEmailAddressHelper.add2import}" />
 
 
 					<rich:dataTable value="#{tempEmailAddressHelper.add2import}"
-						var="_tempEmailAddress" rowClasses="rvgRowOne,rvgRowTwo"
-						id="TempEmailAddressesTable">
+						var="_tempEmailAddress"
+						rendered="#{not empty tempEmailAddressHelper.add2import}"
+						rowClasses="rvgRowOne,rvgRowTwo" id="TempEmailAddressesTable">
 						<rich:column sortBy="#{_tempEmailAddress.name}">
 							<f:facet name="header">#{messages['TempEmailAddresses.nominativo.label']}</f:facet>
 							<h:outputText value="#{_tempEmailAddress.name}" />
@@ -34,21 +38,27 @@
 						</rich:column>
 						<rich:column sortBy="#{_tempEmailAddress.retentionDays}">
 							<f:facet name="header">#{messages['TempEmailAddresses.politicaConservazioni.label']}</f:facet>
+
 							<h:selectOneRadio
-								value="#{tempEmailAddressHelper.retentionPolicy}">
+								value="#{tempEmailAddressHelper.imported2Retention[_tempEmailAddress]}">
 								<f:selectItem itemLabel="discard" itemValue="0" />
 								<f:selectItem itemLabel="deliver" itemValue="-1" />
 								<f:selectItem itemLabel="retain" itemValue="1" />
 								<f:ajax event="change" render="RetentionPolicyValue"
 									execute="@this" />
+									<f:converter converterId="retentionPolicyConverter"/>
+								
 							</h:selectOneRadio>
 							<h:inputText id="RetentionPolicyValue" required="true"
-								value="#{tempEmailAddressHome.instance.retentionDays}"
+								value="#{_tempEmailAddress.retentionDays}"
 								converterMessage="Retention Days must be a number"
-								disabled="#{tempEmailAddressHelper.retentionPolicy!=1}">
+								disabled="#{tempEmailAddressHelper.imported2Retention[_tempEmailAddress]!=1}">
+
 								<f:ajax event="blur" execute="@this"></f:ajax>
+							<f:converter converterId="retentionPolicyConverter"/>
 								<!-- inputText disabilitato quando retentionPolicy non è 1 -->
 							</h:inputText>
+
 						</rich:column>
 						<rich:column>
 							<f:facet name="header">#{messages['TempEmailAddresses.Delete.label']}</f:facet>
@@ -62,11 +72,10 @@
 
 
 					<div class="actionButtons">
-						<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
+						<!-- 						<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet> -->
 						<h:commandButton id="save" value="Add all"
-							action="#{tempEmailAddressHelper.persistAll}"
-							disabled="#{!tempEmailAddressHome.wired}"
-							rendered="#{!tempEmailAddressHome.managed}" />
+							action="#{tempEmailAddressHelper.persistAll}" />
+
 					</div>
 				</h:form>
 			</rich:tab>

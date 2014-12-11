@@ -16,5 +16,15 @@
          <supported-locale>da</supported-locale>
       </locale-config>     
    </application>
+   
+   <converter>
+   <converter-id>retentionPolicyConverter</converter-id>
+<converter-class>it.i_node.tempemail.jsf.converters.RetentionPolicyConverter</converter-class>
+   </converter>
+
+<validator>
+<validator-id>tempEmailAddressValidator</validator-id>
+<validator-class>package it.i_node.tempemail.jsf.Validator.TempEmailAddressValidator</validator-class>
+</validator>
 
 </faces-config>
