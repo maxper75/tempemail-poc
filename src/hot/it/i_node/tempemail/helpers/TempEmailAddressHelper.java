@@ -84,9 +84,9 @@ public class TempEmailAddressHelper {
 
 		if(retentionPolicy<1)//0 oppure -1
 			teah.getInstance().setRetentionDays(retentionPolicy);
-		
 
 
+		yesChanges();
 		return teah.persist();
 	}
 	@SuppressWarnings("unused")
@@ -97,7 +97,7 @@ public class TempEmailAddressHelper {
 		if (add2import!= null)
 			if (!add2import.isEmpty()){
 				for(TempEmailAddress tea: imported2Retention.keySet()){
-					
+
 
 					if(imported2Retention.get(tea)<1)
 						//0 oppure -1
@@ -107,10 +107,11 @@ public class TempEmailAddressHelper {
 					if (tea.getId()>0)
 						//if(validator.exsists(tea.getEmailAddress()))
 						em.merge(tea);
-						//teah.update();
+					//teah.update();
 					else
 						em.persist(tea);
 				}
+				yesChanges();
 				return "addedAll";
 			}
 		return "noAddressesAdded";
@@ -126,10 +127,12 @@ public class TempEmailAddressHelper {
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 		if(retentionPolicy<1)
 			teah.getInstance().setRetentionDays(retentionPolicy);
+		yesChanges();
 		return teah.update();
 	}
 	public String remove(){
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
+		yesChanges();
 		return teah.remove(); 
 	}
 
@@ -153,6 +156,7 @@ public class TempEmailAddressHelper {
 			add2import.remove(tea);
 		if (imported2Retention.containsKey(tea))
 			imported2Retention.remove(tea);
+		yesChanges();
 		return "removed";
 	}
 	/**
@@ -190,6 +194,12 @@ public class TempEmailAddressHelper {
 		return 0;//default se non esiste retentiondays
 
 	}
+	public void yesChanges(){
+		TempMailboxHelper tmhelper = (TempMailboxHelper) Component.getInstance(TempMailboxHelper.class);
+		tmhelper.setChanges_generateRule(true);//ci sono state delle modifiche
+		//va rigenerata la sieveRule
+	}
+
 	/**
 	 * metodo da usare nella fase di test
 	 * più lento nel caricamento
@@ -221,7 +231,7 @@ public class TempEmailAddressHelper {
 		if (!add2import.isEmpty())
 			fillMap(add2import);		
 		return "needRetention";
-		
+
 	}
 	public String alreadyInMailbox(TempEmailAddress tea){
 		TempMailboxHome tmh = (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
@@ -230,8 +240,8 @@ public class TempEmailAddressHelper {
 		if(exsistingAddresses.contains(tea)) return "X";
 		return "";
 	}
-	
-	
+
+
 
 	//	public ImportedAddress getElemFromList(TempEmailAddress tea){
 	//		if(!importedNRetentionPolicy.isEmpty())

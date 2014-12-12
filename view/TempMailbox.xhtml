@@ -175,7 +175,7 @@
 								value="#{tempMailboxHome.instance.mailboxIdnr}" />
 						</s:button>
 						<h:commandButton action="#{tempMailboxHelper.generateSieveRule}"
-							value="Generate sieve rule" />
+							value="Generate sieve rule" disabled="#{tempMailboxHelper.changes_generateRule}"/>
 						<s:button value="Add tempEmailAddress"
 							view="/TempEmailAddressEdit.xhtml" propagation="end"
 							includePageParams="false">

@@ -40,11 +40,14 @@
 					<h:inputText id="TempEmailAddressEmailAddress"
 						value="#{tempEmailAddressHome.instance.emailAddress}">
 						<f:validator validatorId="emailAddressValidator" />
-<!-- 						<f:validator validatorId="emailAddressExsistingValidator" /> -->
+						<f:validator validatorId="emailAddressExsistingValidator" />
 						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
 							execute="@this" />
 
 					</h:inputText>
+					<!-- caso: modifica email di TempEmailAddress già esistente (edit) -->
+					<!-- non ammissibile -->
+					<!-- soluzione: bisogna eliminare il TempEmailAddress e ricrearlo successivamente -->
 
 				</s:decorate>
 

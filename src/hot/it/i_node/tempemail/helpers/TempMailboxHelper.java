@@ -17,7 +17,16 @@ import it.i_node.tempemail.model.TempEmailAddress;
 @Name ("tempMailboxHelper")
 public class TempMailboxHelper {
 
+	private boolean changes_generateRule= false;//if true=> there are changes => a new sieve rule have to be generate
 
+
+	public boolean isChanges_generateRule() {
+		return changes_generateRule;
+	}
+
+	public void setChanges_generateRule(boolean changes_generateRule) {
+		this.changes_generateRule = changes_generateRule;
+	}
 
 	public String generateSieveRule(){
 
@@ -40,7 +49,7 @@ public class TempMailboxHelper {
 
 				DbmailSievescripts script= sieveScriptses.iterator().next();
 				if(script.getName().equals("TempMail")){//test per verificare che sia presente lo script corretto da aggiornare
-					
+
 					setNactivateScript(script,addresses,tmh.getInstance().getDbmailUsers().getUserid());
 					home.setInstance(script);
 					home.update();
@@ -66,6 +75,8 @@ public class TempMailboxHelper {
 				System.out.println("è stato creato il nuovo script");
 
 			}
+		setChanges_generateRule(false);//dopo aver creato la nuova sieve rules, 
+										//il pulsante generate sieve rules deve essere disabilitato
 		return "";
 	}
 
