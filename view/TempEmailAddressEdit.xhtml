@@ -10,7 +10,7 @@
 
 	<ui:define name="body">
 
-		<h:form id="tempMailbox" styleClass="edit">
+		<h:form id="tempEmailAddress" styleClass="edit">
 
 			<rich:panel>
 
@@ -31,21 +31,21 @@
 						<a:ajax event="blur" render="TempEmailAddressNameField"
 							execute="@this" />
 					</h:inputText>
+
 				</s:decorate>
 
 				<s:decorate id="TempEmailAddressEmailAddressField"
 					template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
 					<h:inputText id="TempEmailAddressEmailAddress"
-						value="#{tempEmailAddressHome.instance.emailAddress}"
-						converterMessage="Email must be a String">
+						value="#{tempEmailAddressHome.instance.emailAddress}">
+						<f:validator validatorId="emailAddressValidator" />
+<!-- 						<f:validator validatorId="emailAddressExsistingValidator" /> -->
 						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
 							execute="@this" />
+
 					</h:inputText>
-					<!--
-					
-					validator="#{tempEmailAddressHelper.exsists(tempEmailAddressHome.instance.emailAddress)}"
-					validatorMessage="Email gia' esistente" -->
+
 				</s:decorate>
 
 				<s:decorate id="RetentionPolicyField" template="layout/edit.xhtml">
@@ -62,8 +62,9 @@
 						value="#{tempEmailAddressHome.instance.retentionDays}"
 						converterMessage="Retention Days must be a number"
 						disabled="#{tempEmailAddressHelper.retentionPolicy!=1}">
-						<f:ajax event="blur" execute="@this"></f:ajax>
 						<!-- inputText disabilitato quando retentionPolicy non è 1 -->
+						<f:ajax event="blur" execute="@this"></f:ajax>
+
 					</h:inputText>
 				</s:decorate>
 				<div style="clear: both">

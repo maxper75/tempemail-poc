@@ -23,8 +23,15 @@
    </converter>
 
 <validator>
-<validator-id>tempEmailAddressValidator</validator-id>
-<validator-class>package it.i_node.tempemail.jsf.Validator.TempEmailAddressValidator</validator-class>
+<validator-id>emailAddressValidator</validator-id>
+<validator-class>it.i_node.tempemail.jsf.Validator.EmailAddressValidator</validator-class>
 </validator>
+
+<validator>
+<validator-id>emailAddressExsistingValidator</validator-id>
+<validator-class>it.i_node.tempemail.jsf.Validator.EmailAddressExsistingValidator</validator-class>
+</validator>
+
+
 
 </faces-config>

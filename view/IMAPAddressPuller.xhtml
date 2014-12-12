@@ -28,6 +28,10 @@
 						var="_tempEmailAddress"
 						rendered="#{not empty tempEmailAddressHelper.add2import}"
 						rowClasses="rvgRowOne,rvgRowTwo" id="TempEmailAddressesTable">
+							<rich:column sortBy="#{_tempEmailAddress.name}">
+							<f:facet name="header">#{messages['TempEmailAddresses.AlreadyExsisting.label']}</f:facet>
+							<h:outputText value="#{tempEmailAddressHelper.alreadyInMailbox(_tempEmailAddress)}" />
+						</rich:column>
 						<rich:column sortBy="#{_tempEmailAddress.name}">
 							<f:facet name="header">#{messages['TempEmailAddresses.nominativo.label']}</f:facet>
 							<h:outputText value="#{_tempEmailAddress.name}" />

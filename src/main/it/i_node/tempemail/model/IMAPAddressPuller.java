@@ -57,11 +57,12 @@ public class IMAPAddressPuller {
 			for (Address aR: m.getAllRecipients()){
 				//address nella cartella sent
 				TempEmailAddress recipient = teaf.createAddress(aR);
-				if(exsistingAddresses.contains(recipient)){
+				if(exsistingAddresses.contains(recipient)){// se recipient è già presente nella mailbox
+					
 					//address tra gli esistenti == address dei sent
 					TempEmailAddress exsistingAddress = 
 							exsistingAddresses.get(exsistingAddresses.indexOf(recipient));
-					//aggiorno il nome			
+					//aggiorno il nome	
 					if(recipient.getName()!=null && exsistingAddress.getName()== null ){
 						exsistingAddress.setName(recipient.getName());	
 					}
@@ -69,8 +70,8 @@ public class IMAPAddressPuller {
 					address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
 
 				}
-				else{
-					//	Altrimenti se non è già presente nella mailbox					
+				else{//	Altrimenti se non è già presente nella mailbox	
+									
 					if (!address2tempEmail.containsKey(recipient.getEmailAddress())){
 
 						recipient.setTempMailbox(tmh.getInstance());
@@ -83,10 +84,20 @@ public class IMAPAddressPuller {
 				}	
 			}
 		}
+		//finisco di riempire con tutti quelli che non rientrano tra i recipient ma sono presenti nella mailbox
+		fillMapExsisting( exsistingAddresses, address2tempEmail);
+		
 		sent.close(false);
 		store.close();
 
 		return	new HashSet<TempEmailAddress>(address2tempEmail.values());
+	}
+	public void fillMapExsisting(List <TempEmailAddress> exsistingAddresses,Map <String,TempEmailAddress> address2tempEmail){
+		for (TempEmailAddress tea: exsistingAddresses){
+			if(!address2tempEmail.containsKey(tea.getEmailAddress()))//altrimenti era stato già inserito perchè recipient
+				address2tempEmail.put(tea.getEmailAddress(), tea);
+		}
+		
 	}
 
 

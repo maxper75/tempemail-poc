@@ -2,6 +2,7 @@ package it.i_node.tempemail.helpers;
 
 import it.i_node.tempemail.action.TempEmailAddressHome;
 import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.jsf.Validator.EmailAddressExsistingValidator;
 import it.i_node.tempemail.model.AddressToPull;
 import it.i_node.tempemail.model.IMAPAddressPuller;
 import it.i_node.tempemail.model.ImportedAddress;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.persistence.EntityManager;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
@@ -87,26 +91,29 @@ public class TempEmailAddressHelper {
 	}
 	@SuppressWarnings("unused")
 	public String persistAll(){
+		//EmailAddressExsistingValidator validator = new EmailAddressExsistingValidator();
+		EntityManager em = (EntityManager) Component.getInstance("entityManager");
+		//TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 		if (add2import!= null)
 			if (!add2import.isEmpty()){
 				for(TempEmailAddress tea: imported2Retention.keySet()){
-					TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
-					teah.getInstance().setEmailAddress(tea.getEmailAddress());
-					teah.getInstance().setName(tea.getName());
+					
 
 					if(imported2Retention.get(tea)<1)
 						//0 oppure -1
-						teah.getInstance().setRetentionDays(imported2Retention.get(tea));
+						tea.setRetentionDays(imported2Retention.get(tea));
 					//altrimenti è stato già settato dalla form
 
 					if (tea.getId()>0)
-						teah.update();
+						//if(validator.exsists(tea.getEmailAddress()))
+						em.merge(tea);
+						//teah.update();
 					else
-						teah.persist();
+						em.persist(tea);
 				}
 				return "addedAll";
 			}
-		return "noAddresseAdded";
+		return "noAddressesAdded";
 	}
 	public Map<TempEmailAddress, Integer> getImported2Retention() {
 		return imported2Retention;
@@ -148,9 +155,13 @@ public class TempEmailAddressHelper {
 			imported2Retention.remove(tea);
 		return "removed";
 	}
+	/**
+	 * metodo per importare addresses da utente AddressToPull
+	 * (viene richiamato dal pulsante "connect" dalla vista tempmailbox
+	 * */
 	public String importAddresses() throws MessagingException{
 		IMAPAddressPuller puller = new IMAPAddressPuller();
-		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressesFromSentFolder(utente)));
+		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressesFromSentFolder(utente)));//contiene indirizzi scaricati e già esistenti nella tmailbox
 		if (!add2import.isEmpty())
 			fillMap(add2import);		
 		return "needRetention";
@@ -212,6 +223,14 @@ public class TempEmailAddressHelper {
 		return "needRetention";
 		
 	}
+	public String alreadyInMailbox(TempEmailAddress tea){
+		TempMailboxHome tmh = (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
+		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
+				tmh.getInstance().getTempEmailAddresses());
+		if(exsistingAddresses.contains(tea)) return "X";
+		return "";
+	}
+	
 	
 
 	//	public ImportedAddress getElemFromList(TempEmailAddress tea){
