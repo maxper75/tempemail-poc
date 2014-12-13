@@ -8,11 +8,11 @@ import it.i_node.tempemail.model.TempEmailAddress;
 public class TempEmailAddressListener {
 	@PrePersist
 	public void prePersist(TempEmailAddress tea){
-		tea.getTempMailbox().setDirty(true);
+		tea.getTempUser().setDirty(true);
 	}
 	@PreUpdate
 	public void preUpdate(TempEmailAddress tea){
-		tea.getTempMailbox().setDirty(true);
+		tea.getTempUser().setDirty(true);
 	}	
 
 }

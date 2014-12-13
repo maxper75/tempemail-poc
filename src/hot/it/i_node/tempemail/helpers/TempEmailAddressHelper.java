@@ -1,7 +1,7 @@
 package it.i_node.tempemail.helpers;
 
 import it.i_node.tempemail.action.TempEmailAddressHome;
-import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.action.TempUserHome;
 import it.i_node.tempemail.jsf.Validator.EmailAddressExsistingValidator;
 import it.i_node.tempemail.model.AddressToPull;
 import it.i_node.tempemail.model.IMAPAddressPuller;
@@ -230,7 +230,7 @@ public class TempEmailAddressHelper {
 
 	}
 	public String alreadyInMailbox(TempEmailAddress tea){
-		TempMailboxHome tmh = (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
+		TempUserHome tmh = (TempUserHome) Component.getInstance(TempUserHome.class);
 		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
 				tmh.getInstance().getTempEmailAddresses());
 		if(exsistingAddresses.contains(tea)) return "X";

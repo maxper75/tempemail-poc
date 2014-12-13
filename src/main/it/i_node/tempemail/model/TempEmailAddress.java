@@ -29,7 +29,7 @@ public class TempEmailAddress implements java.io.Serializable {
 	private String name;
 	private Integer retentionDays;
 	
-	private TempMailbox tempMailbox;
+	private TempUser tempUser;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@NotNull
@@ -41,14 +41,8 @@ public class TempEmailAddress implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mailbox_id")
-	public TempMailbox getTempMailbox() {
-		return this.tempMailbox;
-	}
-	public void setTempMailbox(TempMailbox tempMailbox) {
-		this.tempMailbox = tempMailbox;
-	}
+	
+	
 //	@Column(unique = true)
 	public String getEmailAddress() {
 		return emailAddress;
@@ -99,6 +93,14 @@ public class TempEmailAddress implements java.io.Serializable {
 	}
 	public void setRetentionDays(Integer retentionDays) {
 		this.retentionDays = retentionDays;
+	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userId")
+	public TempUser getTempUser() {
+		return tempUser;
+	}
+	public void setTempUser(TempUser tempUser) {
+		this.tempUser = tempUser;
 	}
 
 }

@@ -11,8 +11,8 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
 
-@Name("tempMailboxHome")
-public class TempMailboxHome extends EntityHome<TempMailbox> {
+@Name("tempUserHome")
+public class TempUserHome extends EntityHome<TempUser> {
 
 	@In(create = true)
 	DbmailUsersHome dbmailUsersHome;
@@ -26,10 +26,10 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 	}
 
 	@Override
-	protected TempMailbox createInstance() {
-		TempMailbox tempMailbox = new TempMailbox();
-		tempMailbox.setMailboxType("T");
-		return tempMailbox;
+	protected TempUser createInstance() {
+		TempUser tempUser = new TempUser();
+		tempUser.setUserType("T");
+		return tempUser;
 	}
 
 	public void load() {
@@ -40,14 +40,11 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 
 	public void wire() {
 		getInstance();
-		DbmailUsers dbmailUsers = dbmailUsersHome.getDefinedInstance();
-		
-
-		
-		
-		if (dbmailUsers != null) {
-			getInstance().setDbmailUsers(dbmailUsers);
-		}
+//		DbmailUsers dbmailUsers = dbmailUsersHome.getDefinedInstance();
+//		
+//		if (dbmailUsers != null) {
+//			getInstance().setDbmailUsers(dbmailUsers);
+//		}
 
 		
 		
@@ -57,7 +54,7 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 		return true;
 	}
 
-	public TempMailbox getDefinedInstance() {
+	public  TempUser getDefinedInstance() {
 		return isIdDefined() ? getInstance() : null;
 	}
 
@@ -65,10 +62,7 @@ public class TempMailboxHome extends EntityHome<TempMailbox> {
 		return getInstance() == null ? null : new ArrayList<DbmailAcl>(
 				getInstance().getDbmailAcls());
 	}
-	public List<DbmailMessages> getDbmailMessageses() {
-		return getInstance() == null ? null : new ArrayList<DbmailMessages>(
-				getInstance().getDbmailMessageses());
-	}
+
 	public List<DbmailSubscription> getDbmailSubscriptions() {
 		return getInstance() == null
 				? null

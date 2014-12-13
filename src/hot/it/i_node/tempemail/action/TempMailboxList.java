@@ -6,13 +6,13 @@ import org.jboss.seam.framework.EntityQuery;
 import java.util.Arrays;
 
 @Name("tempMailboxList")
-public class TempMailboxList extends EntityQuery<TempMailbox> {
+public class TempMailboxList extends EntityQuery<TempUser> {
 
 	private static final String EJBQL = "select tempMailbox from TempMailbox tempMailbox";
 
 	private static final String[] RESTRICTIONS = {"lower(tempMailbox.name) like lower(concat(#{tempMailboxList.tempMailbox.name},'%'))",};
 
-	private TempMailbox tempMailbox = new TempMailbox();
+	private TempUser tempMailbox = new TempUser();
 
 	public TempMailboxList() {
 		setEjbql(EJBQL);
@@ -20,7 +20,7 @@ public class TempMailboxList extends EntityQuery<TempMailbox> {
 		setMaxResults(25);
 	}
 
-	public TempMailbox getTempMailbox() {
+	public TempUser getTempMailbox() {
 		return tempMailbox;
 	}
 }

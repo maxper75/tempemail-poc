@@ -1,22 +1,23 @@
 package it.i_node.tempemail.model;
 
-import java.util.ArrayList;
+
+
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
 import javax.persistence.Table;
 
 @Entity
 @Table
 @DiscriminatorValue("T")
-public class TempMailbox extends DbmailMailboxes {
+public class TempUser extends DbmailUsers {
 
 	private Date creationDate;
 	private Date refreshDate;

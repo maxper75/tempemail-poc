@@ -6,11 +6,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -25,6 +30,10 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "dbmail_users", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = "userid"))
+@DiscriminatorColumn(name="userType",discriminatorType=DiscriminatorType.CHAR)
+@DiscriminatorValue("D")
+@Inheritance(strategy=InheritanceType.JOINED)
+
 public class DbmailUsers implements java.io.Serializable {
 
 	private long userIdnr;
@@ -37,6 +46,7 @@ public class DbmailUsers implements java.io.Serializable {
 	private long cursieveSize;
 	private String encryptionType;
 	private Date lastLogin;
+	private String userType;
 	private DbmailAutoReplies dbmailAutoReplies;
 	private Set<DbmailMailboxes> dbmailMailboxeses = new HashSet<DbmailMailboxes>(
 			0);
@@ -259,6 +269,14 @@ public class DbmailUsers implements java.io.Serializable {
 
 	public void setDbmailAcls(Set<DbmailAcl> dbmailAcls) {
 		this.dbmailAcls = dbmailAcls;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 }

@@ -1,6 +1,6 @@
 package it.i_node.tempemail.model;
 
-import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.action.TempUserHome;
 
 
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class IMAPAddressPuller {
 		Folder sent= store.getFolder("Sent");
 		sent.open(Folder.READ_ONLY);
 		TempEmailAddressFactory teaf = new TempEmailAddressFactory();
-		TempMailboxHome tmh = (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
+		TempUserHome tuh = (TempUserHome) Component.getInstance(TempUserHome.class);
 		//addresses della tempMailbox : già esistenti
 		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
-				tmh.getInstance().getTempEmailAddresses());
+				tuh.getInstance().getTempEmailAddresses());
 
 		for (Message m : sent.getMessages()){
 			for (Address aR: m.getAllRecipients()){
@@ -74,7 +74,7 @@ public class IMAPAddressPuller {
 									
 					if (!address2tempEmail.containsKey(recipient.getEmailAddress())){
 
-						recipient.setTempMailbox(tmh.getInstance());
+						recipient.setTempUser(tuh.getInstance());
 						address2tempEmail.put(recipient.getEmailAddress(),recipient);
 
 					}

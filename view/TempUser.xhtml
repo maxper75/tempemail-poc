@@ -1,0 +1,109 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<rich:tabPanel switchType="client">
+	<!-- codice aggiunto -->
+			<!-- tempemailAddresses list -->
+			<rich:tab>
+
+
+				<f:facet name="header">
+					<h:panelGroup>#{messages['TempEmailAddresses.list']}</h:panelGroup>
+				</f:facet>
+				<h:form styleClass="association"
+					id="tempEmailAddressesChildren">
+
+					<h:outputText
+						value="There are no TempEmailAddresses associated with this TempUser"
+						rendered="#{empty tempUserHome.tempEmailAddresses}" />
+
+					<rich:dataTable value="#{tempUserHome.tempEmailAddresses}"
+						var="_tempEmailAddress"
+						rendered="#{not empty tempUserHome.tempEmailAddresses}"
+						rowClasses="rvgRowOne,rvgRowTwo" id="TempEmailAddressesTable">
+						<rich:column sortBy="#{_tempEmailAddress.name}">
+							<f:facet name="header">#{messages['TempEmailAddresses.nominativo.label']}</f:facet>
+							<h:outputText value="#{_tempEmailAddress.name}" />
+						</rich:column>
+						<rich:column sortBy="#{_tempEmailAddress.emailAddress}">
+							<f:facet name="header">#{messages['TempEmailAddresses.email.label']}</f:facet>
+							<h:outputText value="#{_tempEmailAddress.emailAddress}" />
+						</rich:column>
+						<rich:column sortBy="#{_tempEmailAddress.retentionDays}">
+							<f:facet name="header">#{messages['TempEmailAddresses.politicaConservazioni.label']}</f:facet>
+							<h:outputText
+								value="#{tempEmailAddressHelper.getRetentionPolicyString(_tempEmailAddress)}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
+							<s:button value="edit tempEmailAddress"
+								view="/TempEmailAddressEdit.xhtml">
+								<f:param name="tempEmailAddressId"
+									value="#{_tempEmailAddress.id}" />
+							</s:button>
+							<s:button value="delete tempEmailAddress"
+								view="/TempEmailAddressEdit.xhtml">
+								<f:param name="tempEmailAddressId"
+									value="#{_tempEmailAddress.id}" />
+							</s:button>
+						</rich:column>
+					</rich:dataTable>
+
+					<div class="actionButtons">
+
+						<s:button value="import Addresses" view="/AddressToPull.xhtml"
+							propagation="end" includePageParams="false">
+							<f:param name="tempUserid"
+								value="#{tempUserHome.instance.userid}" />
+						</s:button>
+						<h:commandButton action="#{tempUserHelper.generateSieveRule}"
+							value="Generate sieve rule"/>
+						<s:button value="Add tempEmailAddress"
+							view="/TempEmailAddressEdit.xhtml" propagation="end"
+							includePageParams="false">
+							<f:param name="tempUserid"
+								value="#{tempUserHome.instance.userid}" />
+						</s:button>
+						<h:commandButton value="import Addresses From Davide's Sent"
+							action="#{tempEmailAddressHelper.importAddressesFromDavide}">
+							<f:param name="tempUserid"
+								value="#{tempUserHome.instance.userid}" />
+						</h:commandButton>
+						<h:commandButton value="import Addresses from Barbara's Sent"
+							action="#{tempEmailAddressHelper.importAddressesFromBarbara}">
+							<f:param name="tempUserid"
+								value="#{tempUserHome.instance.userid}" />
+						</h:commandButton>
+						
+
+					</div>
+				</h:form>
+			</rich:tab>
+
+			<!-- /codice aggiunto -->
+			<!--/ tempemailAddresses -->
+	</rich:tabPanel>
+
+
+		<div class="actionButtons">
+
+			<s:button view="/TempUserEdit.xhtml" id="edit" value="Edit" />
+
+			<s:button
+				view="/#{empty tempMailboxFrom ? 'TempMailboxList' : tempMailboxFrom}.xhtml"
+				id="done" value="Done" />
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>

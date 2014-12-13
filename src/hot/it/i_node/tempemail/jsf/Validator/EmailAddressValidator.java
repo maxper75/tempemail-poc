@@ -13,7 +13,7 @@ import javax.faces.validator.ValidatorException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.action.TempUserHome;
 
 @FacesValidator("emailAddressValidator")
 public class EmailAddressValidator implements Validator {

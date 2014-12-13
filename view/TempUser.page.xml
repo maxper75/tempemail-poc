@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+	<param name="tempUserid" value="#{tempUserHome.instance.userid}" />
+
+	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromDavide}">
+		<rule if-outcome="needRetention">
+			<end-conversation />
+			<redirect view-id="/IMAPAddressPuller.xhtml" />
+		</rule>
+	</navigation>
+	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromBarbara}">
+		<rule if-outcome="needRetention">
+			<end-conversation />
+			<redirect view-id="/IMAPAddressPuller.xhtml" />
+		</rule>
+	</navigation>
+
+
+</page>

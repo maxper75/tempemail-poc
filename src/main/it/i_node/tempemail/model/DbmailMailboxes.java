@@ -27,9 +27,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "dbmail_mailboxes", schema = "public",uniqueConstraints = @UniqueConstraint(columnNames = {"owner_idnr", "name"}))
-@DiscriminatorColumn(name="mailboxType",discriminatorType=DiscriminatorType.CHAR)
-@DiscriminatorValue("D")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class DbmailMailboxes implements java.io.Serializable {
 
 	private long mailboxIdnr;
@@ -45,7 +42,7 @@ public class DbmailMailboxes implements java.io.Serializable {
 	private short noSelect;
 	private short permission;
 	private long seq;
-	private String mailboxType;
+
 	private Set<DbmailSubscription> dbmailSubscriptions = new HashSet<DbmailSubscription>(
 			0);
 	private Set<DbmailMessages> dbmailMessageses = new HashSet<DbmailMessages>(
@@ -246,12 +243,5 @@ public class DbmailMailboxes implements java.io.Serializable {
 		this.dbmailAcls = dbmailAcls;
 	}
 
-	public String getMailboxType() {
-		return mailboxType;
-	}
-
-	public void setMailboxType(String mailboxType) {
-		this.mailboxType = mailboxType;
-	}
 
 }

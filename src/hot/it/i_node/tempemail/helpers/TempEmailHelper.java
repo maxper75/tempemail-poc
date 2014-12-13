@@ -5,7 +5,7 @@ import it.i_node.tempemail.action.DbmailAliasesHome;
 import it.i_node.tempemail.action.DbmailUsersHome;
 import it.i_node.tempemail.action.DbmailUsersList;
 import it.i_node.tempemail.action.TempAliasHome;
-import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.action.TempUserHome;
 import it.i_node.tempemail.model.DbmailAliases;
 import it.i_node.tempemail.model.DbmailHeader;
 import it.i_node.tempemail.model.DbmailHeadervalue;
@@ -13,7 +13,7 @@ import it.i_node.tempemail.model.DbmailMessages;
 import it.i_node.tempemail.model.DbmailSubjectfield;
 import it.i_node.tempemail.model.DbmailUsers;
 import it.i_node.tempemail.model.TempAlias;
-import it.i_node.tempemail.model.TempMailbox;
+import it.i_node.tempemail.model.TempUser;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -42,7 +42,7 @@ public class TempEmailHelper {
 	private String username=null;							//username users
 	private String emailAddress=null;						//indirizzo mail
 	private String text=null;								//da utilizzare per messaggi di errore
-	private TempMailbox mail=null;							//mailbox corrente
+	private TempUser mail=null;							//mailbox corrente
 	
 	//se si vogliono piu alias fare un array
 	private TempAlias alias=null;							//alias utente
@@ -81,7 +81,7 @@ public class TempEmailHelper {
 			user.setEncryptionType("");
 			usersHome.persist();
 			//mailbox
-			TempMailboxHome mailboxesHome=(TempMailboxHome) Component.getInstance(TempMailboxHome.class);
+			TempUserHome mailboxesHome=(TempUserHome) Component.getInstance(TempUserHome.class);
 			mailboxesHome.clearInstance();
 			setMail(mailboxesHome.getInstance());
 			mail.setDbmailUsers(user);
@@ -115,8 +115,8 @@ public class TempEmailHelper {
 			DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
 			EntityManager em=(EntityManager) Component.getInstance("entityManager");
 			try	{
-			TempMailbox mailbox=em.createQuery("From TempMailbox t where t.mailboxIdnr="
-					+ " :mailid",TempMailbox.class).setParameter("mailid",mail.getMailboxIdnr()).getSingleResult();
+			TempUser mailbox=em.createQuery("From TempMailbox t where t.mailboxIdnr="
+					+ " :mailid",TempUser.class).setParameter("mailid",mail.getMailboxIdnr()).getSingleResult();
 			if(mailbox!=null)	{
 				usersHome.setDbmailUsersUserIdnr(mail.getDbmailUsers().getUserIdnr());
 				usersHome.remove();
@@ -160,7 +160,7 @@ public class TempEmailHelper {
 				return;
 			}
 			Date data=Calendar.getInstance().getTime();
-			TempMailboxHome mailboxHome=(TempMailboxHome) Component.getInstance(TempMailboxHome.class);
+			TempUserHome mailboxHome=(TempUserHome) Component.getInstance(TempUserHome.class);
 			mailboxHome.setId(mail.getMailboxIdnr());
 			mailboxHome.getInstance().setRefreshDate(data);
 			mailboxHome.update();
@@ -439,11 +439,11 @@ public class TempEmailHelper {
 		this.headerMap = headerMap;
 	}
 
-	public TempMailbox getMail() {
+	public TempUser getMail() {
 		return mail;
 	}
 
-	public void setMail(TempMailbox mail) {
+	public void setMail(TempUser mail) {
 		this.mail = mail;
 	}
 

@@ -24,7 +24,7 @@ public class DbmailMailboxesHome extends EntityHome<DbmailMailboxes> {
 	@Override
 	protected DbmailMailboxes createInstance() {
 		DbmailMailboxes dbmailMailboxes = new DbmailMailboxes();
-		dbmailMailboxes.setMailboxType("D");
+		//dbmailMailboxes.setMailboxType("D");
 		return dbmailMailboxes;
 	}
 

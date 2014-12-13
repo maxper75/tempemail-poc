@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
 	no-conversation-view-id="/TempMailboxList.xhtml" login-required="true">
 
-	<param name="tempMailboxMailboxIdnr" value="#{tempMailboxHome.tempMailboxMailboxIdnr}" />
+	<param name="tempUserid" value="#{tempUserHome.instance.userid}" />
 
 
 	<navigation from-action="#{tempEmailAddressHelper.importAddresses}">

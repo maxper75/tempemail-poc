@@ -9,32 +9,32 @@ import org.jboss.seam.Component;
 import org.jboss.seam.annotations.Name;
 
 import it.i_node.tempemail.action.DbmailSievescriptsHome;
-import it.i_node.tempemail.action.TempMailboxHome;
+import it.i_node.tempemail.action.TempUserHome;
 import it.i_node.tempemail.model.DbmailSievescripts;
 import it.i_node.tempemail.model.SieveRulesFactory;
 import it.i_node.tempemail.model.TempEmailAddress;
 
-@Name ("tempMailboxHelper")
-public class TempMailboxHelper {
+@Name ("tempUserHelper")
+public class TempUserHelper {
 
-	private boolean changes_generateRule= false;//if true=> there are changes => a new sieve rule have to be generate
-
-
-	public boolean isChanges_generateRule() {
-		return changes_generateRule;
-	}
-
-	public void setChanges_generateRule(boolean changes_generateRule) {
-		this.changes_generateRule = changes_generateRule;
-	}
+//	private boolean changes_generateRule= false;//if true=> there are changes => a new sieve rule have to be generate
+//
+//
+//	public boolean isChanges_generateRule() {
+//		return changes_generateRule;
+//	}
+//
+//	public void setChanges_generateRule(boolean changes_generateRule) {
+//		this.changes_generateRule = changes_generateRule;
+//	}
 
 	public String generateSieveRule(){
 
-		TempMailboxHome tmh= (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
-		DbmailSievescriptsHome home=(DbmailSievescriptsHome) Component.getInstance(DbmailSievescriptsHome.class);
+		TempUserHome tuh= (TempUserHome) Component.getInstance(TempUserHome.class);
+		DbmailSievescriptsHome scriptHome=(DbmailSievescriptsHome) Component.getInstance(DbmailSievescriptsHome.class);
 		List <TempEmailAddress> addresses = 
-				new ArrayList <TempEmailAddress>(tmh.getInstance().getTempEmailAddresses());
-		Set <DbmailSievescripts> sieveScriptses =tmh.getInstance().getDbmailUsers().getDbmailSievescriptses();
+				new ArrayList <TempEmailAddress>(tuh.getInstance().getTempEmailAddresses());
+		Set <DbmailSievescripts> sieveScriptses =tuh.getInstance().getDbmailSievescriptses();
 
 		if(sieveScriptses.size() >1){//caso:presenti più DbmailSievescript =>errore
 
@@ -50,9 +50,9 @@ public class TempMailboxHelper {
 				DbmailSievescripts script= sieveScriptses.iterator().next();
 				if(script.getName().equals("TempMail")){//test per verificare che sia presente lo script corretto da aggiornare
 
-					setNactivateScript(script,addresses,tmh.getInstance().getDbmailUsers().getUserid());
-					home.setInstance(script);
-					home.update();
+					setNactivateScript(script,addresses,tuh.getInstance().getUserid());
+					scriptHome.setInstance(script);
+					scriptHome.update();
 					System.out.println("lo script presente è stato aggiornato e attivato");
 				}
 
@@ -68,17 +68,17 @@ public class TempMailboxHelper {
 				//
 				//			}
 				//caso default:presente nessun DbmailSievescript => create
-				home.getInstance().setName("TempMail");
-				home.getInstance().setDbmailUsers(tmh.getInstance().getDbmailUsers());
-				setNactivateScript(home.getInstance(),addresses,tmh.getInstance().getDbmailUsers().getUserid());
-				home.persist();
+				scriptHome.getInstance().setName("TempMail");
+				scriptHome.getInstance().setDbmailUsers(tuh.getInstance());
+				setNactivateScript(scriptHome.getInstance(),addresses,tuh.getInstance().getUserid());
+				scriptHome.persist();
 				System.out.println("è stato creato il nuovo script");
 
 			}
-		setChanges_generateRule(false);//dopo aver creato la nuova sieve rules, 
+	//	setChanges_generateRule(false);//dopo aver creato la nuova sieve rules, 
 										//il pulsante generate sieve rules deve essere disabilitato
 		
-		tmh.getInstance().setDirty(false);
+		tuh.getInstance().setDirty(false);
 		return "";
 	}
 
