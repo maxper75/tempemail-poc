@@ -1,7 +1,10 @@
 package it.i_node.tempemail.model;
 
+import it.i_node.tempemail.listeners.TempEmailAddressListener;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +20,7 @@ import org.hibernate.engine.jdbc.ColumnNameCache;
 
 @Entity												
 @Table(name = "tempemailaddress", schema = "public")
+@EntityListeners(TempEmailAddressListener.class)
 //uniqueConstraints=@UniqueConstraint(columnNames={"tempMailbox", "emailAddress"})
 public class TempEmailAddress implements java.io.Serializable {
 

@@ -14,7 +14,7 @@ import javax.faces.validator.ValidatorException;
 import org.jboss.seam.Component;
 @FacesValidator("emailAddressExsistingValidator")
 public class EmailAddressExsistingValidator implements Validator {
-
+	
 	@Override
 	public void validate(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
@@ -31,6 +31,7 @@ public class EmailAddressExsistingValidator implements Validator {
 
 
 	}
+
 	public boolean exsists(String email){
 		TempMailboxHome tmh = (TempMailboxHome) Component.getInstance(TempMailboxHome.class);
 

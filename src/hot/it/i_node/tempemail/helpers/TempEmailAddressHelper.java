@@ -34,6 +34,7 @@ public class TempEmailAddressHelper {
 	 * -1=deliver 
 	 * 
 	 */
+	
 	private Integer retentionPolicy;
 	private List <TempEmailAddress> add2import= new  ArrayList<TempEmailAddress>();
 	private AddressToPull utente = new AddressToPull();
@@ -79,14 +80,14 @@ public class TempEmailAddressHelper {
 
 	}
 	public String persist(){
-
+		
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 
 		if(retentionPolicy<1)//0 oppure -1
 			teah.getInstance().setRetentionDays(retentionPolicy);
 
 
-		yesChanges();
+		
 		return teah.persist();
 	}
 	@SuppressWarnings("unused")
@@ -111,7 +112,7 @@ public class TempEmailAddressHelper {
 					else
 						em.persist(tea);
 				}
-				yesChanges();
+				
 				return "addedAll";
 			}
 		return "noAddressesAdded";
@@ -127,12 +128,12 @@ public class TempEmailAddressHelper {
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 		if(retentionPolicy<1)
 			teah.getInstance().setRetentionDays(retentionPolicy);
-		yesChanges();
+		
 		return teah.update();
 	}
 	public String remove(){
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
-		yesChanges();
+		
 		return teah.remove(); 
 	}
 
@@ -156,7 +157,7 @@ public class TempEmailAddressHelper {
 			add2import.remove(tea);
 		if (imported2Retention.containsKey(tea))
 			imported2Retention.remove(tea);
-		yesChanges();
+		
 		return "removed";
 	}
 	/**
@@ -194,12 +195,7 @@ public class TempEmailAddressHelper {
 		return 0;//default se non esiste retentiondays
 
 	}
-	public void yesChanges(){
-		TempMailboxHelper tmhelper = (TempMailboxHelper) Component.getInstance(TempMailboxHelper.class);
-		tmhelper.setChanges_generateRule(true);//ci sono state delle modifiche
-		//va rigenerata la sieveRule
-	}
-
+	
 	/**
 	 * metodo da usare nella fase di test
 	 * più lento nel caricamento

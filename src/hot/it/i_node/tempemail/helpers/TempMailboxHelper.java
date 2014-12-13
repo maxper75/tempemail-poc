@@ -77,6 +77,8 @@ public class TempMailboxHelper {
 			}
 		setChanges_generateRule(false);//dopo aver creato la nuova sieve rules, 
 										//il pulsante generate sieve rules deve essere disabilitato
+		
+		tmh.getInstance().setDirty(false);
 		return "";
 	}
 

@@ -1,8 +1,11 @@
 package it.i_node.tempemail.model;
 // Generated 7-mar-2014 17.20.31 by Hibernate Tools 4.0.0
 
+import it.i_node.tempemail.listeners.DbmailSievescriptsListener;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +23,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "dbmail_sievescripts", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = {
 		"owner_idnr", "name"}))
+@EntityListeners(DbmailSievescriptsListener.class)
 public class DbmailSievescripts implements java.io.Serializable {
 
 	private long id;

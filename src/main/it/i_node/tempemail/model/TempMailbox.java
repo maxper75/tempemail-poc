@@ -21,6 +21,7 @@ public class TempMailbox extends DbmailMailboxes {
 	private Date creationDate;
 	private Date refreshDate;
 	private Set <TempEmailAddress> tempEmailAddresses = new HashSet<TempEmailAddress>(0);
+	private boolean dirty;
 	
 	
 	
@@ -43,6 +44,12 @@ public class TempMailbox extends DbmailMailboxes {
 	}
 	public void setTempEmailAddresses(Set<TempEmailAddress> tempEmailAddresses) {
 		this.tempEmailAddresses = tempEmailAddresses;
+	}
+	public boolean isDirty() {
+		return dirty;
+	}
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 
 
