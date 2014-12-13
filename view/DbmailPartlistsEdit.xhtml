@@ -1,0 +1,158 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailPartlists" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailPartlistsHome.managed ? messages['DbmailPartlists.edit'] : messages['DbmailPartlists.add']}</f:facet>
+
+
+            <s:decorate id="isHeaderField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailPartlists.isHeader.label']}</ui:define>
+                <h:inputText id="isHeader"
+                       required="true"
+                       disabled="#{dbmailPartlistsHome.managed}"
+                          value="#{dbmailPartlistsHome.instance.id.isHeader}">
+                    <a:ajax event="blur" render="isHeaderField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="partDepthField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailPartlists.partDepth.label']}</ui:define>
+                <h:inputText id="partDepth"
+                       required="true"
+                       disabled="#{dbmailPartlistsHome.managed}"
+                          value="#{dbmailPartlistsHome.instance.id.partDepth}">
+                    <a:ajax event="blur" render="partDepthField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="partIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailPartlists.partId.label']}</ui:define>
+                <h:inputText id="partId"
+                       required="true"
+                       disabled="#{dbmailPartlistsHome.managed}"
+                          value="#{dbmailPartlistsHome.instance.id.partId}">
+                    <a:ajax event="blur" render="partIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="partKeyField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailPartlists.partKey.label']}</ui:define>
+                <h:inputText id="partKey"
+                       required="true"
+                       disabled="#{dbmailPartlistsHome.managed}"
+                          value="#{dbmailPartlistsHome.instance.id.partKey}">
+                    <a:ajax event="blur" render="partKeyField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="partOrderField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailPartlists.partOrder.label']}</ui:define>
+                <h:inputText id="partOrder"
+                       required="true"
+                       disabled="#{dbmailPartlistsHome.managed}"
+                          value="#{dbmailPartlistsHome.instance.id.partOrder}">
+                    <a:ajax event="blur" render="partOrderField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="physmessageIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailPartlists.physmessageId.label']}</ui:define>
+                <h:inputText id="physmessageId"
+                       required="true"
+                       disabled="#{dbmailPartlistsHome.managed}"
+                          value="#{dbmailPartlistsHome.instance.id.physmessageId}">
+                    <a:ajax event="blur" render="physmessageIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailMimeparts it.i_node.tempemail.model.DbmailMimeparts-->
+		<s:decorate id="dbmailPartlistsHome_dbmailMimeparts" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailPartlists.dbmailMimeparts.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailPartlistsHome.instance.dbmailMimeparts}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailMimeparts.select']}"
+							value="#{dbmailMimepartsList.resultList}" var="_dbmailMimeparts"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailMimeparts)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+		<s:decorate id="dbmailPartlistsHome_dbmailPhysmessage" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailPartlists.dbmailPhysmessage.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailPartlistsHome.instance.dbmailPhysmessage}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailPhysmessage.select']}"
+							value="#{dbmailPhysmessageList.resultList}" var="_dbmailPhysmessage"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailPhysmessage)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailPartlistsHome.persist}"
+                       disabled="#{!dbmailPartlistsHome.wired}"
+                       rendered="#{!dbmailPartlistsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailPartlistsHome.update}"
+                       rendered="#{dbmailPartlistsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailPartlistsHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailPartlistsHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailPartlists.xhtml"
+                rendered="#{dbmailPartlistsHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailPartlistsFrom ? 'DbmailPartlistsList' : dbmailPartlistsFrom}.xhtml"
+                rendered="#{!dbmailPartlistsHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

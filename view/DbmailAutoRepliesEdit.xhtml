@@ -1,0 +1,108 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailAutoReplies" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailAutoRepliesHome.managed ? messages['DbmailAutoReplies.edit'] : messages['DbmailAutoReplies.add']}</f:facet>
+
+
+
+            <s:decorate id="replyBodyField" template="layout/edit.xhtml">
+                <ui:define name="label">Reply body</ui:define>
+                <h:inputTextarea id="replyBody"
+                               cols="80"
+                               rows="3"
+                              value="#{dbmailAutoRepliesHome.instance.replyBody}"/>
+            </s:decorate>
+
+
+            <s:decorate id="startDateField" template="layout/edit.xhtml">
+                <ui:define name="label">Start date</ui:define>
+                <rich:calendar id="startDate"
+                       required="true"
+                          value="#{dbmailAutoRepliesHome.instance.startDate}" datePattern="dd/MM/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="stopDateField" template="layout/edit.xhtml">
+                <ui:define name="label">Stop date</ui:define>
+                <rich:calendar id="stopDate"
+                       required="true"
+                          value="#{dbmailAutoRepliesHome.instance.stopDate}" datePattern="dd/MM/yyyy hh:mm a"/>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+		<s:decorate id="dbmailAutoRepliesHome_dbmailUsers" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailAutoReplies.dbmailUsers.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailAutoRepliesHome.instance.dbmailUsers}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailUsers.select']}"
+							value="#{dbmailUsersList.resultList}" var="_dbmailUsers"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailUsers)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailAutoRepliesHome.persist}"
+                       disabled="#{!dbmailAutoRepliesHome.wired}"
+                       rendered="#{!dbmailAutoRepliesHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailAutoRepliesHome.update}"
+                       rendered="#{dbmailAutoRepliesHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailAutoRepliesHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailAutoRepliesHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailAutoReplies.xhtml"
+                rendered="#{dbmailAutoRepliesHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailAutoRepliesFrom ? 'DbmailAutoRepliesList' : dbmailAutoRepliesFrom}.xhtml"
+                rendered="#{!dbmailAutoRepliesHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="firstResult" value="#{dbmailAuthlogList.firstResult}"/>
+   <param name="sort" value="#{dbmailAuthlogList.orderColumn}"/>
+   <param name="dir" value="#{dbmailAuthlogList.orderDirection}"/>
+   <param name="logic" value="#{dbmailAuthlogList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="dstIp" value="#{dbmailAuthlogList.dbmailAuthlog.id.dstIp}"/>
+   <param name="service" value="#{dbmailAuthlogList.dbmailAuthlog.id.service}"/>
+   <param name="srcIp" value="#{dbmailAuthlogList.dbmailAuthlog.id.srcIp}"/>
+   <param name="status" value="#{dbmailAuthlogList.dbmailAuthlog.id.status}"/>
+   <param name="userid" value="#{dbmailAuthlogList.dbmailAuthlog.id.userid}"/>
+
+</page>

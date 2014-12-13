@@ -1,0 +1,183 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailAcl.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="mailboxId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.mailboxId.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.id.mailboxId}"/>
+        </s:decorate>
+        <s:decorate id="userId" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.userId.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.id.userId}"/>
+        </s:decorate>
+
+
+        <s:decorate id="administerFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.administerFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.administerFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="createFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.createFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.createFlag}"/>
+        </s:decorate>
+
+
+
+
+        <s:decorate id="deleteFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.deleteFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.deleteFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="deletedFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.deletedFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.deletedFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="expungeFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.expungeFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.expungeFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="insertFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.insertFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.insertFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="lookupFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.lookupFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.lookupFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="postFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.postFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.postFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="readFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.readFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.readFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="seenFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.seenFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.seenFlag}"/>
+        </s:decorate>
+
+
+        <s:decorate id="writeFlag" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAcl.writeFlag.label']}</ui:define>
+            <h:outputText value="#{dbmailAclHome.instance.writeFlag}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailMailboxes it.i_node.tempemail.model.DbmailMailboxes-->
+        <s:decorate id="dbmailMailboxes" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailMailboxes']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailAclHome.instance.dbmailMailboxes)}"/>
+        </s:decorate>
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+        <s:decorate id="dbmailUsers" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailAclHome.instance.dbmailUsers)}"/>
+        </s:decorate>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailAclEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailAclFrom ? 'DbmailAclList' : dbmailAclFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

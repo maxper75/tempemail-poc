@@ -1,0 +1,190 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailUsermapSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailUsermap Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.login.label']}</ui:define>
+                <h:inputText id="login" value="#{dbmailUsermapList.dbmailUsermap.id.login}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.sockAllow.label']}</ui:define>
+                <h:inputText id="sockAllow" value="#{dbmailUsermapList.dbmailUsermap.id.sockAllow}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.sockDeny.label']}</ui:define>
+                <h:inputText id="sockDeny" value="#{dbmailUsermapList.dbmailUsermap.id.sockDeny}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.userid.label']}</ui:define>
+                <h:inputText id="userid" value="#{dbmailUsermapList.dbmailUsermap.id.userid}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailUsermapList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailUsermapList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailUsermap.search.results']} (#{empty dbmailUsermapList.resultList ? 0 : (dbmailUsermapList.paginated ? dbmailUsermapList.resultCount : dbmailUsermapList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailUsermapList">
+
+    <h:outputText value="The dbmailUsermap search returned no results."
+               rendered="#{empty dbmailUsermapList.resultList}"/>
+
+    <rich:dataTable id="dbmailUsermapList"
+                var="_dbmailUsermap"
+              value="#{dbmailUsermapList.resultList}"
+           rendered="#{not empty dbmailUsermapList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsermapList}"/>
+                    <ui:param name="propertyLabel" value="Login"/>
+                    <ui:param name="propertyPath" value="dbmailUsermap.id.login"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsermap.id.login}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsermapList}"/>
+                    <ui:param name="propertyLabel" value="Sock allow"/>
+                    <ui:param name="propertyPath" value="dbmailUsermap.id.sockAllow"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsermap.id.sockAllow}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsermapList}"/>
+                    <ui:param name="propertyLabel" value="Sock deny"/>
+                    <ui:param name="propertyPath" value="dbmailUsermap.id.sockDeny"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsermap.id.sockDeny}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailUsermapList}"/>
+                    <ui:param name="propertyLabel" value="Userid"/>
+                    <ui:param name="propertyPath" value="dbmailUsermap.id.userid"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailUsermap.id.userid}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailUsermap' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailUsermapViewId">
+                <f:param name="dbmailUsermapLogin"
+                        value="#{_dbmailUsermap.id.login}"/>
+                <f:param name="dbmailUsermapSockAllow"
+                        value="#{_dbmailUsermap.id.sockAllow}"/>
+                <f:param name="dbmailUsermapSockDeny"
+                        value="#{_dbmailUsermap.id.sockDeny}"/>
+                <f:param name="dbmailUsermapUserid"
+                        value="#{_dbmailUsermap.id.userid}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailUsermapEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailUsermapEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailUsermapLogin"
+                        value="#{_dbmailUsermap.id.login}"/>
+                <f:param name="dbmailUsermapSockAllow"
+                        value="#{_dbmailUsermap.id.sockAllow}"/>
+                <f:param name="dbmailUsermapSockDeny"
+                        value="#{_dbmailUsermap.id.sockDeny}"/>
+                <f:param name="dbmailUsermapUserid"
+                        value="#{_dbmailUsermap.id.userid}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailUsermapList.xhtml"
+            rendered="#{dbmailUsermapList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailUsermapList.xhtml"
+            rendered="#{dbmailUsermapList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailUsermapList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailUsermapList.xhtml"
+            rendered="#{dbmailUsermapList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailUsermapList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailUsermapList.xhtml"
+            rendered="#{dbmailUsermapList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailUsermapList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailUsermapEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailUsermap">
+            <f:param name="dbmailUsermapLogin"/>
+            <f:param name="dbmailUsermapSockAllow"/>
+            <f:param name="dbmailUsermapSockDeny"/>
+            <f:param name="dbmailUsermapUserid"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

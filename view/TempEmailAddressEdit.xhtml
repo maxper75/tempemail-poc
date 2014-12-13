@@ -1,0 +1,97 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="tempEmailAddress" styleClass="edit">
+
+			<rich:panel>
+
+				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
+
+				<s:decorate id="mailboxIdnr" template="layout/edit.xhtml">
+					<ui:define name="label">Mailbox Idnr : </ui:define>
+					<h:outputText
+						value="#{tempEmailAddressHome.instance.tempMailbox.mailboxIdnr}" />
+				</s:decorate>
+
+				<s:decorate id="TempEmailAddressNameField"
+					template="layout/edit.xhtml">
+					<ui:define name="label">Name:</ui:define>
+					<h:inputText id="TempEmailAddressName" required="true"
+						converterMessage="Name must be a String"
+						value="#{tempEmailAddressHome.instance.name}">
+						<a:ajax event="blur" render="TempEmailAddressNameField"
+							execute="@this" />
+					</h:inputText>
+
+				</s:decorate>
+
+				<s:decorate id="TempEmailAddressEmailAddressField"
+					template="layout/edit.xhtml">
+					<ui:define name="label">Email address</ui:define>
+					<h:inputText id="TempEmailAddressEmailAddress"
+						value="#{tempEmailAddressHome.instance.emailAddress}">
+						<f:validator validatorId="emailAddressValidator" />
+						<f:validator validatorId="emailAddressExsistingValidator"  disabled="#{}" />
+						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
+							execute="@this" />
+
+					</h:inputText>
+					<!-- caso: modifica email di TempEmailAddress già esistente (edit) -->
+					<!-- non ammissibile -->
+					<!-- soluzione: bisogna eliminare il TempEmailAddress e ricrearlo successivamente -->
+
+				</s:decorate>
+
+				<s:decorate id="RetentionPolicyField" template="layout/edit.xhtml">
+					<ui:define name="label">Retention Policy</ui:define>
+
+					<h:selectOneRadio value="#{tempEmailAddressHelper.retentionPolicy}">
+						<f:selectItem itemLabel="discard" itemValue="0" />
+						<f:selectItem itemLabel="deliver" itemValue="-1" />
+						<f:selectItem itemLabel="retain" itemValue="1" />
+						<f:ajax event="change" render="RetentionPolicyValue"
+							execute="@this" />
+					</h:selectOneRadio>
+					<h:inputText id="RetentionPolicyValue" required="true"
+						value="#{tempEmailAddressHome.instance.retentionDays}"
+						converterMessage="Retention Days must be a number"
+						disabled="#{tempEmailAddressHelper.retentionPolicy!=1}">
+						<!-- inputText disabilitato quando retentionPolicy non è 1 -->
+						<f:ajax event="blur" execute="@this"></f:ajax>
+
+					</h:inputText>
+				</s:decorate>
+				<div style="clear: both">
+					<span class="required">*</span> #{messages['requiredFields']}
+				</div>
+
+			</rich:panel>
+
+			<div class="actionButtons">
+
+				<h:commandButton id="save" value="Save"
+					action="#{tempEmailAddressHelper.persist}"
+					disabled="#{!tempEmailAddressHome.wired}"
+					rendered="#{!tempEmailAddressHome.managed}" />
+				<h:commandButton id="update" value="Save"
+					action="#{tempEmailAddressHelper.update}"
+					rendered="#{tempEmailAddressHome.managed}" />
+				<h:commandButton id="delete" value="Delete"
+					action="#{tempEmailAddressHelper.remove}" immediate="true"
+					rendered="#{tempEmailAddressHome.managed}" />
+			</div>
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>

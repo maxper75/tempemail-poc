@@ -1,0 +1,473 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailPhysmessage.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="id" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPhysmessage.id.label']}</ui:define>
+            <h:outputText value="#{dbmailPhysmessageHome.instance.id}"/>
+        </s:decorate>
+
+
+
+
+
+
+
+
+        <s:decorate id="internalDate" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPhysmessage.internalDate.label']}</ui:define>
+            <h:outputText value="#{dbmailPhysmessageHome.instance.internalDate}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+
+        <s:decorate id="messagesize" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPhysmessage.messagesize.label']}</ui:define>
+            <h:outputText value="#{dbmailPhysmessageHome.instance.messagesize}"/>
+        </s:decorate>
+
+
+        <s:decorate id="rfcsize" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPhysmessage.rfcsize.label']}</ui:define>
+            <h:outputText value="#{dbmailPhysmessageHome.instance.rfcsize}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailEnvelope.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailEnvelopesChildren">
+
+
+        <h:outputText value="There are no dbmailEnvelopes associated with this dbmailPhysmessage."
+                   rendered="#{empty dbmailPhysmessageHome.dbmailEnvelopes}"/>
+
+        <rich:dataTable value="#{dbmailPhysmessageHome.dbmailEnvelopes}"
+                       var="_dbmailEnvelope"
+                  rendered="#{not empty dbmailPhysmessageHome.dbmailEnvelopes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailEnvelopesTable">
+            <rich:column sortBy="#{_dbmailEnvelope.id}">
+                <f:facet name="header">#{messages['DbmailEnvelope.id.label']}</f:facet>
+                <h:outputText value="#{_dbmailEnvelope.id}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailEnvelope.envelope}">
+                <f:facet name="header">#{messages['DbmailEnvelope.envelope.label']}</f:facet>
+                <h:outputText value="#{_dbmailEnvelope.envelope}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailEnvelope"
+                     value="Select"
+                      view="/DbmailEnvelope.xhtml">
+                    <f:param name="dbmailEnvelopeId"
+                            value="#{_dbmailEnvelope.id}"/>
+                    <f:param name="dbmailEnvelopeFrom" value="DbmailPhysmessage"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailEnvelope"
+                view="/DbmailEnvelopeEdit.xhtml">
+            <f:param name="dbmailPhysmessageId"
+                    value="#{dbmailPhysmessageHome.instance.id}"/>
+            <f:param name="dbmailEnvelopeFrom" value="DbmailPhysmessage"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailHeader.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailHeadersChildren">
+
+
+        <h:outputText value="There are no dbmailHeaders associated with this dbmailPhysmessage."
+                   rendered="#{empty dbmailPhysmessageHome.dbmailHeaders}"/>
+
+        <rich:dataTable value="#{dbmailPhysmessageHome.dbmailHeaders}"
+                       var="_dbmailHeader"
+                  rendered="#{not empty dbmailPhysmessageHome.dbmailHeaders}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailHeadersTable">
+            <rich:column sortBy="#{_dbmailHeader.id.headernameId}">
+                <f:facet name="header">#{messages['DbmailHeader.headernameId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.headernameId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailHeader.id.headervalueId}">
+                <f:facet name="header">#{messages['DbmailHeader.headervalueId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.headervalueId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailHeader.id.physmessageId}">
+                <f:facet name="header">#{messages['DbmailHeader.physmessageId.label']}</f:facet>
+                <h:outputText value="#{_dbmailHeader.id.physmessageId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailHeader"
+                     value="Select"
+                      view="/DbmailHeader.xhtml">
+                    <f:param name="dbmailHeaderHeadernameId"
+                            value="#{_dbmailHeader.id.headernameId}"/>
+                    <f:param name="dbmailHeaderHeadervalueId"
+                            value="#{_dbmailHeader.id.headervalueId}"/>
+                    <f:param name="dbmailHeaderPhysmessageId"
+                            value="#{_dbmailHeader.id.physmessageId}"/>
+                    <f:param name="dbmailHeaderFrom" value="DbmailPhysmessage"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailHeader"
+                view="/DbmailHeaderEdit.xhtml">
+            <f:param name="dbmailPhysmessageId"
+                    value="#{dbmailPhysmessageHome.instance.id}"/>
+            <f:param name="dbmailHeaderFrom" value="DbmailPhysmessage"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailMessageblks.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailMessageblksesChildren">
+
+
+        <h:outputText value="There are no dbmailMessageblkses associated with this dbmailPhysmessage."
+                   rendered="#{empty dbmailPhysmessageHome.dbmailMessageblkses}"/>
+
+        <rich:dataTable value="#{dbmailPhysmessageHome.dbmailMessageblkses}"
+                       var="_dbmailMessageblks"
+                  rendered="#{not empty dbmailPhysmessageHome.dbmailMessageblkses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailMessageblksesTable">
+            <rich:column sortBy="#{_dbmailMessageblks.messageblkIdnr}">
+                <f:facet name="header">#{messages['DbmailMessageblks.messageblkIdnr.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessageblks.messageblkIdnr}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessageblks.blocksize}">
+                <f:facet name="header">#{messages['DbmailMessageblks.blocksize.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessageblks.blocksize}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessageblks.isHeader}">
+                <f:facet name="header">#{messages['DbmailMessageblks.isHeader.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessageblks.isHeader}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessageblks.messageblk}">
+                <f:facet name="header">#{messages['DbmailMessageblks.messageblk.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessageblks.messageblk}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailMessageblks"
+                     value="Select"
+                      view="/DbmailMessageblks.xhtml">
+                    <f:param name="dbmailMessageblksMessageblkIdnr"
+                            value="#{_dbmailMessageblks.messageblkIdnr}"/>
+                    <f:param name="dbmailMessageblksFrom" value="DbmailPhysmessage"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailMessageblks"
+                view="/DbmailMessageblksEdit.xhtml">
+            <f:param name="dbmailPhysmessageId"
+                    value="#{dbmailPhysmessageHome.instance.id}"/>
+            <f:param name="dbmailMessageblksFrom" value="DbmailPhysmessage"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailMessages.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailMessagesesChildren">
+
+
+        <h:outputText value="There are no dbmailMessageses associated with this dbmailPhysmessage."
+                   rendered="#{empty dbmailPhysmessageHome.dbmailMessageses}"/>
+
+        <rich:dataTable value="#{dbmailPhysmessageHome.dbmailMessageses}"
+                       var="_dbmailMessages"
+                  rendered="#{not empty dbmailPhysmessageHome.dbmailMessageses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailMessagesesTable">
+            <rich:column sortBy="#{_dbmailMessages.messageIdnr}">
+                <f:facet name="header">#{messages['DbmailMessages.messageIdnr.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.messageIdnr}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.answeredFlag}">
+                <f:facet name="header">#{messages['DbmailMessages.answeredFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.answeredFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.deletedFlag}">
+                <f:facet name="header">#{messages['DbmailMessages.deletedFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.deletedFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.draftFlag}">
+                <f:facet name="header">#{messages['DbmailMessages.draftFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.draftFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.flaggedFlag}">
+                <f:facet name="header">#{messages['DbmailMessages.flaggedFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.flaggedFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.recentFlag}">
+                <f:facet name="header">#{messages['DbmailMessages.recentFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.recentFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.seenFlag}">
+                <f:facet name="header">#{messages['DbmailMessages.seenFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.seenFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.status}">
+                <f:facet name="header">#{messages['DbmailMessages.status.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.status}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMessages.uniqueId}">
+                <f:facet name="header">#{messages['DbmailMessages.uniqueId.label']}</f:facet>
+                <h:outputText value="#{_dbmailMessages.uniqueId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailMessages"
+                     value="Select"
+                      view="/DbmailMessages.xhtml">
+                    <f:param name="dbmailMessagesMessageIdnr"
+                            value="#{_dbmailMessages.messageIdnr}"/>
+                    <f:param name="dbmailMessagesFrom" value="DbmailPhysmessage"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailMessages"
+                view="/DbmailMessagesEdit.xhtml">
+            <f:param name="dbmailPhysmessageId"
+                    value="#{dbmailPhysmessageHome.instance.id}"/>
+            <f:param name="dbmailMessagesFrom" value="DbmailPhysmessage"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailPartlists.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailPartlistsesChildren">
+
+
+        <h:outputText value="There are no dbmailPartlistses associated with this dbmailPhysmessage."
+                   rendered="#{empty dbmailPhysmessageHome.dbmailPartlistses}"/>
+
+        <rich:dataTable value="#{dbmailPhysmessageHome.dbmailPartlistses}"
+                       var="_dbmailPartlists"
+                  rendered="#{not empty dbmailPhysmessageHome.dbmailPartlistses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailPartlistsesTable">
+            <rich:column sortBy="#{_dbmailPartlists.id.isHeader}">
+                <f:facet name="header">#{messages['DbmailPartlists.isHeader.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.isHeader}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partDepth}">
+                <f:facet name="header">#{messages['DbmailPartlists.partDepth.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partDepth}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partId}">
+                <f:facet name="header">#{messages['DbmailPartlists.partId.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partKey}">
+                <f:facet name="header">#{messages['DbmailPartlists.partKey.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partKey}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.partOrder}">
+                <f:facet name="header">#{messages['DbmailPartlists.partOrder.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.partOrder}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailPartlists.id.physmessageId}">
+                <f:facet name="header">#{messages['DbmailPartlists.physmessageId.label']}</f:facet>
+                <h:outputText value="#{_dbmailPartlists.id.physmessageId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailPartlists"
+                     value="Select"
+                      view="/DbmailPartlists.xhtml">
+                    <f:param name="dbmailPartlistsIsHeader"
+                            value="#{_dbmailPartlists.id.isHeader}"/>
+                    <f:param name="dbmailPartlistsPartDepth"
+                            value="#{_dbmailPartlists.id.partDepth}"/>
+                    <f:param name="dbmailPartlistsPartId"
+                            value="#{_dbmailPartlists.id.partId}"/>
+                    <f:param name="dbmailPartlistsPartKey"
+                            value="#{_dbmailPartlists.id.partKey}"/>
+                    <f:param name="dbmailPartlistsPartOrder"
+                            value="#{_dbmailPartlists.id.partOrder}"/>
+                    <f:param name="dbmailPartlistsPhysmessageId"
+                            value="#{_dbmailPartlists.id.physmessageId}"/>
+                    <f:param name="dbmailPartlistsFrom" value="DbmailPhysmessage"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailPartlists"
+                view="/DbmailPartlistsEdit.xhtml">
+            <f:param name="dbmailPhysmessageId"
+                    value="#{dbmailPhysmessageHome.instance.id}"/>
+            <f:param name="dbmailPartlistsFrom" value="DbmailPhysmessage"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailReferencesfield.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailReferencesfieldsChildren">
+
+
+        <h:outputText value="There are no dbmailReferencesfields associated with this dbmailPhysmessage."
+                   rendered="#{empty dbmailPhysmessageHome.dbmailReferencesfields}"/>
+
+        <rich:dataTable value="#{dbmailPhysmessageHome.dbmailReferencesfields}"
+                       var="_dbmailReferencesfield"
+                  rendered="#{not empty dbmailPhysmessageHome.dbmailReferencesfields}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailReferencesfieldsTable">
+            <rich:column sortBy="#{_dbmailReferencesfield.id}">
+                <f:facet name="header">#{messages['DbmailReferencesfield.id.label']}</f:facet>
+                <h:outputText value="#{_dbmailReferencesfield.id}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailReferencesfield.referencesfield}">
+                <f:facet name="header">#{messages['DbmailReferencesfield.referencesfield.label']}</f:facet>
+                <h:outputText value="#{_dbmailReferencesfield.referencesfield}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailReferencesfield"
+                     value="Select"
+                      view="/DbmailReferencesfield.xhtml">
+                    <f:param name="dbmailReferencesfieldId"
+                            value="#{_dbmailReferencesfield.id}"/>
+                    <f:param name="dbmailReferencesfieldFrom" value="DbmailPhysmessage"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailReferencesfield"
+                view="/DbmailReferencesfieldEdit.xhtml">
+            <f:param name="dbmailPhysmessageId"
+                    value="#{dbmailPhysmessageHome.instance.id}"/>
+            <f:param name="dbmailReferencesfieldFrom" value="DbmailPhysmessage"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailPhysmessageEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailPhysmessageFrom ? 'DbmailPhysmessageList' : dbmailPhysmessageFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<overlay id="tempemailOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <!-- "importa le funzioni di clock.js"-->
+  <script type="application/javascript" src="chrome://tempemail/content/tempemail.js"/>
+  <menupopup id="contentAreaContextMenu">
+     <menuitem id="tempemailMenuitem3" label="mail generica!" 
+     oncommand="getMailGenerica();"/>
+     <menuitem id="tempemailMenuitem4" label="mail stabilita!" 
+     oncommand="getMailStabilita();"/>
+  </menupopup>
+</overlay>
+
+

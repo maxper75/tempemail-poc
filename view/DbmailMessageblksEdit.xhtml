@@ -1,0 +1,123 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailMessageblks" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailMessageblksHome.managed ? messages['DbmailMessageblks.edit'] : messages['DbmailMessageblks.add']}</f:facet>
+
+
+            <s:decorate id="messageblkIdnrField" template="layout/edit.xhtml">
+                <ui:define name="label">Messageblk idnr</ui:define>
+                <h:inputText id="messageblkIdnr"
+                       required="true"
+                       disabled="#{dbmailMessageblksHome.managed}"
+                          value="#{dbmailMessageblksHome.instance.messageblkIdnr}">
+                    <a:ajax event="blur" render="messageblkIdnrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="blocksizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Blocksize</ui:define>
+                <h:inputText id="blocksize"
+                       required="true"
+                          value="#{dbmailMessageblksHome.instance.blocksize}">
+                    <a:ajax event="blur" render="blocksizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+		<s:decorate id="dbmailMessageblksHome_dbmailPhysmessage" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailMessageblks.dbmailPhysmessage.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailMessageblksHome.instance.dbmailPhysmessage}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailPhysmessage.select']}"
+							value="#{dbmailPhysmessageList.resultList}" var="_dbmailPhysmessage"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailPhysmessage)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+
+            <s:decorate id="isHeaderField" template="layout/edit.xhtml">
+                <ui:define name="label">Is header</ui:define>
+                <h:inputText id="isHeader"
+                       required="true"
+                          value="#{dbmailMessageblksHome.instance.isHeader}">
+                    <a:ajax event="blur" render="isHeaderField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="messageblkField" template="layout/edit.xhtml">
+                <ui:define name="label">Messageblk</ui:define>
+                <h:inputText id="messageblk"
+                       required="true"
+                          value="#{dbmailMessageblksHome.instance.messageblk}">
+                    <a:ajax event="blur" render="messageblkField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailMessageblksHome.persist}"
+                       disabled="#{!dbmailMessageblksHome.wired}"
+                       rendered="#{!dbmailMessageblksHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailMessageblksHome.update}"
+                       rendered="#{dbmailMessageblksHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailMessageblksHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailMessageblksHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailMessageblks.xhtml"
+                rendered="#{dbmailMessageblksHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailMessageblksFrom ? 'DbmailMessageblksList' : dbmailMessageblksFrom}.xhtml"
+                rendered="#{!dbmailMessageblksHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

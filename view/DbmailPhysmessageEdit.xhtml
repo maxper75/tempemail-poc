@@ -1,0 +1,111 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailPhysmessage" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailPhysmessageHome.managed ? messages['DbmailPhysmessage.edit'] : messages['DbmailPhysmessage.add']}</f:facet>
+
+
+            <s:decorate id="idField" template="layout/edit.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <h:inputText id="id"
+                       required="true"
+                       disabled="#{dbmailPhysmessageHome.managed}"
+                          value="#{dbmailPhysmessageHome.instance.id}">
+                    <a:ajax event="blur" render="idField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+
+
+
+
+            <s:decorate id="internalDateField" template="layout/edit.xhtml">
+                <ui:define name="label">Internal date</ui:define>
+                <rich:calendar id="internalDate"
+                          value="#{dbmailPhysmessageHome.instance.internalDate}" datePattern="dd/MM/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="messagesizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Messagesize</ui:define>
+                <h:inputText id="messagesize"
+                       required="true"
+                          value="#{dbmailPhysmessageHome.instance.messagesize}">
+                    <a:ajax event="blur" render="messagesizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="rfcsizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Rfcsize</ui:define>
+                <h:inputText id="rfcsize"
+                       required="true"
+                          value="#{dbmailPhysmessageHome.instance.rfcsize}">
+                    <a:ajax event="blur" render="rfcsizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailPhysmessageHome.persist}"
+                       disabled="#{!dbmailPhysmessageHome.wired}"
+                       rendered="#{!dbmailPhysmessageHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailPhysmessageHome.update}"
+                       rendered="#{dbmailPhysmessageHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailPhysmessageHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailPhysmessageHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailPhysmessage.xhtml"
+                rendered="#{dbmailPhysmessageHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailPhysmessageFrom ? 'DbmailPhysmessageList' : dbmailPhysmessageFrom}.xhtml"
+                rendered="#{!dbmailPhysmessageHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

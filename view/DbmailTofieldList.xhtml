@@ -1,0 +1,145 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailTofieldSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailTofield Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailTofield.tofield.label']}</ui:define>
+                <h:inputText id="tofield" value="#{dbmailTofieldList.dbmailTofield.id.tofield}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailTofieldList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailTofieldList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailTofield.search.results']} (#{empty dbmailTofieldList.resultList ? 0 : (dbmailTofieldList.paginated ? dbmailTofieldList.resultCount : dbmailTofieldList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailTofieldList">
+
+    <h:outputText value="The dbmailTofield search returned no results."
+               rendered="#{empty dbmailTofieldList.resultList}"/>
+
+    <rich:dataTable id="dbmailTofieldList"
+                var="_dbmailTofield"
+              value="#{dbmailTofieldList.resultList}"
+           rendered="#{not empty dbmailTofieldList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailTofieldList}"/>
+                    <ui:param name="propertyLabel" value="Physmessage id"/>
+                    <ui:param name="propertyPath" value="dbmailTofield.id.physmessageId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailTofield.id.physmessageId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailTofieldList}"/>
+                    <ui:param name="propertyLabel" value="Tofield"/>
+                    <ui:param name="propertyPath" value="dbmailTofield.id.tofield"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailTofield.id.tofield}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailTofield' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailTofieldViewId">
+                <f:param name="dbmailTofieldPhysmessageId"
+                        value="#{_dbmailTofield.id.physmessageId}"/>
+                <f:param name="dbmailTofieldTofield"
+                        value="#{_dbmailTofield.id.tofield}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailTofieldEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailTofieldEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailTofieldPhysmessageId"
+                        value="#{_dbmailTofield.id.physmessageId}"/>
+                <f:param name="dbmailTofieldTofield"
+                        value="#{_dbmailTofield.id.tofield}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailTofieldList.xhtml"
+            rendered="#{dbmailTofieldList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailTofieldList.xhtml"
+            rendered="#{dbmailTofieldList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailTofieldList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailTofieldList.xhtml"
+            rendered="#{dbmailTofieldList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailTofieldList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailTofieldList.xhtml"
+            rendered="#{dbmailTofieldList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailTofieldList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailTofieldEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailTofield">
+            <f:param name="dbmailTofieldPhysmessageId"/>
+            <f:param name="dbmailTofieldTofield"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

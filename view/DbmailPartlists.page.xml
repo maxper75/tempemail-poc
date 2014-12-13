@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="dbmailPartlistsFrom"/>
+   <param name="dbmailPartlistsIsHeader" value="#{dbmailPartlistsHome.dbmailPartlistsId.isHeader}"/>
+   <param name="dbmailPartlistsPartDepth" value="#{dbmailPartlistsHome.dbmailPartlistsId.partDepth}"/>
+   <param name="dbmailPartlistsPartId" value="#{dbmailPartlistsHome.dbmailPartlistsId.partId}"/>
+   <param name="dbmailPartlistsPartKey" value="#{dbmailPartlistsHome.dbmailPartlistsId.partKey}"/>
+   <param name="dbmailPartlistsPartOrder" value="#{dbmailPartlistsHome.dbmailPartlistsId.partOrder}"/>
+   <param name="dbmailPartlistsPhysmessageId" value="#{dbmailPartlistsHome.dbmailPartlistsId.physmessageId}"/>
+   <param name="dbmailMimepartsFrom"/>
+   <param name="dbmailMimepartsId" value="#{dbmailMimepartsHome.dbmailMimepartsId}"/>
+
+   <param name="dbmailPhysmessageFrom"/>
+   <param name="dbmailPhysmessageId" value="#{dbmailPhysmessageHome.dbmailPhysmessageId}"/>
+
+
+
+</page>

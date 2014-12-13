@@ -1,0 +1,224 @@
+<rich:toolbar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich">
+    <rich:toolbarGroup>
+        <h:outputText value="#{projectName}:"/>
+        <s:link id="menuHomeId" view="/home.xhtml" value="Home" propagation="none"/>
+    </rich:toolbarGroup>
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none">
+        <f:facet name="label">Browse data</f:facet>
+	<rich:menuItem>
+    	<s:link view="/DbmailPbspList.xhtml"
+           	value="DbmailPbsp List"
+           	id="DbmailPbspId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailAliasesList.xhtml"
+           	value="DbmailAliases List"
+           	id="DbmailAliasesId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailAuthlogList.xhtml"
+           	value="DbmailAuthlog List"
+           	id="DbmailAuthlogId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailReplycacheList.xhtml"
+           	value="DbmailReplycache List"
+           	id="DbmailReplycacheId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailSubjectfieldList.xhtml"
+           	value="DbmailSubjectfield List"
+           	id="DbmailSubjectfieldId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailHeadervalueList.xhtml"
+           	value="DbmailHeadervalue List"
+           	id="DbmailHeadervalueId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailFromfieldList.xhtml"
+           	value="DbmailFromfield List"
+           	id="DbmailFromfieldId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailMessageblksList.xhtml"
+           	value="DbmailMessageblks List"
+           	id="DbmailMessageblksId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailUsermapList.xhtml"
+           	value="DbmailUsermap List"
+           	id="DbmailUsermapId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailAutoRepliesList.xhtml"
+           	value="DbmailAutoReplies List"
+           	id="DbmailAutoRepliesId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailHeaderList.xhtml"
+           	value="DbmailHeader List"
+           	id="DbmailHeaderId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailKeywordsList.xhtml"
+           	value="DbmailKeywords List"
+           	id="DbmailKeywordsId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailPhysmessageList.xhtml"
+           	value="DbmailPhysmessage List"
+           	id="DbmailPhysmessageId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailMessagesList.xhtml"
+           	value="DbmailMessages List"
+           	id="DbmailMessagesId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailTofieldList.xhtml"
+           	value="DbmailTofield List"
+           	id="DbmailTofieldId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailEnvelopeList.xhtml"
+           	value="DbmailEnvelope List"
+           	id="DbmailEnvelopeId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailUsersList.xhtml"
+           	value="DbmailUsers List"
+           	id="DbmailUsersId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailAclList.xhtml"
+           	value="DbmailAcl List"
+           	id="DbmailAclId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailCcfieldList.xhtml"
+           	value="DbmailCcfield List"
+           	id="DbmailCcfieldId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailHeadernameList.xhtml"
+           	value="DbmailHeadername List"
+           	id="DbmailHeadernameId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailDatefieldList.xhtml"
+           	value="DbmailDatefield List"
+           	id="DbmailDatefieldId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailPartlistsList.xhtml"
+           	value="DbmailPartlists List"
+           	id="DbmailPartlistsId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailFiltersList.xhtml"
+           	value="DbmailFilters List"
+           	id="DbmailFiltersId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailMailboxesList.xhtml"
+           	value="DbmailMailboxes List"
+           	id="DbmailMailboxesId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailSievescriptsList.xhtml"
+           	value="DbmailSievescripts List"
+           	id="DbmailSievescriptsId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailAutoNotificationsList.xhtml"
+           	value="DbmailAutoNotifications List"
+           	id="DbmailAutoNotificationsId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailReferencesfieldList.xhtml"
+           	value="DbmailReferencesfield List"
+           	id="DbmailReferencesfieldId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailMimepartsList.xhtml"
+           	value="DbmailMimeparts List"
+           	id="DbmailMimepartsId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem>
+    	<s:link view="/DbmailSubscriptionList.xhtml"
+           	value="DbmailSubscription List"
+           	id="DbmailSubscriptionId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+    </rich:dropDownMenu>
+    <!-- @newMenuItem@ -->
+    <rich:toolbarGroup location="right">
+        <h:outputText id="menuWelcomeId" value="signed in as: #{credentials.username}" rendered="#{identity.loggedIn}"/>
+        <s:link id="menuLoginId" view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
+        <s:link id="menuLogoutId" view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+    </rich:toolbarGroup>
+</rich:toolbar>

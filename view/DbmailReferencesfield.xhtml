@@ -1,0 +1,77 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailReferencesfield.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="id" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailReferencesfield.id.label']}</ui:define>
+            <h:outputText value="#{dbmailReferencesfieldHome.instance.id}"/>
+        </s:decorate>
+
+
+
+        <s:decorate id="referencesfield" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailReferencesfield.referencesfield.label']}</ui:define>
+            <h:outputText value="#{dbmailReferencesfieldHome.instance.referencesfield}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailPhysmessage it.i_node.tempemail.model.DbmailPhysmessage-->
+        <s:decorate id="dbmailPhysmessage" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPhysmessage']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailReferencesfieldHome.instance.dbmailPhysmessage)}"/>
+        </s:decorate>
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailReferencesfieldEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailReferencesfieldFrom ? 'DbmailReferencesfieldList' : dbmailReferencesfieldFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

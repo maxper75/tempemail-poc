@@ -1,0 +1,273 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tempMailboxSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="TempMailbox Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['TempMailbox.name.label']}</ui:define>
+                <h:inputText id="name" value="#{tempMailboxList.tempMailbox.name}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{tempMailboxList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/TempMailboxList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['TempMailbox.search.results']} (#{empty tempMailboxList.resultList ? 0 : (tempMailboxList.paginated ? tempMailboxList.resultCount : tempMailboxList.resultList.size)})</f:facet>
+    <div class="results" id="tempMailboxList">
+
+    <h:outputText value="The tempMailbox search returned no results."
+               rendered="#{empty tempMailboxList.resultList}"/>
+
+    <rich:dataTable id="tempMailboxList"
+                var="_tempMailbox"
+              value="#{tempMailboxList.resultList}"
+           rendered="#{not empty tempMailboxList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Mailbox idnr"/>
+                    <ui:param name="propertyPath" value="tempMailbox.mailboxIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.mailboxIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Answered flag"/>
+                    <ui:param name="propertyPath" value="tempMailbox.answeredFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.answeredFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Dbmail users user idnr"/>
+                    <ui:param name="propertyPath" value="tempMailbox.dbmailUsers.userIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.dbmailUsers.userIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Deleted flag"/>
+                    <ui:param name="propertyPath" value="tempMailbox.deletedFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.deletedFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Draft flag"/>
+                    <ui:param name="propertyPath" value="tempMailbox.draftFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.draftFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Flagged flag"/>
+                    <ui:param name="propertyPath" value="tempMailbox.flaggedFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.flaggedFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Name"/>
+                    <ui:param name="propertyPath" value="tempMailbox.name"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.name}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="No inferiors"/>
+                    <ui:param name="propertyPath" value="tempMailbox.noInferiors"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.noInferiors}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="No select"/>
+                    <ui:param name="propertyPath" value="tempMailbox.noSelect"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.noSelect}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Permission"/>
+                    <ui:param name="propertyPath" value="tempMailbox.permission"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.permission}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Recent flag"/>
+                    <ui:param name="propertyPath" value="tempMailbox.recentFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.recentFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Seen flag"/>
+                    <ui:param name="propertyPath" value="tempMailbox.seenFlag"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.seenFlag}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Seq"/>
+                    <ui:param name="propertyPath" value="tempMailbox.seq"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.seq}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Seq"/>
+                    <ui:param name="propertyPath" value="tempMailbox.creationDate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.creationDate}"/>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tempMailboxList}"/>
+                    <ui:param name="propertyLabel" value="Seq"/>
+                    <ui:param name="propertyPath" value="tempMailbox.refreshDate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tempMailbox.refreshDate}"/>
+        </h:column>
+        
+        
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'TempMailbox' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="tempMailboxViewId">
+                <f:param name="tempMailboxMailboxIdnr"
+                        value="#{_tempMailbox.mailboxIdnr}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/TempMailboxEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="tempMailboxEdit"
+                rendered="#{empty from}">
+                <f:param name="tempMailboxMailboxIdnr"
+                        value="#{_tempMailbox.mailboxIdnr}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TempMailboxList.xhtml"
+            rendered="#{tempMailboxList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TempMailboxList.xhtml"
+            rendered="#{tempMailboxList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{tempMailboxList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TempMailboxList.xhtml"
+            rendered="#{tempMailboxList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{tempMailboxList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TempMailboxList.xhtml"
+            rendered="#{tempMailboxList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{tempMailboxList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TempMailboxEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create tempMailbox">
+            <f:param name="tempMailboxMailboxIdnr"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

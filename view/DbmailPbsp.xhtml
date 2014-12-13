@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailPbsp.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="idnr" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPbsp.idnr.label']}</ui:define>
+            <h:outputText value="#{dbmailPbspHome.instance.idnr}"/>
+        </s:decorate>
+
+
+        <s:decorate id="ipnumber" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPbsp.ipnumber.label']}</ui:define>
+            <h:outputText value="#{dbmailPbspHome.instance.ipnumber}"/>
+        </s:decorate>
+
+
+        <s:decorate id="since" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailPbsp.since.label']}</ui:define>
+            <h:outputText value="#{dbmailPbspHome.instance.since}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailPbspEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailPbspFrom ? 'DbmailPbspList' : dbmailPbspFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

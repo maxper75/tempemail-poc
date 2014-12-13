@@ -1,0 +1,116 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailUsermap" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailUsermapHome.managed ? messages['DbmailUsermap.edit'] : messages['DbmailUsermap.add']}</f:facet>
+
+
+            <s:decorate id="loginField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.login.label']}</ui:define>
+                <h:inputText id="login"
+                       disabled="#{dbmailUsermapHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailUsermapHome.instance.id.login}">
+                    <a:ajax event="blur" render="loginField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="sockAllowField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.sockAllow.label']}</ui:define>
+                <h:inputText id="sockAllow"
+                       disabled="#{dbmailUsermapHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailUsermapHome.instance.id.sockAllow}">
+                    <a:ajax event="blur" render="sockAllowField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="sockDenyField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.sockDeny.label']}</ui:define>
+                <h:inputText id="sockDeny"
+                       disabled="#{dbmailUsermapHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailUsermapHome.instance.id.sockDeny}">
+                    <a:ajax event="blur" render="sockDenyField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="useridField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailUsermap.userid.label']}</ui:define>
+                <h:inputText id="userid"
+                       disabled="#{dbmailUsermapHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailUsermapHome.instance.id.userid}">
+                    <a:ajax event="blur" render="useridField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailUsermapHome.persist}"
+                       disabled="#{!dbmailUsermapHome.wired}"
+                       rendered="#{!dbmailUsermapHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailUsermapHome.update}"
+                       rendered="#{dbmailUsermapHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailUsermapHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailUsermapHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailUsermap.xhtml"
+                rendered="#{dbmailUsermapHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailUsermapFrom ? 'DbmailUsermapList' : dbmailUsermapFrom}.xhtml"
+                rendered="#{!dbmailUsermapHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

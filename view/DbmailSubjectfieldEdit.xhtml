@@ -1,0 +1,88 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailSubjectfield" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailSubjectfieldHome.managed ? messages['DbmailSubjectfield.edit'] : messages['DbmailSubjectfield.add']}</f:facet>
+
+
+            <s:decorate id="physmessageIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailSubjectfield.physmessageId.label']}</ui:define>
+                <h:inputText id="physmessageId"
+                       required="true"
+                       disabled="#{dbmailSubjectfieldHome.managed}"
+                          value="#{dbmailSubjectfieldHome.instance.id.physmessageId}">
+                    <a:ajax event="blur" render="physmessageIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="subjectfieldField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailSubjectfield.subjectfield.label']}</ui:define>
+                <h:inputTextarea id="subjectfield"
+                               cols="80"
+                               rows="3"
+                           disabled="#{dbmailSubjectfieldHome.managed}"
+                           required="true"
+                              value="#{dbmailSubjectfieldHome.instance.id.subjectfield}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailSubjectfieldHome.persist}"
+                       disabled="#{!dbmailSubjectfieldHome.wired}"
+                       rendered="#{!dbmailSubjectfieldHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailSubjectfieldHome.update}"
+                       rendered="#{dbmailSubjectfieldHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailSubjectfieldHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailSubjectfieldHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailSubjectfield.xhtml"
+                rendered="#{dbmailSubjectfieldHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailSubjectfieldFrom ? 'DbmailSubjectfieldList' : dbmailSubjectfieldFrom}.xhtml"
+                rendered="#{!dbmailSubjectfieldHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

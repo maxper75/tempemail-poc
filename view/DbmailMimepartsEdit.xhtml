@@ -1,0 +1,109 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailMimeparts" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailMimepartsHome.managed ? messages['DbmailMimeparts.edit'] : messages['DbmailMimeparts.add']}</f:facet>
+
+
+            <s:decorate id="idField" template="layout/edit.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <h:inputText id="id"
+                       required="true"
+                       disabled="#{dbmailMimepartsHome.managed}"
+                          value="#{dbmailMimepartsHome.instance.id}">
+                    <a:ajax event="blur" render="idField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="dataField" template="layout/edit.xhtml">
+                <ui:define name="label">Data</ui:define>
+                <h:inputText id="data"
+                       required="true"
+                          value="#{dbmailMimepartsHome.instance.data}">
+                    <a:ajax event="blur" render="dataField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="hashField" template="layout/edit.xhtml">
+                <ui:define name="label">Hash</ui:define>
+                <h:inputTextarea id="hash"
+                               cols="80"
+                               rows="3"
+                           required="true"
+                              value="#{dbmailMimepartsHome.instance.hash}"/>
+            </s:decorate>
+
+
+            <s:decorate id="sizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Size</ui:define>
+                <h:inputText id="size"
+                       required="true"
+                          value="#{dbmailMimepartsHome.instance.size}">
+                    <a:ajax event="blur" render="sizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailMimepartsHome.persist}"
+                       disabled="#{!dbmailMimepartsHome.wired}"
+                       rendered="#{!dbmailMimepartsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailMimepartsHome.update}"
+                       rendered="#{dbmailMimepartsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailMimepartsHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailMimepartsHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailMimeparts.xhtml"
+                rendered="#{dbmailMimepartsHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailMimepartsFrom ? 'DbmailMimepartsList' : dbmailMimepartsFrom}.xhtml"
+                rendered="#{!dbmailMimepartsHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

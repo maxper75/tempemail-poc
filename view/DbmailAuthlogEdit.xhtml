@@ -1,0 +1,194 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailAuthlog" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailAuthlogHome.managed ? messages['DbmailAuthlog.edit'] : messages['DbmailAuthlog.add']}</f:facet>
+
+
+            <s:decorate id="bytesRxField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.bytesRx.label']}</ui:define>
+                <h:inputText id="bytesRx"
+                       required="true"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                          value="#{dbmailAuthlogHome.instance.id.bytesRx}">
+                    <a:ajax event="blur" render="bytesRxField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="bytesTxField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.bytesTx.label']}</ui:define>
+                <h:inputText id="bytesTx"
+                       required="true"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                          value="#{dbmailAuthlogHome.instance.id.bytesTx}">
+                    <a:ajax event="blur" render="bytesTxField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="dstIpField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.dstIp.label']}</ui:define>
+                <h:inputText id="dstIp"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="16"
+                         value="#{dbmailAuthlogHome.instance.id.dstIp}">
+                    <a:ajax event="blur" render="dstIpField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="dstPortField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.dstPort.label']}</ui:define>
+                <h:inputText id="dstPort"
+                       required="true"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                          value="#{dbmailAuthlogHome.instance.id.dstPort}">
+                    <a:ajax event="blur" render="dstPortField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="idField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.id.label']}</ui:define>
+                <h:inputText id="id"
+                       required="true"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                          value="#{dbmailAuthlogHome.instance.id.id}">
+                    <a:ajax event="blur" render="idField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="loginTimeField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.loginTime.label']}</ui:define>
+                <rich:calendar id="loginTime"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                       required="true"
+                          value="#{dbmailAuthlogHome.instance.id.loginTime}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="logoutTimeField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.logoutTime.label']}</ui:define>
+                <rich:calendar id="logoutTime"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                       required="true"
+                          value="#{dbmailAuthlogHome.instance.id.logoutTime}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="serviceField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.service.label']}</ui:define>
+                <h:inputText id="service"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                      required="true"
+                          size="32"
+                     maxlength="32"
+                         value="#{dbmailAuthlogHome.instance.id.service}">
+                    <a:ajax event="blur" render="serviceField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="srcIpField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.srcIp.label']}</ui:define>
+                <h:inputText id="srcIp"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="16"
+                         value="#{dbmailAuthlogHome.instance.id.srcIp}">
+                    <a:ajax event="blur" render="srcIpField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="srcPortField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.srcPort.label']}</ui:define>
+                <h:inputText id="srcPort"
+                       required="true"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                          value="#{dbmailAuthlogHome.instance.id.srcPort}">
+                    <a:ajax event="blur" render="srcPortField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="statusField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.status.label']}</ui:define>
+                <h:inputText id="status"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                      required="true"
+                          size="32"
+                     maxlength="32"
+                         value="#{dbmailAuthlogHome.instance.id.status}">
+                    <a:ajax event="blur" render="statusField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="useridField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailAuthlog.userid.label']}</ui:define>
+                <h:inputText id="userid"
+                       disabled="#{dbmailAuthlogHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailAuthlogHome.instance.id.userid}">
+                    <a:ajax event="blur" render="useridField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailAuthlogHome.persist}"
+                       disabled="#{!dbmailAuthlogHome.wired}"
+                       rendered="#{!dbmailAuthlogHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailAuthlogHome.update}"
+                       rendered="#{dbmailAuthlogHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailAuthlogHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailAuthlogHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailAuthlog.xhtml"
+                rendered="#{dbmailAuthlogHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailAuthlogFrom ? 'DbmailAuthlogList' : dbmailAuthlogFrom}.xhtml"
+                rendered="#{!dbmailAuthlogHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

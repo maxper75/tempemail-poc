@@ -1,0 +1,105 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailKeywords" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailKeywordsHome.managed ? messages['DbmailKeywords.edit'] : messages['DbmailKeywords.add']}</f:facet>
+
+
+            <s:decorate id="keywordField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailKeywords.keyword.label']}</ui:define>
+                <h:inputText id="keyword"
+                       disabled="#{dbmailKeywordsHome.managed}"
+                      required="true"
+                          size="64"
+                     maxlength="64"
+                         value="#{dbmailKeywordsHome.instance.id.keyword}">
+                    <a:ajax event="blur" render="keywordField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="messageIdnrField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailKeywords.messageIdnr.label']}</ui:define>
+                <h:inputText id="messageIdnr"
+                       required="true"
+                       disabled="#{dbmailKeywordsHome.managed}"
+                          value="#{dbmailKeywordsHome.instance.id.messageIdnr}">
+                    <a:ajax event="blur" render="messageIdnrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailMessages it.i_node.tempemail.model.DbmailMessages-->
+		<s:decorate id="dbmailKeywordsHome_dbmailMessages" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailKeywords.dbmailMessages.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailKeywordsHome.instance.dbmailMessages}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailMessages.select']}"
+							value="#{dbmailMessagesList.resultList}" var="_dbmailMessages"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailMessages)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailKeywordsHome.persist}"
+                       disabled="#{!dbmailKeywordsHome.wired}"
+                       rendered="#{!dbmailKeywordsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailKeywordsHome.update}"
+                       rendered="#{dbmailKeywordsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailKeywordsHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailKeywordsHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailKeywords.xhtml"
+                rendered="#{dbmailKeywordsHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailKeywordsFrom ? 'DbmailKeywordsList' : dbmailKeywordsFrom}.xhtml"
+                rendered="#{!dbmailKeywordsHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

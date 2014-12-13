@@ -1,0 +1,155 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailKeywordsSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailKeywords Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['DbmailKeywords.keyword.label']}</ui:define>
+                <h:inputText id="keyword" value="#{dbmailKeywordsList.dbmailKeywords.id.keyword}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailKeywordsList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailKeywordsList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailKeywords.search.results']} (#{empty dbmailKeywordsList.resultList ? 0 : (dbmailKeywordsList.paginated ? dbmailKeywordsList.resultCount : dbmailKeywordsList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailKeywordsList">
+
+    <h:outputText value="The dbmailKeywords search returned no results."
+               rendered="#{empty dbmailKeywordsList.resultList}"/>
+
+    <rich:dataTable id="dbmailKeywordsList"
+                var="_dbmailKeywords"
+              value="#{dbmailKeywordsList.resultList}"
+           rendered="#{not empty dbmailKeywordsList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailKeywordsList}"/>
+                    <ui:param name="propertyLabel" value="Keyword"/>
+                    <ui:param name="propertyPath" value="dbmailKeywords.id.keyword"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailKeywords.id.keyword}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailKeywordsList}"/>
+                    <ui:param name="propertyLabel" value="Message idnr"/>
+                    <ui:param name="propertyPath" value="dbmailKeywords.id.messageIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailKeywords.id.messageIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailKeywordsList}"/>
+                    <ui:param name="propertyLabel" value="Dbmail messages message idnr"/>
+                    <ui:param name="propertyPath" value="dbmailKeywords.dbmailMessages.messageIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailKeywords.dbmailMessages.messageIdnr}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailKeywords' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailKeywordsViewId">
+                <f:param name="dbmailKeywordsKeyword"
+                        value="#{_dbmailKeywords.id.keyword}"/>
+                <f:param name="dbmailKeywordsMessageIdnr"
+                        value="#{_dbmailKeywords.id.messageIdnr}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailKeywordsEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailKeywordsEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailKeywordsKeyword"
+                        value="#{_dbmailKeywords.id.keyword}"/>
+                <f:param name="dbmailKeywordsMessageIdnr"
+                        value="#{_dbmailKeywords.id.messageIdnr}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailKeywordsList.xhtml"
+            rendered="#{dbmailKeywordsList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailKeywordsList.xhtml"
+            rendered="#{dbmailKeywordsList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailKeywordsList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailKeywordsList.xhtml"
+            rendered="#{dbmailKeywordsList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailKeywordsList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailKeywordsList.xhtml"
+            rendered="#{dbmailKeywordsList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailKeywordsList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailKeywordsEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailKeywords">
+            <f:param name="dbmailKeywordsKeyword"/>
+            <f:param name="dbmailKeywordsMessageIdnr"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,118 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailSubscription" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailSubscriptionHome.managed ? messages['DbmailSubscription.edit'] : messages['DbmailSubscription.add']}</f:facet>
+
+
+            <s:decorate id="mailboxIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailSubscription.mailboxId.label']}</ui:define>
+                <h:inputText id="mailboxId"
+                       required="true"
+                       disabled="#{dbmailSubscriptionHome.managed}"
+                          value="#{dbmailSubscriptionHome.instance.id.mailboxId}">
+                    <a:ajax event="blur" render="mailboxIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="userIdField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailSubscription.userId.label']}</ui:define>
+                <h:inputText id="userId"
+                       required="true"
+                       disabled="#{dbmailSubscriptionHome.managed}"
+                          value="#{dbmailSubscriptionHome.instance.id.userId}">
+                    <a:ajax event="blur" render="userIdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailMailboxes it.i_node.tempemail.model.DbmailMailboxes-->
+		<s:decorate id="dbmailSubscriptionHome_dbmailMailboxes" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailSubscription.dbmailMailboxes.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailSubscriptionHome.instance.dbmailMailboxes}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailMailboxes.select']}"
+							value="#{dbmailMailboxesList.resultList}" var="_dbmailMailboxes"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailMailboxes)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+		<s:decorate id="dbmailSubscriptionHome_dbmailUsers" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailSubscription.dbmailUsers.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailSubscriptionHome.instance.dbmailUsers}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailUsers.select']}"
+							value="#{dbmailUsersList.resultList}" var="_dbmailUsers"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailUsers)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailSubscriptionHome.persist}"
+                       disabled="#{!dbmailSubscriptionHome.wired}"
+                       rendered="#{!dbmailSubscriptionHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailSubscriptionHome.update}"
+                       rendered="#{dbmailSubscriptionHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailSubscriptionHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailSubscriptionHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailSubscription.xhtml"
+                rendered="#{dbmailSubscriptionHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailSubscriptionFrom ? 'DbmailSubscriptionList' : dbmailSubscriptionFrom}.xhtml"
+                rendered="#{!dbmailSubscriptionHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

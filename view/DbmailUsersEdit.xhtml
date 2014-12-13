@@ -1,0 +1,207 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailUsers" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailUsersHome.managed ? messages['DbmailUsers.edit'] : messages['DbmailUsers.add']}</f:facet>
+
+
+            <s:decorate id="userIdnrField" template="layout/edit.xhtml">
+                <ui:define name="label">User idnr</ui:define>
+                <h:inputText id="userIdnr"
+                       required="true"
+                       disabled="#{dbmailUsersHome.managed}"
+                          value="#{dbmailUsersHome.instance.userIdnr}">
+                    <a:ajax event="blur" render="userIdnrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="clientIdnrField" template="layout/edit.xhtml">
+                <ui:define name="label">Client idnr</ui:define>
+                <h:inputText id="clientIdnr"
+                       required="true"
+                          value="#{dbmailUsersHome.instance.clientIdnr}">
+                    <a:ajax event="blur" render="clientIdnrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="curmailSizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Curmail size</ui:define>
+                <h:inputText id="curmailSize"
+                       required="true"
+                          value="#{dbmailUsersHome.instance.curmailSize}">
+                    <a:ajax event="blur" render="curmailSizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cursieveSizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Cursieve size</ui:define>
+                <h:inputText id="cursieveSize"
+                       required="true"
+                          value="#{dbmailUsersHome.instance.cursieveSize}">
+                    <a:ajax event="blur" render="cursieveSizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+
+
+
+            <s:decorate id="encryptionTypeField" template="layout/edit.xhtml">
+                <ui:define name="label">Encryption type</ui:define>
+                <h:inputText id="encryptionType"
+                       required="true"
+                           size="20"
+                      maxlength="20"
+                          value="#{dbmailUsersHome.instance.encryptionType}">
+                    <a:ajax event="blur" render="encryptionTypeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="lastLoginField" template="layout/edit.xhtml">
+                <ui:define name="label">Last login</ui:define>
+                <rich:calendar id="lastLogin"
+                       required="true"
+                          value="#{dbmailUsersHome.instance.lastLogin}" datePattern="dd/MM/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="maxmailSizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Maxmail size</ui:define>
+                <h:inputText id="maxmailSize"
+                       required="true"
+                          value="#{dbmailUsersHome.instance.maxmailSize}">
+                    <a:ajax event="blur" render="maxmailSizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="maxsieveSizeField" template="layout/edit.xhtml">
+                <ui:define name="label">Maxsieve size</ui:define>
+                <h:inputText id="maxsieveSize"
+                       required="true"
+                          value="#{dbmailUsersHome.instance.maxsieveSize}">
+                    <a:ajax event="blur" render="maxsieveSizeField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="passwdField" template="layout/edit.xhtml">
+                <ui:define name="label">Passwd</ui:define>
+                <h:inputText id="passwd"
+                       required="true"
+                           size="100"
+                      maxlength="130"
+                          value="#{dbmailUsersHome.instance.passwd}">
+                    <a:ajax event="blur" render="passwdField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="useridField" template="layout/edit.xhtml">
+                <ui:define name="label">Userid</ui:define>
+                <h:inputText id="userid"
+                       required="true"
+                           size="100"
+                      maxlength="100"
+                          value="#{dbmailUsersHome.instance.userid}">
+                    <a:ajax event="blur" render="useridField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailAutoNotifications it.i_node.tempemail.model.DbmailAutoNotifications-->
+		<s:decorate id="dbmailUsersHome_dbmailAutoNotifications" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailUsers.dbmailAutoNotifications.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailUsersHome.instance.dbmailAutoNotifications}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailAutoNotifications.select']}"
+							value="#{dbmailAutoNotificationsList.resultList}" var="_dbmailAutoNotifications"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailAutoNotifications)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailAutoReplies it.i_node.tempemail.model.DbmailAutoReplies-->
+		<s:decorate id="dbmailUsersHome_dbmailAutoReplies" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailUsers.dbmailAutoReplies.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailUsersHome.instance.dbmailAutoReplies}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailAutoReplies.select']}"
+							value="#{dbmailAutoRepliesList.resultList}" var="_dbmailAutoReplies"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailAutoReplies)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailUsersHome.persist}"
+                       disabled="#{!dbmailUsersHome.wired}"
+                       rendered="#{!dbmailUsersHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailUsersHome.update}"
+                       rendered="#{dbmailUsersHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailUsersHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailUsersHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailUsers.xhtml"
+                rendered="#{dbmailUsersHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailUsersFrom ? 'DbmailUsersList' : dbmailUsersFrom}.xhtml"
+                rendered="#{!dbmailUsersHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

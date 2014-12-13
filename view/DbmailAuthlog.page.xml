@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd">
+
+   <param name="dbmailAuthlogFrom"/>
+   <param name="dbmailAuthlogBytesRx" value="#{dbmailAuthlogHome.dbmailAuthlogId.bytesRx}"/>
+   <param name="dbmailAuthlogBytesTx" value="#{dbmailAuthlogHome.dbmailAuthlogId.bytesTx}"/>
+   <param name="dbmailAuthlogDstIp" value="#{dbmailAuthlogHome.dbmailAuthlogId.dstIp}"/>
+   <param name="dbmailAuthlogDstPort" value="#{dbmailAuthlogHome.dbmailAuthlogId.dstPort}"/>
+   <param name="dbmailAuthlogId" value="#{dbmailAuthlogHome.dbmailAuthlogId.id}"/>
+   <param name="dbmailAuthlogLoginTime" value="#{dbmailAuthlogHome.dbmailAuthlogId.loginTime}"/>
+   <param name="dbmailAuthlogLogoutTime" value="#{dbmailAuthlogHome.dbmailAuthlogId.logoutTime}"/>
+   <param name="dbmailAuthlogService" value="#{dbmailAuthlogHome.dbmailAuthlogId.service}"/>
+   <param name="dbmailAuthlogSrcIp" value="#{dbmailAuthlogHome.dbmailAuthlogId.srcIp}"/>
+   <param name="dbmailAuthlogSrcPort" value="#{dbmailAuthlogHome.dbmailAuthlogId.srcPort}"/>
+   <param name="dbmailAuthlogStatus" value="#{dbmailAuthlogHome.dbmailAuthlogId.status}"/>
+   <param name="dbmailAuthlogUserid" value="#{dbmailAuthlogHome.dbmailAuthlogId.userid}"/>
+
+
+</page>

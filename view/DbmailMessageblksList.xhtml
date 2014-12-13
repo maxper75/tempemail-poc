@@ -1,0 +1,165 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailMessageblksSearch" styleClass="edit">
+
+        <rich:collapsiblePanel header="DbmailMessageblks Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">#{messages['match']}</ui:define>
+                <h:selectOneRadio id="logic" value="#{dbmailMessageblksList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:collapsiblePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DbmailMessageblksList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">#{messages['DbmailMessageblks.search.results']} (#{empty dbmailMessageblksList.resultList ? 0 : (dbmailMessageblksList.paginated ? dbmailMessageblksList.resultCount : dbmailMessageblksList.resultList.size)})</f:facet>
+    <div class="results" id="dbmailMessageblksList">
+
+    <h:outputText value="The dbmailMessageblks search returned no results."
+               rendered="#{empty dbmailMessageblksList.resultList}"/>
+
+    <rich:dataTable id="dbmailMessageblksList"
+                var="_dbmailMessageblks"
+              value="#{dbmailMessageblksList.resultList}"
+           rendered="#{not empty dbmailMessageblksList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMessageblksList}"/>
+                    <ui:param name="propertyLabel" value="Messageblk idnr"/>
+                    <ui:param name="propertyPath" value="dbmailMessageblks.messageblkIdnr"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMessageblks.messageblkIdnr}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMessageblksList}"/>
+                    <ui:param name="propertyLabel" value="Blocksize"/>
+                    <ui:param name="propertyPath" value="dbmailMessageblks.blocksize"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMessageblks.blocksize}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMessageblksList}"/>
+                    <ui:param name="propertyLabel" value="Dbmail physmessage id"/>
+                    <ui:param name="propertyPath" value="dbmailMessageblks.dbmailPhysmessage.id"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMessageblks.dbmailPhysmessage.id}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMessageblksList}"/>
+                    <ui:param name="propertyLabel" value="Is header"/>
+                    <ui:param name="propertyPath" value="dbmailMessageblks.isHeader"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMessageblks.isHeader}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dbmailMessageblksList}"/>
+                    <ui:param name="propertyLabel" value="Messageblk"/>
+                    <ui:param name="propertyPath" value="dbmailMessageblks.messageblk"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dbmailMessageblks.messageblk}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">#{messages['action']}</f:facet>
+            <s:link view="/#{empty from ? 'DbmailMessageblks' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dbmailMessageblksViewId">
+                <f:param name="dbmailMessageblksMessageblkIdnr"
+                        value="#{_dbmailMessageblks.messageblkIdnr}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DbmailMessageblksEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dbmailMessageblksEdit"
+                rendered="#{empty from}">
+                <f:param name="dbmailMessageblksMessageblkIdnr"
+                        value="#{_dbmailMessageblks.messageblkIdnr}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DbmailMessageblksList.xhtml"
+            rendered="#{dbmailMessageblksList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DbmailMessageblksList.xhtml"
+            rendered="#{dbmailMessageblksList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dbmailMessageblksList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailMessageblksList.xhtml"
+            rendered="#{dbmailMessageblksList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dbmailMessageblksList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DbmailMessageblksList.xhtml"
+            rendered="#{dbmailMessageblksList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dbmailMessageblksList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DbmailMessageblksEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dbmailMessageblks">
+            <f:param name="dbmailMessageblksMessageblkIdnr"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,538 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailUsers.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="userIdnr" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.userIdnr.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.userIdnr}"/>
+        </s:decorate>
+
+
+        <s:decorate id="clientIdnr" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.clientIdnr.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.clientIdnr}"/>
+        </s:decorate>
+
+
+        <s:decorate id="curmailSize" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.curmailSize.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.curmailSize}"/>
+        </s:decorate>
+
+
+        <s:decorate id="cursieveSize" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.cursieveSize.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.cursieveSize}"/>
+        </s:decorate>
+
+
+
+
+
+
+
+        <s:decorate id="encryptionType" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.encryptionType.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.encryptionType}"/>
+        </s:decorate>
+
+
+        <s:decorate id="lastLogin" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.lastLogin.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.lastLogin}">
+                <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+
+        <s:decorate id="maxmailSize" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.maxmailSize.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.maxmailSize}"/>
+        </s:decorate>
+
+
+        <s:decorate id="maxsieveSize" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.maxsieveSize.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.maxsieveSize}"/>
+        </s:decorate>
+
+
+        <s:decorate id="passwd" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.passwd.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.passwd}"/>
+        </s:decorate>
+
+
+        <s:decorate id="userid" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsers.userid.label']}</ui:define>
+            <h:outputText value="#{dbmailUsersHome.instance.userid}"/>
+        </s:decorate>
+
+
+
+
+<!--Codice aggiunto -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailAutoNotifications it.i_node.tempemail.model.DbmailAutoNotifications-->
+        <s:decorate id="dbmailAutoNotifications" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAutoNotifications']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailUsersHome.instance.dbmailAutoNotifications)}"/>
+        </s:decorate>
+
+
+
+
+
+<!-- aggiunto per far apparire le proprieta delle associazioni toOne direttamente nella prima pagina, utilizza il metodo SelectDescriptionHelper quindi implementarlo per DbmailAutoReplies it.i_node.tempemail.model.DbmailAutoReplies-->
+        <s:decorate id="dbmailAutoReplies" template="/layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailAutoReplies']}</ui:define>
+            <h:outputText value="#{selectDescriptionsHelper.getDescription(dbmailUsersHome.instance.dbmailAutoReplies)}"/>
+        </s:decorate>
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+
+
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailAcl.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailAclsChildren">
+
+
+        <h:outputText value="There are no dbmailAcls associated with this dbmailUsers."
+                   rendered="#{empty dbmailUsersHome.dbmailAcls}"/>
+
+        <rich:dataTable value="#{dbmailUsersHome.dbmailAcls}"
+                       var="_dbmailAcl"
+                  rendered="#{not empty dbmailUsersHome.dbmailAcls}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailAclsTable">
+            <rich:column sortBy="#{_dbmailAcl.id.mailboxId}">
+                <f:facet name="header">#{messages['DbmailAcl.mailboxId.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.id.mailboxId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.id.userId}">
+                <f:facet name="header">#{messages['DbmailAcl.userId.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.id.userId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.administerFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.administerFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.administerFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.createFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.createFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.createFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.deleteFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.deleteFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.deleteFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.deletedFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.deletedFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.deletedFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.expungeFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.expungeFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.expungeFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.insertFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.insertFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.insertFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.lookupFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.lookupFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.lookupFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.postFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.postFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.postFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.readFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.readFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.readFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.seenFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.seenFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.seenFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailAcl.writeFlag}">
+                <f:facet name="header">#{messages['DbmailAcl.writeFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailAcl.writeFlag}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailAcl"
+                     value="Select"
+                      view="/DbmailAcl.xhtml">
+                    <f:param name="dbmailAclMailboxId"
+                            value="#{_dbmailAcl.id.mailboxId}"/>
+                    <f:param name="dbmailAclUserId"
+                            value="#{_dbmailAcl.id.userId}"/>
+                    <f:param name="dbmailAclFrom" value="DbmailUsers"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailAcl"
+                view="/DbmailAclEdit.xhtml">
+            <f:param name="dbmailUsersUserIdnr"
+                    value="#{dbmailUsersHome.instance.userIdnr}"/>
+            <f:param name="dbmailAclFrom" value="DbmailUsers"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailFilters.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailFiltersesChildren">
+
+
+        <h:outputText value="There are no dbmailFilterses associated with this dbmailUsers."
+                   rendered="#{empty dbmailUsersHome.dbmailFilterses}"/>
+
+        <rich:dataTable value="#{dbmailUsersHome.dbmailFilterses}"
+                       var="_dbmailFilters"
+                  rendered="#{not empty dbmailUsersHome.dbmailFilterses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailFiltersesTable">
+            <rich:column sortBy="#{_dbmailFilters.id.id}">
+                <f:facet name="header">#{messages['DbmailFilters.id.label']}</f:facet>
+                <h:outputText value="#{_dbmailFilters.id.id}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailFilters.id.userId}">
+                <f:facet name="header">#{messages['DbmailFilters.userId.label']}</f:facet>
+                <h:outputText value="#{_dbmailFilters.id.userId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailFilters.headername}">
+                <f:facet name="header">#{messages['DbmailFilters.headername.label']}</f:facet>
+                <h:outputText value="#{_dbmailFilters.headername}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailFilters.headervalue}">
+                <f:facet name="header">#{messages['DbmailFilters.headervalue.label']}</f:facet>
+                <h:outputText value="#{_dbmailFilters.headervalue}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailFilters.mailbox}">
+                <f:facet name="header">#{messages['DbmailFilters.mailbox.label']}</f:facet>
+                <h:outputText value="#{_dbmailFilters.mailbox}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailFilters"
+                     value="Select"
+                      view="/DbmailFilters.xhtml">
+                    <f:param name="dbmailFiltersId"
+                            value="#{_dbmailFilters.id.id}"/>
+                    <f:param name="dbmailFiltersUserId"
+                            value="#{_dbmailFilters.id.userId}"/>
+                    <f:param name="dbmailFiltersFrom" value="DbmailUsers"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailFilters"
+                view="/DbmailFiltersEdit.xhtml">
+            <f:param name="dbmailUsersUserIdnr"
+                    value="#{dbmailUsersHome.instance.userIdnr}"/>
+            <f:param name="dbmailFiltersFrom" value="DbmailUsers"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailMailboxes.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailMailboxesesChildren">
+
+
+        <h:outputText value="There are no dbmailMailboxeses associated with this dbmailUsers."
+                   rendered="#{empty dbmailUsersHome.dbmailMailboxeses}"/>
+
+        <rich:dataTable value="#{dbmailUsersHome.dbmailMailboxeses}"
+                       var="_dbmailMailboxes"
+                  rendered="#{not empty dbmailUsersHome.dbmailMailboxeses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailMailboxesesTable">
+            <rich:column sortBy="#{_dbmailMailboxes.mailboxIdnr}">
+                <f:facet name="header">#{messages['DbmailMailboxes.mailboxIdnr.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.mailboxIdnr}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.answeredFlag}">
+                <f:facet name="header">#{messages['DbmailMailboxes.answeredFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.answeredFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.deletedFlag}">
+                <f:facet name="header">#{messages['DbmailMailboxes.deletedFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.deletedFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.draftFlag}">
+                <f:facet name="header">#{messages['DbmailMailboxes.draftFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.draftFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.flaggedFlag}">
+                <f:facet name="header">#{messages['DbmailMailboxes.flaggedFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.flaggedFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.name}">
+                <f:facet name="header">#{messages['DbmailMailboxes.name.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.name}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.noInferiors}">
+                <f:facet name="header">#{messages['DbmailMailboxes.noInferiors.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.noInferiors}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.noSelect}">
+                <f:facet name="header">#{messages['DbmailMailboxes.noSelect.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.noSelect}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.permission}">
+                <f:facet name="header">#{messages['DbmailMailboxes.permission.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.permission}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.recentFlag}">
+                <f:facet name="header">#{messages['DbmailMailboxes.recentFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.recentFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.seenFlag}">
+                <f:facet name="header">#{messages['DbmailMailboxes.seenFlag.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.seenFlag}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailMailboxes.seq}">
+                <f:facet name="header">#{messages['DbmailMailboxes.seq.label']}</f:facet>
+                <h:outputText value="#{_dbmailMailboxes.seq}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailMailboxes"
+                     value="Select"
+                      view="/DbmailMailboxes.xhtml">
+                    <f:param name="dbmailMailboxesMailboxIdnr"
+                            value="#{_dbmailMailboxes.mailboxIdnr}"/>
+                    <f:param name="dbmailMailboxesFrom" value="DbmailUsers"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailMailboxes"
+                view="/DbmailMailboxesEdit.xhtml">
+            <f:param name="dbmailUsersUserIdnr"
+                    value="#{dbmailUsersHome.instance.userIdnr}"/>
+            <f:param name="dbmailMailboxesFrom" value="DbmailUsers"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailSievescripts.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailSievescriptsesChildren">
+
+
+        <h:outputText value="There are no dbmailSievescriptses associated with this dbmailUsers."
+                   rendered="#{empty dbmailUsersHome.dbmailSievescriptses}"/>
+
+        <rich:dataTable value="#{dbmailUsersHome.dbmailSievescriptses}"
+                       var="_dbmailSievescripts"
+                  rendered="#{not empty dbmailUsersHome.dbmailSievescriptses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailSievescriptsesTable">
+            <rich:column sortBy="#{_dbmailSievescripts.id}">
+                <f:facet name="header">#{messages['DbmailSievescripts.id.label']}</f:facet>
+                <h:outputText value="#{_dbmailSievescripts.id}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailSievescripts.active}">
+                <f:facet name="header">#{messages['DbmailSievescripts.active.label']}</f:facet>
+                <h:outputText value="#{_dbmailSievescripts.active}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailSievescripts.name}">
+                <f:facet name="header">#{messages['DbmailSievescripts.name.label']}</f:facet>
+                <h:outputText value="#{_dbmailSievescripts.name}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailSievescripts.script}">
+                <f:facet name="header">#{messages['DbmailSievescripts.script.label']}</f:facet>
+                <h:outputText value="#{_dbmailSievescripts.script}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailSievescripts"
+                     value="Select"
+                      view="/DbmailSievescripts.xhtml">
+                    <f:param name="dbmailSievescriptsId"
+                            value="#{_dbmailSievescripts.id}"/>
+                    <f:param name="dbmailSievescriptsFrom" value="DbmailUsers"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailSievescripts"
+                view="/DbmailSievescriptsEdit.xhtml">
+            <f:param name="dbmailUsersUserIdnr"
+                    value="#{dbmailUsersHome.instance.userIdnr}"/>
+            <f:param name="dbmailSievescriptsFrom" value="DbmailUsers"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+    <rich:tab>
+        <f:facet name="header">
+            <h:panelGroup>#{messages['DbmailSubscription.details']}</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="dbmailSubscriptionsChildren">
+
+
+        <h:outputText value="There are no dbmailSubscriptions associated with this dbmailUsers."
+                   rendered="#{empty dbmailUsersHome.dbmailSubscriptions}"/>
+
+        <rich:dataTable value="#{dbmailUsersHome.dbmailSubscriptions}"
+                       var="_dbmailSubscription"
+                  rendered="#{not empty dbmailUsersHome.dbmailSubscriptions}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="dbmailSubscriptionsTable">
+            <rich:column sortBy="#{_dbmailSubscription.id.mailboxId}">
+                <f:facet name="header">#{messages['DbmailSubscription.mailboxId.label']}</f:facet>
+                <h:outputText value="#{_dbmailSubscription.id.mailboxId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_dbmailSubscription.id.userId}">
+                <f:facet name="header">#{messages['DbmailSubscription.userId.label']}</f:facet>
+                <h:outputText value="#{_dbmailSubscription.id.userId}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">#{messages['action']}</f:facet>
+                <s:link id="selectdbmailSubscription"
+                     value="Select"
+                      view="/DbmailSubscription.xhtml">
+                    <f:param name="dbmailSubscriptionMailboxId"
+                            value="#{_dbmailSubscription.id.mailboxId}"/>
+                    <f:param name="dbmailSubscriptionUserId"
+                            value="#{_dbmailSubscription.id.userId}"/>
+                    <f:param name="dbmailSubscriptionFrom" value="DbmailUsers"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add dbmailSubscription"
+                view="/DbmailSubscriptionEdit.xhtml">
+            <f:param name="dbmailUsersUserIdnr"
+                    value="#{dbmailUsersHome.instance.userIdnr}"/>
+            <f:param name="dbmailSubscriptionFrom" value="DbmailUsers"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+
+
+
+
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailUsersEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailUsersFrom ? 'DbmailUsersList' : dbmailUsersFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

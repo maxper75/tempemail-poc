@@ -1,0 +1,68 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+<rich:tabPanel switchType="client">
+
+    <rich:tab>
+        <f:facet name="header">
+        	<h:panelGroup>#{messages['DbmailUsermap.details']}</h:panelGroup>
+        </f:facet>
+
+
+        <s:decorate id="login" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsermap.login.label']}</ui:define>
+            <h:outputText value="#{dbmailUsermapHome.instance.id.login}"/>
+        </s:decorate>
+        <s:decorate id="sockAllow" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsermap.sockAllow.label']}</ui:define>
+            <h:outputText value="#{dbmailUsermapHome.instance.id.sockAllow}"/>
+        </s:decorate>
+        <s:decorate id="sockDeny" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsermap.sockDeny.label']}</ui:define>
+            <h:outputText value="#{dbmailUsermapHome.instance.id.sockDeny}"/>
+        </s:decorate>
+        <s:decorate id="userid" template="layout/display.xhtml">
+            <ui:define name="label">#{messages['DbmailUsermap.userid.label']}</ui:define>
+            <h:outputText value="#{dbmailUsermapHome.instance.id.userid}"/>
+        </s:decorate>
+
+
+<!--Codice aggiunto -->
+
+
+<!--/Codice aggiunto -->
+
+       <div style="clear:both"/>
+
+</rich:tab>
+
+
+
+
+</rich:tabPanel>
+
+
+    <div class="actionButtons">
+
+        <s:button view="/DbmailUsermapEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dbmailUsermapFrom ? 'DbmailUsermapList' : dbmailUsermapFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

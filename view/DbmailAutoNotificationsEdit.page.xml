@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.org/schema/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
+      no-conversation-view-id="/DbmailAutoNotificationsList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{dbmailAutoNotificationsHome.wire}"/>
+
+   <param name="dbmailAutoNotificationsFrom"/>
+   <param name="dbmailAutoNotificationsUserIdnr" value="#{dbmailAutoNotificationsHome.dbmailAutoNotificationsUserIdnr}"/>
+   <param name="dbmailUsersFrom"/>
+   <param name="dbmailUsersUserIdnr" value="#{dbmailUsersHome.dbmailUsersUserIdnr}"/>
+   <param name="dbmailAutoRepliesFrom"/>
+   <param name="dbmailAutoRepliesUserIdnr" value="#{dbmailAutoRepliesHome.dbmailAutoRepliesUserIdnr}"/>
+
+
+
+
+   <navigation from-action="#{dbmailAutoNotificationsHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/DbmailAutoNotifications.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{dbmailAutoNotificationsHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/DbmailAutoNotifications.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{dbmailAutoNotificationsHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/DbmailAutoNotificationsList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

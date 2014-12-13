@@ -1,0 +1,39 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.org/schema/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+	
+	<table border="1" cellpadding="1" cellspacing="2">
+    
+    <caption>Dettagli messaggio</caption>
+    <tr><th>Header Name</th><th>Header Value</th></tr>
+    <tr><td>From</td><td><h:outputText value="#{tempEmailHelper.headerMap.get('from')}"/></td></tr>
+    <tr><td>To</td><td><h:outputText value="#{tempEmailHelper.headerMap.get('to')}"/></td></tr>
+    <tr><td>Subject</td>	<td>
+    	<h:outputText value="#{not empty tempEmailHelper.headerMap.get('subject') ?
+    					tempEmailHelper.headerMap.get('subject') :
+    					'nessun subject'}"/>
+    	</td></tr>
+    <tr><td>Date</td><td><h:outputText value="#{tempEmailHelper.headerMap.get('date')}"/></td></tr> 
+    <tr><td>Data</td>	<td>
+    		<ui:repeat var="parte" value="#{tempEmailHelper.message.dbmailPhysmessage.dbmailPartlistses.toArray()}">
+				<h:outputText value="#{tempEmailHelper.convertToString(parte.dbmailMimeparts.data)}" 
+					rendered="#{parte.id.isHeader==0}"/>
+			</ui:repeat>	</td></tr>
+    </table>
+	
+	
+	<div class="actionButtons">
+		<s:button view="/TempEmailHelper.xhtml"
+			id="elencoMail"
+			value="elenco mail"/>
+	</div>	
+	</ui:define>
+</ui:composition>

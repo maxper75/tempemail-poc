@@ -1,0 +1,94 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailAutoNotifications" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailAutoNotificationsHome.managed ? messages['DbmailAutoNotifications.edit'] : messages['DbmailAutoNotifications.add']}</f:facet>
+
+
+
+            <s:decorate id="notifyAddressField" template="layout/edit.xhtml">
+                <ui:define name="label">Notify address</ui:define>
+                <h:inputText id="notifyAddress"
+                           size="100"
+                      maxlength="100"
+                          value="#{dbmailAutoNotificationsHome.instance.notifyAddress}">
+                    <a:ajax event="blur" render="notifyAddressField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+<!-- modifica per visualizzare i campi ManyToOne con una tendina--> 
+<!-- siamo nel caso in cui va visualizzata la tendina 
+ricordati di implementare il metodo selectDescriptionsHelper.getDescription per l'oggetto di tipo DbmailUsers it.i_node.tempemail.model.DbmailUsers-->
+		<s:decorate id="dbmailAutoNotificationsHome_dbmailUsers" template="/layout/edit.xhtml">
+				<ui:define name="label">#{messages['DbmailAutoNotifications.dbmailUsers.label']}</ui:define>
+					<h:selectOneMenu 
+						value="#{dbmailAutoNotificationsHome.instance.dbmailUsers}">
+						
+						<s:selectItems noSelectionLabel="#{messages['DbmailUsers.select']}"
+							value="#{dbmailUsersList.resultList}" var="_dbmailUsers"
+							label="#{selectDescriptionsHelper.getDescription(_dbmailUsers)}" />
+						<s:convertEntity />
+					</h:selectOneMenu>
+		</s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailAutoNotificationsHome.persist}"
+                       disabled="#{!dbmailAutoNotificationsHome.wired}"
+                       rendered="#{!dbmailAutoNotificationsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailAutoNotificationsHome.update}"
+                       rendered="#{dbmailAutoNotificationsHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailAutoNotificationsHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailAutoNotificationsHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailAutoNotifications.xhtml"
+                rendered="#{dbmailAutoNotificationsHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailAutoNotificationsFrom ? 'DbmailAutoNotificationsList' : dbmailAutoNotificationsFrom}.xhtml"
+                rendered="#{!dbmailAutoNotificationsHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

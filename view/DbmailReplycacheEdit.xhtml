@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.org/schema/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dbmailReplycache" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dbmailReplycacheHome.managed ? messages['DbmailReplycache.edit'] : messages['DbmailReplycache.add']}</f:facet>
+
+
+            <s:decorate id="fromAddrField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailReplycache.fromAddr.label']}</ui:define>
+                <h:inputText id="fromAddr"
+                       disabled="#{dbmailReplycacheHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailReplycacheHome.instance.id.fromAddr}">
+                    <a:ajax event="blur" render="fromAddrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="handleField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailReplycache.handle.label']}</ui:define>
+                <h:inputText id="handle"
+                       disabled="#{dbmailReplycacheHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailReplycacheHome.instance.id.handle}">
+                    <a:ajax event="blur" render="handleField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="lastseenField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailReplycache.lastseen.label']}</ui:define>
+                <rich:calendar id="lastseen"
+                       disabled="#{dbmailReplycacheHome.managed}"
+                       required="true"
+                          value="#{dbmailReplycacheHome.instance.id.lastseen}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="toAddrField" template="layout/edit.xhtml">
+                <ui:define name="label">#{messages['DbmailReplycache.toAddr.label']}</ui:define>
+                <h:inputText id="toAddr"
+                       disabled="#{dbmailReplycacheHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="100"
+                         value="#{dbmailReplycacheHome.instance.id.toAddr}">
+                    <a:ajax event="blur" render="toAddrField" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                #{messages['requiredFields']}
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dbmailReplycacheHome.persist}"
+                       disabled="#{!dbmailReplycacheHome.wired}"
+                       rendered="#{!dbmailReplycacheHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dbmailReplycacheHome.update}"
+                       rendered="#{dbmailReplycacheHome.managed}">
+                <s:conversationId/>
+            </h:commandButton>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dbmailReplycacheHome.remove}"
+                      immediate="true"
+                       rendered="#{dbmailReplycacheHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/DbmailReplycache.xhtml"
+                rendered="#{dbmailReplycacheHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dbmailReplycacheFrom ? 'DbmailReplycacheList' : dbmailReplycacheFrom}.xhtml"
+                rendered="#{!dbmailReplycacheHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>
