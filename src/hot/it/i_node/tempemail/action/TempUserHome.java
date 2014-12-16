@@ -13,9 +13,11 @@ import org.jboss.seam.framework.EntityHome;
 
 @Name("tempUserHome")
 public class TempUserHome extends EntityHome<TempUser> {
-
 //	@In(create = true)
-//	DbmailUsersHome dbmailUsersHome;
+	//TempEmailAddressHome teahome;
+
+	@In(create = true)
+	DbmailMailboxesHome dbmailMailboxesHome;
 	
 	public void setTempUserUserIdnr(Long id) {
 		setId(id);
@@ -40,11 +42,11 @@ public class TempUserHome extends EntityHome<TempUser> {
 
 	public void wire() {
 		getInstance();
-//		DbmailUsers dbmailUsers = dbmailUsersHome.getDefinedInstance();
-//		
-//		if (dbmailUsers != null) {
-//			getInstance().setDbmailUsers(dbmailUsers);
-//		}	
+		DbmailMailboxes dbmailbox = dbmailMailboxesHome.getDefinedInstance();
+		
+		if (dbmailbox != null) {
+			getInstance().getDbmailMailboxeses().add(dbmailbox);
+		}	
 	}
 
 	public boolean isWired() {

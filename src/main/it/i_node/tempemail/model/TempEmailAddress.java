@@ -28,8 +28,8 @@ public class TempEmailAddress implements java.io.Serializable {
 	private String emailAddress;
 	private String name;
 	private Integer retentionDays;
-	
 	private TempUser tempUser;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@NotNull

@@ -9,11 +9,9 @@ import org.jboss.seam.framework.EntityHome;
 
 @Name("tempEmailAddressHome")
 public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
+	
 	@In(create = true)
 	private TempUserHome tempuserHome;
-	
-	
-	
 
 	public void setTempEmailAddressIdnr(Long id) {
 		setId(id);

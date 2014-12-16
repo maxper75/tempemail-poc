@@ -70,8 +70,8 @@
 
 				<h:commandButton value="connect"
 					action="#{tempEmailAddressHelper.importAddresses}">
-					<f:param name="tempMailboxMailboxIdnr"
-						value="#{tempMailboxHome.tempMailboxMailboxIdnr}" />
+					<f:param name="tempUserid"
+								value="#{tempUserHome.instance.userid}" />
 				</h:commandButton>
 
 			</div>
