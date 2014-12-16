@@ -19,9 +19,9 @@ import org.hibernate.engine.jdbc.ColumnNameCache;
 
 
 @Entity												
-@Table(name = "tempemailaddress", schema = "public")
+@Table(name = "tempemailaddress", schema = "public")//,uniqueConstraints=@UniqueConstraint(columnNames={"tempUser", "emailAddress"})
 @EntityListeners(TempEmailAddressListener.class)
-//uniqueConstraints=@UniqueConstraint(columnNames={"tempMailbox", "emailAddress"})
+
 public class TempEmailAddress implements java.io.Serializable {
 
 	private long id;
@@ -41,9 +41,6 @@ public class TempEmailAddress implements java.io.Serializable {
 		this.id = id;
 	}
 
-	
-	
-//	@Column(unique = true)
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -95,7 +92,7 @@ public class TempEmailAddress implements java.io.Serializable {
 		this.retentionDays = retentionDays;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "userIdnr")
 	public TempUser getTempUser() {
 		return tempUser;
 	}

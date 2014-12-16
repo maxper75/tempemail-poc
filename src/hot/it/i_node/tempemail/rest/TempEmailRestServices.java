@@ -286,9 +286,9 @@ public class TempEmailRestServices {
 	public String getNomeUtente() {
 		TempEmailHelper helper = (TempEmailHelper) Component
 				.getInstance(TempEmailHelper.class);
-		if (helper.getMail() != null)
+		if (helper.getDbmailbox() != null)
 			if (helper.countDown() > 0)
-				return helper.getMail().getDbmailUsers().getUserid();
+				return helper.getDbmailbox().getDbmailUsers().getUserid();
 			else
 				helper.clear();
 		return "non presente";
@@ -333,7 +333,7 @@ public class TempEmailRestServices {
 	public String createAlias(@PathParam("alias") String alias) {
 		TempEmailHelper helper = (TempEmailHelper) Component
 				.getInstance(TempEmailHelper.class);
-		if (helper.getMail() == null || helper.countDown() <= 0) {
+		if (helper.getDbmailbox() == null || helper.countDown() <= 0) {
 			System.out.println("create alias:error");
 			return "error";
 		}

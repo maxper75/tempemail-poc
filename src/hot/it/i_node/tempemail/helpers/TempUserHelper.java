@@ -17,16 +17,6 @@ import it.i_node.tempemail.model.TempEmailAddress;
 @Name ("tempUserHelper")
 public class TempUserHelper {
 
-//	private boolean changes_generateRule= false;//if true=> there are changes => a new sieve rule have to be generate
-//
-//
-//	public boolean isChanges_generateRule() {
-//		return changes_generateRule;
-//	}
-//
-//	public void setChanges_generateRule(boolean changes_generateRule) {
-//		this.changes_generateRule = changes_generateRule;
-//	}
 
 	public String generateSieveRule(){
 
@@ -75,9 +65,7 @@ public class TempUserHelper {
 				System.out.println("è stato creato il nuovo script");
 
 			}
-	//	setChanges_generateRule(false);//dopo aver creato la nuova sieve rules, 
-										//il pulsante generate sieve rules deve essere disabilitato
-		
+	
 		tuh.getInstance().setDirty(false);
 		return "";
 	}

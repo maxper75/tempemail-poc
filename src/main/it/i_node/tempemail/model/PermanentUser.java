@@ -1,8 +1,5 @@
 package it.i_node.tempemail.model;
 
-
-
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,19 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 @Entity
-@Table(name ="tempuser",schema="public")
+@Table
 @DiscriminatorValue("T")
-public class TempUser extends DbmailUsers {
-	
+public class PermanentUser extends DbmailUsers{
 	private Set <TempEmailAddress> tempEmailAddresses = new HashSet<TempEmailAddress>(0);
 	private boolean dirty;
-	//private TempUser tempUser;
-	private Date creationDate;
-	private Date refreshDate;
-
-
+	private TempUser tempUser;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tempUser")
 	public Set<TempEmailAddress> getTempEmailAddresses() {
 		return this.tempEmailAddresses;
@@ -37,22 +29,4 @@ public class TempUser extends DbmailUsers {
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
-
-
-	public Date getRefreshDate() {
-		return refreshDate;
-	}
-	public void setRefreshDate(Date refreshDate) {
-		this.refreshDate = refreshDate;
-	}
-	public Date getCreationDate() {
-		return creationDate;
-	}
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-
-
-
-
 }

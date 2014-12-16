@@ -9,6 +9,7 @@ import it.i_node.tempemail.action.TempUserHome;
 import it.i_node.tempemail.model.DbmailAliases;
 import it.i_node.tempemail.model.DbmailHeader;
 import it.i_node.tempemail.model.DbmailHeadervalue;
+import it.i_node.tempemail.model.DbmailMailboxes;
 import it.i_node.tempemail.model.DbmailMessages;
 import it.i_node.tempemail.model.DbmailSubjectfield;
 import it.i_node.tempemail.model.DbmailUsers;
@@ -42,20 +43,25 @@ public class TempEmailHelper {
 	private String username=null;							//username users
 	private String emailAddress=null;						//indirizzo mail
 	private String text=null;								//da utilizzare per messaggi di errore
-	private TempUser mail=null;							//mailbox corrente
-	
+	//private DbmailUsers dbmailUsers;						//mailbox corrente //per ricevere mail
+	private TempUser tempUser;
+	private DbmailMailboxes dbmailbox;
+
 	//se si vogliono piu alias fare un array
 	private TempAlias alias=null;							//alias utente
-	
+
 	private long messageId;									//id messaggio corrente
 	private List<DbmailMessages> messages=null;				//lista messaggi
 	private Map<Long, DbmailSubjectfield> subjectMap=null;	//<id physmessage,subject>
 	private DbmailMessages message=null;					//messaggio corrente
 	private Map<String,DbmailHeadervalue> headerMap=null;	//<nome,valore>
 
-	
+
 	//crea uno user e la mailbox associata
+
+
 	public boolean createEmail() {
+
 		if(emailAddress!=null&&!emailAddress.isEmpty())	{
 			System.out.println("create email: utente gia in sessione");
 			text="utente gia in sessione";
@@ -63,36 +69,58 @@ public class TempEmailHelper {
 		}
 		if (username==null||username.isEmpty()) 
 			username=randomString();
-		
+
 		StringBuilder emailBuilder = new StringBuilder();
 		emailBuilder.append(username);
 		emailBuilder.append("@");
 		emailBuilder.append(getDomainName());
 		emailAddress=emailBuilder.toString();			
 		if(emailAddressIsValid())	{
-			// user
+												// user//
 			Date data=new Date();
-			DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
-			usersHome.clearInstance();
-			DbmailUsers user = usersHome.getInstance();
-			user.setUserid(emailAddress);
-			user.setPasswd("");
-			user.setLastLogin(data);
-			user.setEncryptionType("");
-			usersHome.persist();
-			//mailbox
-			TempUserHome mailboxesHome=(TempUserHome) Component.getInstance(TempUserHome.class);
-			mailboxesHome.clearInstance();
-			setMail(mailboxesHome.getInstance());
-			mail.setDbmailUsers(user);
-			mail.setName("INBOX");
-			mail.setPermission((short) 2);
-			mail.setCreationDate(data);
-			mail.setRefreshDate(data);
-			//salvataggio dati in dbmail MAILBOX
-			mailboxesHome.persist();
+			TempUserHome tuserHome= (TempUserHome) Component.getInstance(TempUserHome.class);
+			//DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
+			tuserHome.clearInstance();
+			tempUser= tuserHome.getInstance();
+			//			usersHome.clearInstance();
+			//			DbmailUsers user = usersHome.getInstance();
+			//			user.setUserid(emailAddress);
+			//			user.setPasswd("");
+			//			user.setLastLogin(data);
+			//			user.setEncryptionType("");
+
+			tempUser.setUserid(emailAddress);//username@domain
+			tempUser.setPasswd("");
+			tempUser.setLastLogin(data);
+			tempUser.setEncryptionType("");
+			tempUser.setCreationDate(data);
+			tempUser.setRefreshDate(data);
 			
-			text="Utente "+mail.getDbmailUsers().getUserid()+" creato";
+
+												//mailbox//
+
+			//			TempUserHome mailboxesHome=(TempUserHome) Component.getInstance(TempUserHome.class);//no
+			//			mailboxesHome.clearInstance();
+			//			setMail(mailboxesHome.getInstance());
+			//			dbmailbox.setDbmailUsers(user);
+			dbmailbox= new DbmailMailboxes();
+			dbmailbox.setName("INBOX");
+			dbmailbox.setPermission((short) 2);
+			dbmailbox.setDbmailUsers(tempUser);
+			tuserHome.getInstance().getDbmailMailboxeses().add(dbmailbox);
+
+
+
+			//			mail.setCreationDate(data);
+			//			mail.setRefreshDate(data);
+
+			//			
+			//			//salvataggio dati in dbmail MAILBOX
+			//			mailboxesHome.persist();
+			//			usersHome.persist();
+
+			tuserHome.persist();
+			text="Utente "+tempUser.getUserIdnr()+" creato";
 			System.out.println("create email ok: creato: "+username);
 			return true;
 		}
@@ -107,38 +135,41 @@ public class TempEmailHelper {
 
 	//elimina user e mailbox associata, se presenti
 	public void deleteEmail()	{
-		if(mail==null)	{
+		if(tempUser==null)	{//non presente => non va eliminato
 			text="Crea un indirizzo di mail";
 			return;
 		}		
-		if(!mail.getDbmailUsers().getUserid().isEmpty())	{
-			DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
+		if(!tempUser.getUserid().isEmpty())	{//se esiste l'utente
+			//DbmailUsersHome usersHome=(DbmailUsersHome) Component.getInstance(DbmailUsersHome.class);
+			TempUserHome tuserHome= (TempUserHome) Component.getInstance(TempUserHome.class);
+
 			EntityManager em=(EntityManager) Component.getInstance("entityManager");
 			try	{
-			TempUser mailbox=em.createQuery("From TempMailbox t where t.mailboxIdnr="
-					+ " :mailid",TempUser.class).setParameter("mailid",mail.getMailboxIdnr()).getSingleResult();
-			if(mailbox!=null)	{
-				usersHome.setDbmailUsersUserIdnr(mail.getDbmailUsers().getUserIdnr());
-				usersHome.remove();
-				text="Utente "+mail.getDbmailUsers().getUserid()+" con password eliminato!";
-				//mail=null;
-				//messages=null;
-				text="utente "+username+" eliminato";
-				//elimino anche la coda
-				//SynchronousQueueManager.instance().messageArrived(-1);
-				SynchronousQueueManager.instance().deleteQueue(emailAddress);
-				if(alias!=null)	{
-					TempAliasHome aliasHome=(TempAliasHome) Component.getInstance(TempAliasHome.class);
-					aliasHome.setId(alias.getAliasIdnr());
-					aliasHome.remove();
-					System.out.println("delete email: alias eliminato");
+				TempUser tuser=em.createQuery("From TempUser t where t.userIdnr="
+						+ " :userIdnr",TempUser.class).setParameter("userIdnr",tempUser.getUserIdnr()).getSingleResult();
+				if(tuser!=null)	{
+					tuserHome.setTempUserUserIdnr(tempUser.getUserIdnr());
+					//tuserHome.setDbmailUsersUserIdnr(tempUser.getUserIdnr());
+					tuserHome.remove();
+					text="Utente "+tempUser.getUserid()+" con password eliminato!";
+					//mail=null;
+					//messages=null;
+					text="utente "+username+" eliminato";
+					//elimino anche la coda
+					//SynchronousQueueManager.instance().messageArrived(-1);
+					SynchronousQueueManager.instance().deleteQueue(emailAddress);
+					if(alias!=null)	{
+						TempAliasHome aliasHome=(TempAliasHome) Component.getInstance(TempAliasHome.class);
+						aliasHome.setId(alias.getAliasIdnr());
+						aliasHome.remove();
+						System.out.println("delete email: alias eliminato");
+					}
+					//alias=null;
+					//emailAddress=null;
+					//username=null;
+					clear();
+					System.out.println("delete email");
 				}
-				//alias=null;
-				//emailAddress=null;
-				//username=null;
-				clear();
-				System.out.println("delete email");
-			}
 			}
 			catch(NoResultException e)	{
 				text="Utente non presente!";
@@ -150,23 +181,39 @@ public class TempEmailHelper {
 			System.out.println("delete mail: inserisci un nome");
 		}
 	}
-	
+
+//	public DbmailMailboxes getDbmailbox() {
+//		return dbmailbox;
+//	}
+//
+//	public void setDbmailbox(DbmailMailboxes dbmailbox) {
+//		this.dbmailbox = dbmailbox;
+//	}
+
+	public TempUser getTempUser() {
+		return tempUser;
+	}
+
+	public void setTempUser(TempUser tempUser) {
+		this.tempUser = tempUser;
+	}
+
 	//aggiorna la data di ultimo refresh e richiama reloadContents
 	public void refreshing()	{
 		if(!emailAddressIsValid())	{
 			//aggiorno la refreshdate
-			if(mail==null)	{
+			if(tempUser==null)	{
 				text="Crea un indirizzo di mail";
 				return;
 			}
 			Date data=Calendar.getInstance().getTime();
-			TempUserHome mailboxHome=(TempUserHome) Component.getInstance(TempUserHome.class);
-			mailboxHome.setId(mail.getMailboxIdnr());
-			mailboxHome.getInstance().setRefreshDate(data);
-			mailboxHome.update();
-			mail.setRefreshDate(data);
-			System.out.println("refresh per id:"+mail.getMailboxIdnr()+" con data: "+mail.getRefreshDate());
-			
+			TempUserHome tempUserHome=(TempUserHome) Component.getInstance(TempUserHome.class);
+			tempUserHome.setId(tempUser.getUserIdnr());
+			tempUserHome.getInstance().setRefreshDate(data);
+			tempUserHome.update();
+			tempUser.setRefreshDate(data);
+			System.out.println("refresh per id:"+tempUser.getUserIdnr()+" con data: "+tempUser.getRefreshDate());
+
 			if(alias!=null)	{
 				TempAliasHome aliasHome=(TempAliasHome) Component.getInstance(TempAliasHome.class);
 				aliasHome.setId(alias.getAliasIdnr());
@@ -175,8 +222,8 @@ public class TempEmailHelper {
 				alias.setRefreshDate(data);
 				System.out.println("refresh per id:"+alias.getAliasIdnr()+" con data: "+alias.getRefreshDate());
 			}
-			
-			
+
+
 			reloadContents();
 		}
 		else	{
@@ -184,24 +231,24 @@ public class TempEmailHelper {
 			System.out.println("refreshing: user non valido");
 		}
 	}
-	
+
 	//ricarica i messaggi dell' utente
 	public boolean reloadContents()	{
-		if(mail!=null)	{
-			if(!mail.getDbmailUsers().getUserid().isEmpty())	{
+		if(tempUser!=null)	{
+			if(!tempUser.getUserid().isEmpty())	{
 				EntityManager em = (EntityManager) Component.getInstance("entityManager");
 				messages=em.createQuery("From DbmailMessages m where m.dbmailMailboxes.dbmailUsers.userid"
-						+ " = :userid",DbmailMessages.class).setParameter("userid",mail.getDbmailUsers().getUserid()).getResultList();
+						+ " = :userid",DbmailMessages.class).setParameter("userid",dbmailbox.getDbmailUsers().getUserid()).getResultList();
 				if(getMessages().size()==0)	{
 					text="nessun messaggio presente o user non presente!";
 					System.out.println("reload contents: nessun messaggio presente o user non presente!");
-					System.out.println("users: "+mail.getDbmailUsers().getUserid());
+					System.out.println("users: "+tempUser.getUserIdnr());
 					return true;
 				}
 				else	{
-					text="messaggi di "+mail.getDbmailUsers().getUserid()+" :";
-					System.out.println("messaggi di "+mail.getDbmailUsers().getUserid());
-					createSubjectMap(reloadSubjects(mail.getDbmailUsers().getUserid()));
+					text="messaggi di "+dbmailbox.getDbmailUsers().getUserid()+" :";
+					System.out.println("messaggi di "+dbmailbox.getDbmailUsers().getUserid());
+					createSubjectMap(reloadSubjects(dbmailbox.getDbmailUsers().getUserid()));
 					return true;
 				}
 			}	
@@ -222,7 +269,7 @@ public class TempEmailHelper {
 				System.out.println("message settato:"+message.getDbmailPhysmessage().getId());
 			}
 	}
-	
+
 	//ricarica i subjects di un utente
 	@SuppressWarnings("unchecked")
 	public List<DbmailSubjectfield> reloadSubjects(String name)	{
@@ -233,7 +280,7 @@ public class TempEmailHelper {
 				+ "and dbmail_mailboxes.mailbox_idnr=dbmail_messages.mailbox_idnr and dbmail_messages.physmessage_id=id;";
 		return em.createNativeQuery(s, DbmailSubjectfield.class).setParameter("userid",name).getResultList();
 	}
-	
+
 	//crea mappa <id_physmessage,subjectfield>
 	private void createSubjectMap(List<DbmailSubjectfield> subjects)	{
 		setSubjectMap(new HashMap<Long,DbmailSubjectfield>());
@@ -241,7 +288,7 @@ public class TempEmailHelper {
 			if(sub!=null)	{
 				if(!getSubjectMap().containsKey(sub.getId().getPhysmessageId()))	
 					getSubjectMap().put(Long.valueOf(sub.getId().getPhysmessageId()), sub);
-				}
+			}
 		}
 	}
 
@@ -254,8 +301,8 @@ public class TempEmailHelper {
 		setCurrentMessage(messageId);
 		return headerMap;
 	}
-	
-	
+
+
 	//crea mappa <nome header,valore header>
 	private void createHeaderMap(Set<DbmailHeader> headers)	{
 		setHeaderMap(new HashMap<String,DbmailHeadervalue>());
@@ -265,12 +312,12 @@ public class TempEmailHelper {
 					getHeaderMap().put(header.getDbmailHeadername().getHeadername(), header.getDbmailHeadervalue());
 			}
 	}	
-	
+
 	//restituisce tempo di vita mailbox
 	public long countDown()	{
-		if(getMail()!=null)	{
+		if(getTempUser()!=null)	{
 			Calendar calendar=Calendar.getInstance();
-			calendar.setTime(mail.getRefreshDate());
+			calendar.setTime(tempUser.getRefreshDate());
 			//calendar.add(Calendar.MINUTE, 20); RISOSTITUIRE
 			calendar.add(Calendar.MINUTE, 20);
 			Calendar today = Calendar.getInstance();
@@ -278,11 +325,11 @@ public class TempEmailHelper {
 			long togo = (calendar.getTimeInMillis() - today.getTimeInMillis()) / 1000;
 			if (togo>0)
 				return togo;
-	    	return 0;
+			return 0;
 		}
 		return 0;
 	}
-	
+
 	//restituisce una stringa random
 	private String randomString()	{
 		String localPart=RandomStringUtils.random(8,"abcdefghijklmnopqrstuvwxyz0123456789");
@@ -305,7 +352,7 @@ public class TempEmailHelper {
 			}
 		return true;
 	}
-	
+
 	//converter bytearray to string
 	@SuppressWarnings("deprecation")
 	public String convertToString(byte[] toConvert)	{
@@ -318,21 +365,22 @@ public class TempEmailHelper {
 	}
 
 	public void clear() {
-		setMail(null);
+		//setDbmailbox(null);
+		setTempUser(null);
 		setMessages(null);
 		setUsername(null);
 		setEmailAddress(null);
 		setAlias(null);
 		System.out.println("CLEAR ALL!");
 	}
-	
+
 	public DbmailMessages getMessageById(long messageId) {
 		EntityManager em = (EntityManager) Component.getInstance("entityManager");
 		DbmailMessages mess=em.createQuery("From DbmailMessages m where m.messageIdnr"
-				+ "= :messageid and m.dbmailMailboxes.mailboxIdnr= :mailboxid",DbmailMessages.class).setParameter("messageid", messageId).setParameter("mailboxid", mail.getMailboxIdnr()).getSingleResult();
+				+ "= :messageid and m.dbmailMailboxes.mailboxIdnr= :mailboxid",DbmailMessages.class).setParameter("messageid", messageId).setParameter("mailboxid", dbmailbox.getMailboxIdnr()).getSingleResult();
 		return mess;
 	}
-	
+
 	public boolean createAlias(String name)	{
 		//controllo mail esistente nel servizio rest
 		//DbmailAliasesHome aliasHome=(DbmailAliasesHome) Component.getInstance(DbmailAliasesHome.class);
@@ -341,7 +389,7 @@ public class TempEmailHelper {
 		//alias.setAlias(emailAddress);
 		//alias.setDeliverTo(name);
 		//aliasHome.persist();
-		if(mail==null)	{	
+		if(tempUser==null)	{	
 			text="createAlias: mail null";
 			System.out.println("createAlias: mail null");
 			return false;
@@ -368,8 +416,16 @@ public class TempEmailHelper {
 			return false;
 		}
 	}
-	
+
 	//GETTER E SETTER 
+
+	public DbmailMailboxes getDbmailbox() {
+		return dbmailbox;
+	}
+
+	public void setDbmailbox(DbmailMailboxes dbmailbox) {
+		this.dbmailbox = dbmailbox;
+	}
 
 	public String getEmailAddress() {
 		return emailAddress;
@@ -378,19 +434,19 @@ public class TempEmailHelper {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	
+
 	public double getMinute(double num)	{
 		return Math.floor(num);
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String usernam) {
 		username = usernam;
 	}
-	
+
 	public String getText() {
 		return text;
 	}
@@ -398,9 +454,9 @@ public class TempEmailHelper {
 	public void setText(String tex) {
 		text = tex;
 	}
-	
+
 	public void checkEmail()	{
-		
+
 	}
 
 	public Map<Long, DbmailSubjectfield> getSubjectMap() {
@@ -426,7 +482,7 @@ public class TempEmailHelper {
 	public void setMessageId(long messageId) {
 		this.messageId = messageId;
 	}
-	
+
 	public DbmailMessages getMessage() {
 		return message;
 	}
@@ -437,14 +493,6 @@ public class TempEmailHelper {
 
 	public void setHeaderMap(Map<String,DbmailHeadervalue> headerMap) {
 		this.headerMap = headerMap;
-	}
-
-	public TempUser getMail() {
-		return mail;
-	}
-
-	public void setMail(TempUser mail) {
-		this.mail = mail;
 	}
 
 	public TempAlias getAlias() {
@@ -462,7 +510,6 @@ public class TempEmailHelper {
 	public void setDomainName(String domainName) {
 		this.domainName = domainName;
 	}
-	
+
 }
 
-	

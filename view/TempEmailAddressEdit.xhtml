@@ -17,7 +17,7 @@
 				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
 
 				<s:decorate id="mailboxIdnr" template="layout/edit.xhtml">
-					<ui:define name="label">Mailbox Idnr : </ui:define>
+					<ui:define name="label">User Idnr : </ui:define>
 					<h:outputText
 						value="#{tempEmailAddressHome.instance.tempUser.userid}" />
 				</s:decorate>
