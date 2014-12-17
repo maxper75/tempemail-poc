@@ -7,8 +7,8 @@
 
 
 	<action execute="#{tempEmailAddressHome.wire}" />
-
-	<param name="tempUserid" value="#{tempUserHome.instance.userid}" />
+	
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.instance.userIdnr}" />
 	<param name="tempEmailAddressId" value="#{tempEmailAddressHome.tempEmailAddressIdnr}" />
 
 
@@ -16,19 +16,19 @@
 	<navigation from-action="#{tempEmailAddressHelper.persist}">
 		<rule if-outcome="persisted">
 			<end-conversation />
-			<redirect view-id="/TempUser.xhtml" />
+			<redirect view-id="/PermanentUser.xhtml" />
 		</rule>
 	</navigation>
 	<navigation from-action="#{tempEmailAddressHelper.update}">
 		<rule if-outcome="updated">
 			<end-conversation />
-			<redirect view-id="/TempUser.xhtml" />
+			<redirect view-id="/PermanentUser.xhtml" />
 		</rule>
 	</navigation>
 	<navigation from-action="#{tempEmailAddressHelper.remove}">
 		<rule if-outcome="removed">
 			<end-conversation />
-			<redirect view-id="/TempUser.xhtml" />
+			<redirect view-id="/PermanentUser.xhtml" />
 		</rule>
 	</navigation>
 

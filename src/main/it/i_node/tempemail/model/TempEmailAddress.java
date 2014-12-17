@@ -28,7 +28,7 @@ public class TempEmailAddress implements java.io.Serializable {
 	private String emailAddress;
 	private String name;
 	private Integer retentionDays;
-	private TempUser tempUser;
+	private PermanentUser permanentUser;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -93,11 +93,11 @@ public class TempEmailAddress implements java.io.Serializable {
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userIdnr")
-	public TempUser getTempUser() {
-		return tempUser;
+	public PermanentUser getPermanentUser() {
+		return permanentUser;
 	}
-	public void setTempUser(TempUser tempUser) {
-		this.tempUser = tempUser;
+	public void setPermanentUser(PermanentUser permanentUser) {
+		this.permanentUser = permanentUser;
 	}
-
+	
 }

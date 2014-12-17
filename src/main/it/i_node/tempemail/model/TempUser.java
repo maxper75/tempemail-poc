@@ -17,20 +17,10 @@ import javax.persistence.Table;
 @DiscriminatorValue("T")
 public class TempUser extends DbmailUsers {
 	
-	private Set <TempEmailAddress> tempEmailAddresses = new HashSet<TempEmailAddress>(0);
-	private boolean dirty;
-	//private TempUser tempUser;
+	private boolean dirty;//forse non serve per questa estensione
 	private Date creationDate;
 	private Date refreshDate;
 
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tempUser")
-	public Set<TempEmailAddress> getTempEmailAddresses() {
-		return this.tempEmailAddresses;
-	}
-	public void setTempEmailAddresses(Set<TempEmailAddress> tempEmailAddresses) {
-		this.tempEmailAddresses = tempEmailAddresses;
-	}
 	public boolean isDirty() {
 		return dirty;
 	}

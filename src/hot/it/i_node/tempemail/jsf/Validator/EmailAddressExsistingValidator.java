@@ -1,6 +1,7 @@
 package it.i_node.tempemail.jsf.Validator;
 
 
+import it.i_node.tempemail.action.PermanentUserHome;
 import it.i_node.tempemail.action.TempUserHome;
 import it.i_node.tempemail.model.TempEmailAddress;
 
@@ -33,9 +34,9 @@ public class EmailAddressExsistingValidator implements Validator {
 	}
 
 	public boolean exsists(String email){
-		TempUserHome tmh = (TempUserHome) Component.getInstance(TempUserHome.class);
+		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
 
-		for (TempEmailAddress tea : tmh.getInstance().getTempEmailAddresses())
+		for (TempEmailAddress tea : puh.getInstance().getTempEmailAddresses())
 			if (tea.getEmailAddress().equals(email))
 				return true;
 		return false;

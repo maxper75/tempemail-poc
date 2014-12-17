@@ -6,14 +6,14 @@
 	<begin-conversation join="true" flush-mode="MANUAL" />
 
 
-	<param name="tempUserid" value="#{tempUserHome.instance.userid}" />
 	
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.instance.userIdnr}" />
 
 
 	<navigation from-action="#{tempEmailAddressHelper.persistAll}">
 		<rule if-outcome="addedAll">
 			<end-conversation />
-			<redirect view-id="/TempUser.xhtml" />
+			<redirect view-id="/PermanentUser.xhtml" />
 		</rule>
 	</navigation>
 	<navigation from-action="#{tempEmailAddressHelper.delete(_tempEmailAddress)}">

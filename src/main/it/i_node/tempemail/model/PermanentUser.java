@@ -12,11 +12,12 @@ import javax.persistence.Table;
 @Table
 @DiscriminatorValue("T")
 public class PermanentUser extends DbmailUsers{
+	
 	private Set <TempEmailAddress> tempEmailAddresses = new HashSet<TempEmailAddress>(0);
 	private boolean dirty;
-	private TempUser tempUser;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tempUser")
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="permanentUser")
 	public Set<TempEmailAddress> getTempEmailAddresses() {
 		return this.tempEmailAddresses;
 	}

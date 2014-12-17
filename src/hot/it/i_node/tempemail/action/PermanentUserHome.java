@@ -1,7 +1,10 @@
 package it.i_node.tempemail.action;
 
-import it.i_node.tempemail.model.*;
-
+import it.i_node.tempemail.model.DbmailAcl;
+import it.i_node.tempemail.model.DbmailMailboxes;
+import it.i_node.tempemail.model.DbmailSubscription;
+import it.i_node.tempemail.model.PermanentUser;
+import it.i_node.tempemail.model.TempEmailAddress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +12,8 @@ import java.util.List;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
-
-@Name("tempUserHome")
-public class TempUserHome extends EntityHome<TempUser> {
-//	@In(create = true)
-	//TempEmailAddressHome teahome;
+@Name ("permanentUserHome")
+public class PermanentUserHome extends EntityHome<PermanentUser>{
 
 	@In(create = true)
 	DbmailMailboxesHome dbmailMailboxesHome;
@@ -27,10 +27,10 @@ public class TempUserHome extends EntityHome<TempUser> {
 	}
 
 	@Override
-	protected TempUser createInstance() {
-		TempUser tempUser = new TempUser();
-		tempUser.setUserType("T");
-		return tempUser;
+	protected PermanentUser createInstance() {
+		PermanentUser permanentUser = new PermanentUser();
+		permanentUser.setUserType("T");
+		return permanentUser;
 	}
 
 	public void load() {
@@ -52,7 +52,7 @@ public class TempUserHome extends EntityHome<TempUser> {
 		return true;
 	}
 
-	public  TempUser getDefinedInstance() {
+	public  PermanentUser getDefinedInstance() {
 		return isIdDefined() ? getInstance() : null;
 	}
 
@@ -67,10 +67,10 @@ public class TempUserHome extends EntityHome<TempUser> {
 				: new ArrayList<DbmailSubscription>(getInstance()
 						.getDbmailSubscriptions());
 	}
-//non serve
-//	public List<TempEmailAddress> getTempEmailAddresses() {
-//		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(
-//				getInstance().getTempEmailAddresses());
-//	}
+
+	public List<TempEmailAddress> getTempEmailAddresses() {
+		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(
+				getInstance().getTempEmailAddresses());
+	}
 
 }

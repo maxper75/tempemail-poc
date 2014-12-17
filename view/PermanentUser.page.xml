@@ -11,7 +11,21 @@
 	<param name="dbmailAutoRepliesFrom" />
 	<param name="dbmailAutoRepliesUserIdnr" value="#{dbmailAutoRepliesHome.dbmailAutoRepliesUserIdnr}" />
 	<param name="tempUserid" value="#{tempUserHome.instance.userid}" />
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.instance.userIdnr}" />
 
+
+	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromDavide}">
+		<rule if-outcome="needRetention">
+			<end-conversation />
+			<redirect view-id="/IMAPAddressPuller.xhtml" />
+		</rule>
+	</navigation>
+	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromBarbara}">
+		<rule if-outcome="needRetention">
+			<end-conversation />
+			<redirect view-id="/IMAPAddressPuller.xhtml" />
+		</rule>
+	</navigation>
 
 
 </page>

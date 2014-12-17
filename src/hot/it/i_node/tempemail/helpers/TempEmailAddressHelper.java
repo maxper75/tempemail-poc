@@ -1,7 +1,8 @@
 package it.i_node.tempemail.helpers;
 
+import it.i_node.tempemail.action.PermanentUserHome;
 import it.i_node.tempemail.action.TempEmailAddressHome;
-import it.i_node.tempemail.action.TempUserHome;
+
 import it.i_node.tempemail.jsf.Validator.EmailAddressExsistingValidator;
 import it.i_node.tempemail.model.AddressToPull;
 import it.i_node.tempemail.model.IMAPAddressPuller;
@@ -92,9 +93,7 @@ public class TempEmailAddressHelper {
 	}
 	@SuppressWarnings("unused")
 	public String persistAll(){
-		//EmailAddressExsistingValidator validator = new EmailAddressExsistingValidator();
 		EntityManager em = (EntityManager) Component.getInstance("entityManager");
-		//TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 		if (add2import!= null)
 			if (!add2import.isEmpty()){
 				for(TempEmailAddress tea: imported2Retention.keySet()){
@@ -106,8 +105,8 @@ public class TempEmailAddressHelper {
 					//altrimenti è stato già settato dalla form
 
 					if (tea.getId()>0)
-						//if(validator.exsists(tea.getEmailAddress()))
-						em.merge(tea);
+						
+						em.merge(tea);//verificare
 					//teah.update();
 					else
 						em.persist(tea);
@@ -230,9 +229,9 @@ public class TempEmailAddressHelper {
 
 	}
 	public String alreadyInMailbox(TempEmailAddress tea){
-		TempUserHome tmh = (TempUserHome) Component.getInstance(TempUserHome.class);
+		PermanentUserHome puh =(PermanentUserHome) Component.getInstance(PermanentUserHome.class);
 		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
-				tmh.getInstance().getTempEmailAddresses());
+				puh.getInstance().getTempEmailAddresses());
 		if(exsistingAddresses.contains(tea)) return "X";
 		return "";
 	}

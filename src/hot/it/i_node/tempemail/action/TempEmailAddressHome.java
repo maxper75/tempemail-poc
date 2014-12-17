@@ -1,7 +1,8 @@
 package it.i_node.tempemail.action;
 
+import it.i_node.tempemail.model.PermanentUser;
 import it.i_node.tempemail.model.TempEmailAddress;
-import it.i_node.tempemail.model.TempUser;
+
 
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -9,9 +10,9 @@ import org.jboss.seam.framework.EntityHome;
 
 @Name("tempEmailAddressHome")
 public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
-	
+
 	@In(create = true)
-	private TempUserHome tempuserHome;
+	private PermanentUserHome permanentUserHome;
 
 	public void setTempEmailAddressIdnr(Long id) {
 		setId(id);
@@ -35,10 +36,12 @@ public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
 	@Override
 	protected TempEmailAddress createInstance() {
 		TempEmailAddress tea = new TempEmailAddress();
-		//TempUser mailbox = tempMailboxHome.getDefinedInstance();
-		TempUser tempUser= tempuserHome.getDefinedInstance();
-		if (tempUser != null)
-			tea.setTempUser(tempUser);
+		
+		PermanentUser puser= permanentUserHome.getDefinedInstance();
+		
+		if (puser != null)
+			tea.setPermanentUser(puser);
+		
 		return tea;
 	}
 
