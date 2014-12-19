@@ -24,6 +24,21 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+//
+//import info.ineighborhood.cardme.io.*;
+//
+//import java.io.*;
+//import org.broad.tribble.AbstractFeatureReader;
+//import org.broad.tribble.FeatureReader;
+//import org.broadinstitute.sting.utils.Utils;
+//import org.broadinstitute.sting.utils.codecs.vcf.*;
+//import org.broadinstitute.sting.utils.variantcontext.VariantContext;
+//import org.broadinstitute.sting.utils.variantcontext.writer.*;
+//import net.sf.samtools.SAMSequenceDictionary;
+//import net.sf.picard.reference.*;
+//import com.hp.hpl.jena.vocabulary.VCARD;
+
+
 
 @Name ("tempEmailAddressHelper")
 @Scope(ScopeType.CONVERSATION)
@@ -35,7 +50,6 @@ public class TempEmailAddressHelper {
 	 * -1=deliver 
 	 * 
 	 */
-	
 	private Integer retentionPolicy;
 	private List <TempEmailAddress> add2import= new  ArrayList<TempEmailAddress>();
 	private AddressToPull utente = new AddressToPull();
@@ -142,7 +156,7 @@ public class TempEmailAddressHelper {
 			case -1:
 				return "deliver";
 			case 0:
-				return "keep(discard)";//mailbox.discarded
+				return "discard";//mailbox.discarded. in realtà viene persistito in una mailbox != mailbox.inbox (non scartato)
 			default:
 				return "retain for "+ tea.getRetentionDays() + " days";//verifica!
 				//non sempre retentionpolicy=1
@@ -159,6 +173,17 @@ public class TempEmailAddressHelper {
 		
 		return "removed";
 	}
+//	public String deleteDirectly(TempEmailAddress tea){
+//		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
+//		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
+//				puh.getInstance().getTempEmailAddresses());
+//		if(exsistingAddresses.contains(tea))
+//			exsistingAddresses.remove(tea);
+//		return remove();
+//		
+//	}
+//	
+
 	/**
 	 * metodo per importare addresses da utente AddressToPull
 	 * (viene richiamato dal pulsante "connect" dalla vista tempmailbox

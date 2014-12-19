@@ -67,6 +67,7 @@ public class TempUserHome extends EntityHome<TempUser> {
 				: new ArrayList<DbmailSubscription>(getInstance()
 						.getDbmailSubscriptions());
 	}
+	
 //non serve
 //	public List<TempEmailAddress> getTempEmailAddresses() {
 //		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(

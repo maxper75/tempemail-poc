@@ -3,7 +3,8 @@
 	xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
 	no-conversation-view-id="/TempMailboxList.xhtml" login-required="true">
 
-	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.instance.userIdnr}" />
+	
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
 
 	<navigation from-action="#{tempEmailAddressHelper.importAddresses}">
 		<rule if-outcome="needRetention">

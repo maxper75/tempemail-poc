@@ -16,10 +16,10 @@
 
 				<f:facet name="header">#{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']}</f:facet>
 
-				<s:decorate id="mailboxIdnr" template="layout/edit.xhtml">
+				<s:decorate id="UserIdnr" template="layout/edit.xhtml">
 					<ui:define name="label">User Idnr : </ui:define>
 					<h:outputText
-						value="#{tempEmailAddressHome.instance.permanentUser.userid}" />
+						value="#{tempEmailAddressHome.instance.permanentUser.userIdnr}" />
 				</s:decorate>
 
 				<s:decorate id="TempEmailAddressNameField"
@@ -40,7 +40,8 @@
 					<h:inputText id="TempEmailAddressEmailAddress"
 						value="#{tempEmailAddressHome.instance.emailAddress}">
 						<f:validator validatorId="emailAddressValidator" />
-						<f:validator validatorId="emailAddressExsistingValidator"/>
+						<f:validator validatorId="emailAddressExsistingValidator"
+							disabled="#{!tempEmailAddressHome.managed}" />
 						<a:ajax event="blur" render="TempEmailAddressEmailAddressField"
 							execute="@this" />
 

@@ -33,6 +33,7 @@ public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
 		
 	}
 	
+	
 	@Override
 	protected TempEmailAddress createInstance() {
 		TempEmailAddress tea = new TempEmailAddress();
@@ -57,4 +58,7 @@ public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
 	public boolean isWired() {
 		return true;
 	}
+//	public PermanentUser getPermanentUser(){
+//		return getInstance()== null? null: getInstance().getPermanentUser();
+//	}
 }

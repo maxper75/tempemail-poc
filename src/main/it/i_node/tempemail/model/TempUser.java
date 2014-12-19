@@ -21,12 +21,12 @@ public class TempUser extends DbmailUsers {
 	private Date creationDate;
 	private Date refreshDate;
 
-	public boolean isDirty() {
-		return dirty;
-	}
-	public void setDirty(boolean dirty) {
-		this.dirty = dirty;
-	}
+//	public boolean isDirty() {
+//		return dirty;
+//	}
+//	public void setDirty(boolean dirty) {
+//		this.dirty = dirty;
+//	}
 
 
 	public Date getRefreshDate() {

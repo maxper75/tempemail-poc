@@ -7,11 +7,8 @@
 
 
 	<action execute="#{tempEmailAddressHome.wire}" />
-	
-	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.instance.userIdnr}" />
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
 	<param name="tempEmailAddressId" value="#{tempEmailAddressHome.tempEmailAddressIdnr}" />
-
-
 
 	<navigation from-action="#{tempEmailAddressHelper.persist}">
 		<rule if-outcome="persisted">

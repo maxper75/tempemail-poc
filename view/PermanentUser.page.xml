@@ -11,7 +11,7 @@
 	<param name="dbmailAutoRepliesFrom" />
 	<param name="dbmailAutoRepliesUserIdnr" value="#{dbmailAutoRepliesHome.dbmailAutoRepliesUserIdnr}" />
 	<param name="tempUserid" value="#{tempUserHome.instance.userid}" />
-	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.instance.userIdnr}" />
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
 
 
 	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromDavide}">
@@ -26,6 +26,7 @@
 			<redirect view-id="/IMAPAddressPuller.xhtml" />
 		</rule>
 	</navigation>
+
 
 
 </page>

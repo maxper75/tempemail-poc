@@ -1,7 +1,9 @@
 package it.i_node.tempemail.action;
 
 import it.i_node.tempemail.model.DbmailAcl;
+import it.i_node.tempemail.model.DbmailFilters;
 import it.i_node.tempemail.model.DbmailMailboxes;
+import it.i_node.tempemail.model.DbmailSievescripts;
 import it.i_node.tempemail.model.DbmailSubscription;
 import it.i_node.tempemail.model.PermanentUser;
 import it.i_node.tempemail.model.TempEmailAddress;
@@ -18,11 +20,11 @@ public class PermanentUserHome extends EntityHome<PermanentUser>{
 	@In(create = true)
 	DbmailMailboxesHome dbmailMailboxesHome;
 	
-	public void setTempUserUserIdnr(Long id) {
+	public void setPermanentUserUserIdnr(Long id) {
 		setId(id);
 	}
 
-	public Long getTempUserUserIdnr() {
+	public Long getPermanentUserUserIdnr() {
 		return (Long) getId();
 	}
 
@@ -56,21 +58,39 @@ public class PermanentUserHome extends EntityHome<PermanentUser>{
 		return isIdDefined() ? getInstance() : null;
 	}
 
+
+
+	
+
+	public List<TempEmailAddress> getTempEmailAddresses() {
+		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(
+				getInstance().getTempEmailAddresses());
+	}
+
 	public List<DbmailAcl> getDbmailAcls() {
 		return getInstance() == null ? null : new ArrayList<DbmailAcl>(
 				getInstance().getDbmailAcls());
 	}
-
+	public List<DbmailFilters> getDbmailFilterses() {
+		return getInstance() == null ? null : new ArrayList<DbmailFilters>(
+				getInstance().getDbmailFilterses());
+	}
+	public List<DbmailMailboxes> getDbmailMailboxeses() {
+		return getInstance() == null ? null : new ArrayList<DbmailMailboxes>(
+				getInstance().getDbmailMailboxeses());
+	}
+	public List<DbmailSievescripts> getDbmailSievescriptses() {
+		return getInstance() == null
+				? null
+				: new ArrayList<DbmailSievescripts>(getInstance()
+						.getDbmailSievescriptses());
+	}
 	public List<DbmailSubscription> getDbmailSubscriptions() {
 		return getInstance() == null
 				? null
 				: new ArrayList<DbmailSubscription>(getInstance()
 						.getDbmailSubscriptions());
 	}
-
-	public List<TempEmailAddress> getTempEmailAddresses() {
-		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(
-				getInstance().getTempEmailAddresses());
-	}
+	
 
 }

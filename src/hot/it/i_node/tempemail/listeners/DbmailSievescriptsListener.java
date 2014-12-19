@@ -2,6 +2,7 @@ package it.i_node.tempemail.listeners;
 
 import it.i_node.tempemail.model.DbmailSievescripts;
 import it.i_node.tempemail.model.DbmailUsers;
+import it.i_node.tempemail.model.PermanentUser;
 import it.i_node.tempemail.model.TempEmailAddress;
 import it.i_node.tempemail.model.TempUser;
 
@@ -18,7 +19,7 @@ public class DbmailSievescriptsListener {
 		if(script.getDbmailUsers().getUserType().equals("T"))
 		{
 			EntityManager em = (EntityManager) Component.getInstance("entityManager");
-			TempUser user = em.find(TempUser.class, script.getDbmailUsers().getUserIdnr());
+			PermanentUser user = em.find(PermanentUser.class, script.getDbmailUsers().getUserIdnr());
 			if(user!=null)
 				user.setDirty(false);
 				
@@ -29,7 +30,7 @@ public class DbmailSievescriptsListener {
 		if(script.getDbmailUsers().getUserType().equals("T"))
 		{
 			EntityManager em = (EntityManager) Component.getInstance("entityManager");
-			TempUser user = em.find(TempUser.class, script.getDbmailUsers().getUserIdnr());
+			PermanentUser user = em.find(PermanentUser.class, script.getDbmailUsers().getUserIdnr());
 			if(user!=null)
 				user.setDirty(false);
 				

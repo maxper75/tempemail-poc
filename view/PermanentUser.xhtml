@@ -368,12 +368,12 @@
 
 					<h:outputText
 						value="There are no dbmailSievescriptses associated with this dbmailUsers."
-						rendered="#{empty permanentUserHome.instance.dbmailSievescriptses}" />
+						rendered="#{empty permanentUserHome.dbmailSievescriptses}" />
 
 					<rich:dataTable
-						value="#{permanentUserHome.instance.dbmailSievescriptses}"
+						value="#{permanentUserHome.dbmailSievescriptses}"
 						var="_dbmailSievescripts"
-						rendered="#{not empty permanentUserHome.instance.dbmailSievescriptses}"
+						rendered="#{not empty permanentUserHome.dbmailSievescriptses}"
 						rowClasses="rvgRowOne,rvgRowTwo" id="dbmailSievescriptsesTable">
 						<rich:column sortBy="#{_dbmailSievescripts.id}">
 							<f:facet name="header">#{messages['DbmailSievescripts.id.label']}</f:facet>
@@ -519,7 +519,7 @@
 								value="#{permanentUserHome.instance.userIdnr}" />
 						</s:button>
 						<h:commandButton action="#{permanentUserHelper.generateSieveRule}"
-							value="Generate sieve rule" />
+							value="Generate sieve rule" disabled="#{not permanentUserHome.instance.dirty}"/>
 						<s:button value="Add tempEmailAddress"
 							view="/TempEmailAddressEdit.xhtml" propagation="end"
 							includePageParams="false">

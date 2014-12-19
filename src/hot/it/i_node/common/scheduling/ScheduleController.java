@@ -21,12 +21,17 @@ public class ScheduleController {
     private static String CRON_INTERVAL_TEMPMAILBOX = "0 * * * * ?";
     private static String CRON_INTERVAL_TEMPALIAS = "0 * * * * ?";  
     private static String MESSAGE_QUEUE_INTERVAL = "*/5 * * * * ?";
+    private static String CRON_INTERVAL_TEMPUSER = "0 * * * * ?";
+
     
 
 	public void startProcesses(){
-		SynchronousQueueManager.instance().getTriggerHandler(Calendar.getInstance().getTime(),MESSAGE_QUEUE_INTERVAL);		
-		TempMailboxRemovalScheduler mailboxRemovalScheduler=TempMailboxRemovalScheduler.instance();
-		testSchedulerHandle=mailboxRemovalScheduler.getTriggerHandler(Calendar.getInstance().getTime(),CRON_INTERVAL_TEMPMAILBOX);
+		SynchronousQueueManager.instance().getTriggerHandler(Calendar.getInstance().getTime(),MESSAGE_QUEUE_INTERVAL);
+		
+		//TempMailboxRemovalScheduler mailboxRemovalScheduler=TempMailboxRemovalScheduler.instance();
+		TempUserRemovalScheduler tempuserRemovalScheduler = TempUserRemovalScheduler.instance();
+		//testSchedulerHandle=mailboxRemovalScheduler.getTriggerHandler(Calendar.getInstance().getTime(),CRON_INTERVAL_TEMPMAILBOX);
+		testSchedulerHandle=tempuserRemovalScheduler.getTriggerHandler(Calendar.getInstance().getTime(),CRON_INTERVAL_TEMPUSER);
 		TempAliasRemovalScheduler.instance().getTriggerHandler(Calendar.getInstance().getTime(), CRON_INTERVAL_TEMPALIAS);
 	}
 }

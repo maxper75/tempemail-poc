@@ -17,7 +17,7 @@ import it.i_node.tempemail.model.TempEmailAddress;
 
 @Name ("permanentUserHelper")
 public class PermanentUserHelper {
-
+ 
 
 	public String generateSieveRule(){
 		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);

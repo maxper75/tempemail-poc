@@ -30,4 +30,5 @@ public class PermanentUser extends DbmailUsers{
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
+
 }
