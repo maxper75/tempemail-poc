@@ -279,10 +279,10 @@
 
 					<h:outputText
 						value="There are no dbmailMailboxeses associated with this dbmailUsers."
-						rendered="#{empty permanentUserHome.instance.dbmailMailboxeses}" />
+						rendered="#{empty permanentUserHome.dbmailMailboxeses}" />
 
 					<rich:dataTable
-						value="#{permanentUserHome.instance.dbmailMailboxeses}"
+						value="#{permanentUserHome.dbmailMailboxeses}"
 						var="_dbmailMailboxes"
 						rendered="#{not empty permanentUserHome.instance.dbmailMailboxeses}"
 						rowClasses="rvgRowOne,rvgRowTwo" id="dbmailMailboxesesTable">
@@ -512,7 +512,11 @@
 					</rich:dataTable>
 
 					<div class="actionButtons">
-
+					<s:button value="import vcf" view="/VCF.xhtml"
+							propagation="end" includePageParams="false">
+							<f:param name="permanentUsersUserIdnr"
+								value="#{permanentUserHome.instance.userIdnr}" />
+						</s:button>
 						<s:button value="import Addresses" view="/AddressToPull.xhtml"
 							propagation="end" includePageParams="false">
 							<f:param name="permanentUsersUserIdnr"
@@ -526,17 +530,6 @@
 							<f:param name="permanentUsersUserIdnr"
 								value="#{permanentUserHome.instance.userIdnr}" />
 						</s:button>
-						<h:commandButton value="import Addresses From Davide's Sent"
-							action="#{tempEmailAddressHelper.importAddressesFromDavide}">
-							<f:param name="permanentUsersUserIdnr"
-								value="#{permanentUserHome.instance.userIdnr}" />
-						</h:commandButton>
-						<h:commandButton value="import Addresses from Barbara's Sent"
-							action="#{tempEmailAddressHelper.importAddressesFromBarbara}">
-							<f:param name="permanentUsersUserIdnr"
-								value="#{permanentUserHome.instance.userIdnr}" />
-						</h:commandButton>
-
 
 					</div>
 				</h:form>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns="http://jboss.org/schema/seam/pages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
+	no-conversation-view-id="/TempMailboxList.xhtml" login-required="true">
+
+
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
+	
+	<navigation from-action="#{tempEmailAddressHelper.importVcf()}">
+		<rule if-outcome="needRetention">
+			<end-conversation />
+			<redirect view-id="/IMAPAddressPuller.xhtml" />
+		</rule>
+	</navigation>
+</page>

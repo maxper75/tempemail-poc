@@ -26,6 +26,13 @@
 			<redirect view-id="/IMAPAddressPuller.xhtml" />
 		</rule>
 	</navigation>
+	<navigation from-action="#{tempEmailAddressHelper.importVcfTest()}">
+		<rule if-outcome="needRetention">
+			<end-conversation />
+			<redirect view-id="/IMAPAddressPuller.xhtml" />
+		</rule>
+	</navigation>
+	
 
 
 

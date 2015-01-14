@@ -308,5 +308,9 @@
 	<classpathentry kind="lib" path="lib/test/xnio-nio-3.0.3.GA.jar"/>
 	<classpathentry kind="lib" path="lib/resteasy-jsapi.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/postgresql-jdbc.jar"/>
+	<classpathentry kind="lib" path="/home/bcovella/projects/tempemail/lib/ez-vcard-0.9.6-with-deps/ez-vcard-0.9.6.jar"/>
+	<classpathentry kind="lib" path="/home/bcovella/projects/tempemail/lib/ez-vcard-0.9.6-with-deps/freemarker-2.3.20.jar"/>
+	<classpathentry kind="lib" path="/home/bcovella/projects/tempemail/lib/ez-vcard-0.9.6-with-deps/jackson-core-2.3.3.jar"/>
+	<classpathentry kind="lib" path="/home/bcovella/projects/tempemail/lib/ez-vcard-0.9.6-with-deps/jsoup-1.7.3.jar"/>
 	<classpathentry kind="output" path="test-build"/>
 </classpath>

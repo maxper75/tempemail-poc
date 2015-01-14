@@ -2,6 +2,8 @@ package it.i_node.tempemail.model;
 
 import it.i_node.tempemail.action.PermanentUserHome;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,8 +19,13 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
 
+import org.apache.derby.iapi.util.CheapDateFormatter;
 import org.jboss.seam.Component;
 import org.jboss.seam.annotations.Name;
+
+import ezvcard.Ezvcard;
+import ezvcard.VCard;
+import ezvcard.property.Email;
 
 
 @Name("imapAddressPuller")
@@ -27,13 +34,39 @@ public class IMAPAddressPuller {
 	public IMAPAddressPuller() {
 
 	}
+
+	public void checkNupdate(List<TempEmailAddress> exsistingAddresses,TempEmailAddress tea, Map <String,TempEmailAddress> address2tempEmail,PermanentUser puser){
+		if(exsistingAddresses.contains(tea)){// se recipient è già presente nella mailbox
+			
+			//address tra gli esistenti == address dei sent
+			TempEmailAddress exsistingAddress = 
+					exsistingAddresses.get(exsistingAddresses.indexOf(tea));
+			//aggiorno il nome	
+			if(tea.getName()!=null && exsistingAddress.getName()== null ){
+				exsistingAddress.setName(tea.getName());	
+			}
+			//aggiungo alla mappa l'indirizzo degli esistenti
+			address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
+
+		}
+		else{//	Altrimenti se non è già presente nella mailbox	
+							
+			if (!address2tempEmail.containsKey(tea.getEmailAddress())){
+				tea.setPermanentUser(puser);
+				address2tempEmail.put(tea.getEmailAddress(),tea);
+
+			}
+			else if (tea.getName()!= null && address2tempEmail.get(tea.getEmailAddress()).getName()== null)
+				address2tempEmail.get(tea.getEmailAddress())
+				.setName(tea.getName());		
+		}	
+	}
 	/**
 	 * @param: Utente da cui importare gli address
 	 * @return: hashSet con tutti gli indirizzi( TempEmailAddress da importare
 	 * 											 e TempEmailAddress  già presenti nella TempMailbox con il valore di 
 	 * 														retentionDays già settato precedentemente) 
-	 */
-	
+	 */	
 	public Set<TempEmailAddress> addressesFromSentFolder (AddressToPull utente) throws MessagingException {
 		Properties props = System.getProperties();
 		props.setProperty("mail.store.protocol",utente.getImapORimaps());
@@ -43,7 +76,6 @@ public class IMAPAddressPuller {
 		Store store = session.getStore(utente.getImapORimaps());
 		store.connect(utente.getServerName(), utente.getEmail(),utente.getPassword());
 
-		//Folder [] folders=store.getDefaultFolder().list("*");
 		Folder sent= store.getFolder("Sent");
 		sent.open(Folder.READ_ONLY);
 		TempEmailAddressFactory teaf = new TempEmailAddressFactory();
@@ -56,31 +88,7 @@ public class IMAPAddressPuller {
 			for (Address aR: m.getAllRecipients()){
 				//address nella cartella sent
 				TempEmailAddress recipient = teaf.createAddress(aR);
-				if(exsistingAddresses.contains(recipient)){// se recipient è già presente nella mailbox
-					
-					//address tra gli esistenti == address dei sent
-					TempEmailAddress exsistingAddress = 
-							exsistingAddresses.get(exsistingAddresses.indexOf(recipient));
-					//aggiorno il nome	
-					if(recipient.getName()!=null && exsistingAddress.getName()== null ){
-						exsistingAddress.setName(recipient.getName());	
-					}
-					//aggiungo alla mappa l'indirizzo degli esistenti
-					address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
-
-				}
-				else{//	Altrimenti se non è già presente nella mailbox	
-									
-					if (!address2tempEmail.containsKey(recipient.getEmailAddress())){
-
-						recipient.setPermanentUser(puh.getInstance());
-						address2tempEmail.put(recipient.getEmailAddress(),recipient);
-
-					}
-					else if (recipient.getName()!= null && address2tempEmail.get(recipient.getEmailAddress()).getName()== null)
-						address2tempEmail.get(recipient.getEmailAddress())
-						.setName(recipient.getName());		
-				}	
+				checkNupdate(exsistingAddresses, recipient, address2tempEmail,puh.getInstance());
 			}
 		}
 		//finisco di riempire con tutti quelli che non rientrano tra i recipient ma sono presenti nella mailbox
@@ -98,8 +106,25 @@ public class IMAPAddressPuller {
 		}
 		
 	}
-
-
-
+	
+	public Set<TempEmailAddress> addressFromVcf(String pathname) throws MessagingException, IOException {
+		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
+		//addresses della tempMailbox : già esistenti
+		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
+				puh.getInstance().getTempEmailAddresses());
+		Map <String,TempEmailAddress> address2tempEmail = new HashMap<String,TempEmailAddress>();
+		File file = new File(pathname);
+		VCard vcard = Ezvcard.parse(file).first();
+		for (Email em: vcard.getEmails()){
+			TempEmailAddress tea = new TempEmailAddress();
+			tea.setEmailAddress(em.getValue());
+			tea.setName(vcard.getFormattedName().getValue());
+			tea.setPermanentUser(puh.getInstance());
+			tea.setRetentionDays(0);
+			checkNupdate(exsistingAddresses, tea, address2tempEmail,puh.getInstance());
+		}
+		fillMapExsisting( exsistingAddresses, address2tempEmail);
+		return	new HashSet<TempEmailAddress>(address2tempEmail.values());
+	}
 
 }

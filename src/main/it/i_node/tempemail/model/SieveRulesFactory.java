@@ -16,7 +16,7 @@ import javax.persistence.Persistence;
 import org.jboss.seam.annotations.Name;
 
 import com.google.common.base.Joiner;
-@Name("sieveRulesFactory")
+
 public class SieveRulesFactory {
 
 	/**Meaning of retain number

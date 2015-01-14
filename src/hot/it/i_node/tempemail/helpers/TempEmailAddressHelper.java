@@ -2,21 +2,19 @@ package it.i_node.tempemail.helpers;
 
 import it.i_node.tempemail.action.PermanentUserHome;
 import it.i_node.tempemail.action.TempEmailAddressHome;
-
-import it.i_node.tempemail.jsf.Validator.EmailAddressExsistingValidator;
 import it.i_node.tempemail.model.AddressToPull;
 import it.i_node.tempemail.model.IMAPAddressPuller;
-import it.i_node.tempemail.model.ImportedAddress;
 import it.i_node.tempemail.model.TempEmailAddress;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.persistence.EntityManager;
 
 import org.jboss.seam.Component;
@@ -24,19 +22,10 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-//
-//import info.ineighborhood.cardme.io.*;
-//
-//import java.io.*;
-//import org.broad.tribble.AbstractFeatureReader;
-//import org.broad.tribble.FeatureReader;
-//import org.broadinstitute.sting.utils.Utils;
-//import org.broadinstitute.sting.utils.codecs.vcf.*;
-//import org.broadinstitute.sting.utils.variantcontext.VariantContext;
-//import org.broadinstitute.sting.utils.variantcontext.writer.*;
-//import net.sf.samtools.SAMSequenceDictionary;
-//import net.sf.picard.reference.*;
-//import com.hp.hpl.jena.vocabulary.VCARD;
+
+import ezvcard.Ezvcard;
+import ezvcard.VCard;
+import ezvcard.property.Email;
 
 
 
@@ -54,11 +43,14 @@ public class TempEmailAddressHelper {
 	private List <TempEmailAddress> add2import= new  ArrayList<TempEmailAddress>();
 	private AddressToPull utente = new AddressToPull();
 	private Map <TempEmailAddress,Integer> imported2Retention = new HashMap<TempEmailAddress, Integer>();
-	//utente da usare per i test(più address= più lento nel caricamento)
-	private AddressToPull davide;
-	//utente da usare per i test (unico address= più veloce nel caricamento)
-	private AddressToPull barbara;
+	private String pathname;
 
+	public String getPathname() {
+		return pathname;
+	}
+	public void setPathname(String pathname) {
+		this.pathname = pathname;
+	}
 	public AddressToPull getUtente() {
 		return utente;
 	}
@@ -95,14 +87,14 @@ public class TempEmailAddressHelper {
 
 	}
 	public String persist(){
-		
+
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 
 		if(retentionPolicy<1)//0 oppure -1
 			teah.getInstance().setRetentionDays(retentionPolicy);
 
 
-		
+
 		return teah.persist();
 	}
 	@SuppressWarnings("unused")
@@ -119,13 +111,13 @@ public class TempEmailAddressHelper {
 					//altrimenti è stato già settato dalla form
 
 					if (tea.getId()>0)
-						
+
 						em.merge(tea);//verificare
 					//teah.update();
 					else
 						em.persist(tea);
 				}
-				
+
 				return "addedAll";
 			}
 		return "noAddressesAdded";
@@ -139,14 +131,14 @@ public class TempEmailAddressHelper {
 	}
 	public String update(){
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
-		if(retentionPolicy<1)
+		if(retentionPolicy<1)// 0=discard // 1= deliver
 			teah.getInstance().setRetentionDays(retentionPolicy);
 		
 		return teah.update();
 	}
 	public String remove(){
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
-		
+
 		return teah.remove(); 
 	}
 
@@ -170,19 +162,9 @@ public class TempEmailAddressHelper {
 			add2import.remove(tea);
 		if (imported2Retention.containsKey(tea))
 			imported2Retention.remove(tea);
-		
+
 		return "removed";
 	}
-//	public String deleteDirectly(TempEmailAddress tea){
-//		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
-//		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
-//				puh.getInstance().getTempEmailAddresses());
-//		if(exsistingAddresses.contains(tea))
-//			exsistingAddresses.remove(tea);
-//		return remove();
-//		
-//	}
-//	
 
 	/**
 	 * metodo per importare addresses da utente AddressToPull
@@ -194,7 +176,6 @@ public class TempEmailAddressHelper {
 		if (!add2import.isEmpty())
 			fillMap(add2import);		
 		return "needRetention";
-		//return "imported";
 	}
 	public void fillMap(List <TempEmailAddress> teaList){
 		//tealist not empty (test in importAddresses)
@@ -219,40 +200,6 @@ public class TempEmailAddressHelper {
 		return 0;//default se non esiste retentiondays
 
 	}
-	
-	/**
-	 * metodo da usare nella fase di test
-	 * più lento nel caricamento
-	 * */
-	public String importAddressesFromDavide() throws MessagingException{
-		IMAPAddressPuller puller = new IMAPAddressPuller();
-		davide = new AddressToPull();
-		davide.setEmail("d.pucci@i-node.it");
-		davide.setImapORimaps("imap");
-		davide.setPassword("uuuV2Tk3");
-		davide.setServerName("zimbra.i-node.it");
-		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressesFromSentFolder(davide)));
-		if (!add2import.isEmpty())
-			fillMap(add2import);		
-		return "needRetention";
-
-	}
-	/**
-	 * metodo da usare nella fase di test
-	 * più rapido nel caricamento*/
-	public String importAddressesFromBarbara() throws MessagingException{
-		IMAPAddressPuller puller = new IMAPAddressPuller();
-		barbara = new AddressToPull();
-		barbara.setEmail("b.covella@i-node.it");
-		barbara.setImapORimaps("imap");
-		barbara.setPassword("7mJ7nagE");
-		barbara.setServerName("zimbra.i-node.it");
-		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressesFromSentFolder(barbara)));
-		if (!add2import.isEmpty())
-			fillMap(add2import);		
-		return "needRetention";
-
-	}
 	public String alreadyInMailbox(TempEmailAddress tea){
 		PermanentUserHome puh =(PermanentUserHome) Component.getInstance(PermanentUserHome.class);
 		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
@@ -261,15 +208,23 @@ public class TempEmailAddressHelper {
 		return "";
 	}
 
+	public String importVcf () throws IOException, MessagingException{
+		IMAPAddressPuller puller = new IMAPAddressPuller();
+		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf(pathname)));
+		if (!add2import.isEmpty())
+			fillMap(add2import);	
+		return "needRetention";
 
+	}
+//	public String importVcfTest () throws IOException, MessagingException{
+//		IMAPAddressPuller puller = new IMAPAddressPuller();
+//		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf("/home/bcovella/Scaricati/sample.vcf")));
+//		if (!add2import.isEmpty())
+//			fillMap(add2import);	
+//		return "needRetention";
+//
+//	}
 
-	//	public ImportedAddress getElemFromList(TempEmailAddress tea){
-	//		if(!importedNRetentionPolicy.isEmpty())
-	//		for (ImportedAddress imported: importedNRetentionPolicy)
-	//			if(imported.getTea()==tea)
-	//				return imported;
-	//		return null;//non esiste l'elemento
-	//	}
 
 
 
