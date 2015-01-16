@@ -2,8 +2,12 @@ package it.i_node.tempemail.model;
 
 import it.i_node.tempemail.action.PermanentUserHome;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,11 +24,13 @@ import javax.mail.Session;
 import javax.mail.Store;
 
 import org.apache.derby.iapi.util.CheapDateFormatter;
+import org.apache.poi.hssf.util.HSSFColor.TEAL;
 import org.jboss.seam.Component;
 import org.jboss.seam.annotations.Name;
 
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
+import ezvcard.io.text.VCardReader;
 import ezvcard.property.Email;
 
 
@@ -36,30 +42,30 @@ public class IMAPAddressPuller {
 	}
 
 	public void checkNupdate(List<TempEmailAddress> exsistingAddresses,TempEmailAddress tea, Map <String,TempEmailAddress> address2tempEmail,PermanentUser puser){
-		if(exsistingAddresses.contains(tea)){// se recipient è già presente nella mailbox
-			
-			//address tra gli esistenti == address dei sent
-			TempEmailAddress exsistingAddress = 
-					exsistingAddresses.get(exsistingAddresses.indexOf(tea));
-			//aggiorno il nome	
-			if(tea.getName()!=null && exsistingAddress.getName()== null ){
-				exsistingAddress.setName(tea.getName());	
-			}
-			//aggiungo alla mappa l'indirizzo degli esistenti
-			address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
-
-		}
-		else{//	Altrimenti se non è già presente nella mailbox	
-							
-			if (!address2tempEmail.containsKey(tea.getEmailAddress())){
-				tea.setPermanentUser(puser);
-				address2tempEmail.put(tea.getEmailAddress(),tea);
-
-			}
-			else if (tea.getName()!= null && address2tempEmail.get(tea.getEmailAddress()).getName()== null)
-				address2tempEmail.get(tea.getEmailAddress())
-				.setName(tea.getName());		
-		}	
+//		if(exsistingAddresses.contains(tea)){// se recipient è già presente nella mailbox
+//			
+//			//address tra gli esistenti == address dei sent
+//			TempEmailAddress exsistingAddress = 
+//					exsistingAddresses.get(exsistingAddresses.indexOf(tea));
+//			//aggiorno il nome	
+//			if(tea.getName()!=null && exsistingAddress.getName()== null ){
+//				exsistingAddress.setName(tea.getName());	
+//			}
+//			//aggiungo alla mappa l'indirizzo degli esistenti
+//			address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
+//
+//		}
+//		else{//	Altrimenti se non è già presente nella mailbox	
+//							
+//			if (!address2tempEmail.containsKey(tea.getEmailAddress())){
+//				tea.setPermanentUser(puser);
+//				address2tempEmail.put(tea.getEmailAddress(),tea);
+//
+//			}
+//			else if (tea.getName()!= null && address2tempEmail.get(tea.getEmailAddress()).getName()== null)
+//				address2tempEmail.get(tea.getEmailAddress())
+//				.setName(tea.getName());		
+//		}	
 	}
 	/**
 	 * @param: Utente da cui importare gli address
@@ -88,7 +94,30 @@ public class IMAPAddressPuller {
 			for (Address aR: m.getAllRecipients()){
 				//address nella cartella sent
 				TempEmailAddress recipient = teaf.createAddress(aR);
-				checkNupdate(exsistingAddresses, recipient, address2tempEmail,puh.getInstance());
+				if(exsistingAddresses.contains(recipient)){// se recipient è già presente nella mailbox
+					
+					//address tra gli esistenti == address dei sent
+					TempEmailAddress exsistingAddress = 
+							exsistingAddresses.get(exsistingAddresses.indexOf(recipient));
+					//aggiorno il nome	
+					if(recipient.getName()!=null && exsistingAddress.getName()== null ){
+						exsistingAddress.setName(recipient.getName());	
+					}
+					//aggiungo alla mappa l'indirizzo degli esistenti
+					address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
+
+				}
+				else{//	Altrimenti se non è già presente nella mailbox	
+									
+					if (!address2tempEmail.containsKey(recipient.getEmailAddress())){
+						recipient.setPermanentUser(puh.getInstance());
+						address2tempEmail.put(recipient.getEmailAddress(),recipient);
+
+					}
+					else if (recipient.getName()!= null && address2tempEmail.get(recipient.getEmailAddress()).getName()== null)
+						address2tempEmail.get(recipient.getEmailAddress())
+						.setName(recipient.getName());		
+				}	
 			}
 		}
 		//finisco di riempire con tutti quelli che non rientrano tra i recipient ma sono presenti nella mailbox
@@ -126,5 +155,38 @@ public class IMAPAddressPuller {
 		fillMapExsisting( exsistingAddresses, address2tempEmail);
 		return	new HashSet<TempEmailAddress>(address2tempEmail.values());
 	}
+/**
+ * metodo non completo
+ * @throws IOException 
+ * 
+ * 
+ * doc: http://stackoverflow.com/questions/13008943/icefaces-seam-file-upload-component-not-uploading-files
+ * doc: https://ez-vcard.googlecode.com/svn/javadocs/latest/ezvcard/io/text/VCardReader.html
+ * doc: http://facestutorials.icefaces.org/tutorial/inputFile-tutorial.html
+ */	
+	public Set<TempEmailAddress> uploadVcf(InputStream in) throws IOException{
+		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
+		Map <String,TempEmailAddress> address2tempEmail = new HashMap<String,TempEmailAddress>();
+		BufferedInputStream buffer = new BufferedInputStream(in);
+		Reader inreader = null;
+		BufferedReader bufferReader = new BufferedReader(inreader);
+
+		VCardReader vcardReader = new VCardReader(in);// InputStream in: the input stream to read the vcards from
+		VCard vcard;
+		while ((vcard = vcardReader.readNext()) != null){
+			for (Email em: vcard.getEmails()){
+			TempEmailAddress tea = new TempEmailAddress();
+			tea.setEmailAddress(em.getValue());
+			tea.setName(vcard.getFormattedName().getValue());
+			tea.setPermanentUser(puh.getInstance());
+			tea.setRetentionDays(0);// default
+			address2tempEmail.put(tea.getEmailAddress(), tea);
+			}
+		}
+		buffer.close();
+		vcardReader.close();
+		return new HashSet<TempEmailAddress>(address2tempEmail.values());
+	}
+	
 
 }

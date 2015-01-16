@@ -111,7 +111,7 @@ public class TempEmailAddressHelper {
 					//altrimenti è stato già settato dalla form
 
 					if (tea.getId()>0)
-
+						
 						em.merge(tea);//verificare
 					//teah.update();
 					else
@@ -133,7 +133,7 @@ public class TempEmailAddressHelper {
 		TempEmailAddressHome teah = (TempEmailAddressHome) Component.getInstance(TempEmailAddressHome.class);
 		if(retentionPolicy<1)// 0=discard // 1= deliver
 			teah.getInstance().setRetentionDays(retentionPolicy);
-		
+
 		return teah.update();
 	}
 	public String remove(){
@@ -185,6 +185,14 @@ public class TempEmailAddressHelper {
 		}
 
 	}
+	public String importAddressesFromUser(AddressToPull topull) throws MessagingException{
+		if(topull!= null){
+			setUtente(topull);
+			return importAddresses();
+		}
+		return "nullUser";
+
+	}
 	public Integer getRetentionPolicyFromRetentionDays(TempEmailAddress tea){
 		if (tea.getRetentionDays()!=null)	{
 			switch(tea.getRetentionDays()){
@@ -209,21 +217,21 @@ public class TempEmailAddressHelper {
 	}
 
 	public String importVcf () throws IOException, MessagingException{
-		IMAPAddressPuller puller = new IMAPAddressPuller();
-		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf(pathname)));
-		if (!add2import.isEmpty())
-			fillMap(add2import);	
+//		IMAPAddressPuller puller = new IMAPAddressPuller();
+//		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf(pathname)));
+//		if (!add2import.isEmpty())
+//			fillMap(add2import);	
 		return "needRetention";
 
 	}
-//	public String importVcfTest () throws IOException, MessagingException{
-//		IMAPAddressPuller puller = new IMAPAddressPuller();
-//		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf("/home/bcovella/Scaricati/sample.vcf")));
-//		if (!add2import.isEmpty())
-//			fillMap(add2import);	
-//		return "needRetention";
-//
-//	}
+	//	public String importVcfTest () throws IOException, MessagingException{
+	//		IMAPAddressPuller puller = new IMAPAddressPuller();
+	//		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf("/home/bcovella/Scaricati/sample.vcf")));
+	//		if (!add2import.isEmpty())
+	//			fillMap(add2import);	
+	//		return "needRetention";
+	//
+	//	}
 
 
 

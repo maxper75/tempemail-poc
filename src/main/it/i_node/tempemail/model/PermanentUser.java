@@ -17,7 +17,7 @@ public class PermanentUser extends DbmailUsers{
 	private boolean dirty;
 	private Set <AddressToPull> addressesToPull = new HashSet<AddressToPull>(0); 
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="permanentUser" )
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="permanentUser")
 	public Set<AddressToPull> getAddressesToPull() {
 		return addressesToPull;
 	}

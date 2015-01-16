@@ -14,13 +14,7 @@
 	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
 
 
-	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromDavide}">
-		<rule if-outcome="needRetention">
-			<end-conversation />
-			<redirect view-id="/IMAPAddressPuller.xhtml" />
-		</rule>
-	</navigation>
-	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromBarbara}">
+	<navigation from-action="#{tempEmailAddressHelper.importAddressesFromUser(_addressToPull)}">
 		<rule if-outcome="needRetention">
 			<end-conversation />
 			<redirect view-id="/IMAPAddressPuller.xhtml" />

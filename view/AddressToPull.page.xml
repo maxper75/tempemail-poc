@@ -6,11 +6,31 @@
 	
 	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
 
-	<navigation from-action="#{tempEmailAddressHelper.importAddresses}">
-		<rule if-outcome="needRetention">
+<!-- 	<navigation from-action="#{tempEmailAddressHelper.importAddresses}"> -->
+<!-- 		<rule if-outcome="needRetention"> -->
+<!-- 			<end-conversation /> -->
+<!-- 			<redirect view-id="/IMAPAddressPuller.xhtml" /> -->
+<!-- 		</rule> -->
+<!-- 	</navigation> -->
+	
+	<navigation from-action="#{addressToPullHome.persist}">
+		<rule if-outcome="persisted">
 			<end-conversation />
-			<redirect view-id="/IMAPAddressPuller.xhtml" />
+			<redirect view-id="/PermanentUser.xhtml" />
 		</rule>
 	</navigation>
+	<navigation from-action="#{addressToPullHome.update}">
+		<rule if-outcome="updated">
+			<end-conversation />
+			<redirect view-id="/PermanentUser.xhtml" />
+		</rule>
+	</navigation>
+	<navigation from-action="#{addressToPullHome.remove}">
+		<rule if-outcome="removed">
+			<end-conversation />
+			<redirect view-id="/PermanentUser.xhtml" />
+		</rule>
+	</navigation>
+	
 
 </page>

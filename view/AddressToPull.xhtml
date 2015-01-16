@@ -10,22 +10,14 @@
 	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
 	<ui:define name="body">
 
-		<!-- 		<rich:tabPanel switchType="client"> -->
 		<h:form id="addressToPull" styleClass="edit">
 
 			<rich:panel>
-				<!-- #{tempEmailAddressHome.managed ? messages['TempEmailAddress.edit'] :messages['TempEmailAddress.add']} -->
 				<f:facet name="header">#{messages['AddressToPull.form']}</f:facet>
 
 				<s:decorate id="AddressToPullImapField" template="layout/edit.xhtml">
 					<ui:define name="label">imap: </ui:define>
-					<!-- 					<h:inputText id="AddressToPullImap" -->
-					<!-- 						value="#{tempEmailAddressHelper.utente.imapORimaps}" required="true"> -->
-					<!-- 						<a:ajax event="blur" render="AddressToPullImapField" -->
-					<!-- 							execute="@this" /> -->
-					<!-- 					</h:inputText> -->
-					<h:selectOneRadio
-						value="#{tempEmailAddressHelper.utente.imapORimaps}"
+					<h:selectOneRadio value="#{addressToPullHome.instance.imapORimaps}"
 						required="true">
 						<f:selectItem itemLabel="imap" itemValue="imap" />
 						<f:selectItem itemLabel="imaps" itemValue="imaps" />
@@ -36,19 +28,21 @@
 
 				<s:decorate id="AddressToPullEmailField"
 					template="layout/edit.xhtml">
-					<ui:define name="label">Email: </ui:define>
-					<h:inputText id="AddressToPullEmail"
-						value="#{tempEmailAddressHelper.utente.email}" required="true">
-						<a:ajax event="blur" render="AddressToPullEmailField"
+					<ui:define name="label">Emai:</ui:define>
+					<h:inputText id="AddressToPullEmail" required="true"
+						converterMessage="Name must be a String"
+						value="#{addressToPullHome.instance.email}">
+						<a:ajax event="blur" render="TempEmailAddressEmailField"
 							execute="@this" />
 					</h:inputText>
 
 				</s:decorate>
+
 				<s:decorate id="AddressToPullPasswordField"
 					template="layout/edit.xhtml">
 					<ui:define name="label">Password : </ui:define>
 					<h:inputText id="AddressToPullPassword"
-						value="#{tempEmailAddressHelper.utente.password}" required="true">
+						value="#{addressToPullHome.instance.password}" required="true">
 						<a:ajax event="blur" render="AddressToPullPasswordField"
 							execute="@this" />
 					</h:inputText>
@@ -57,7 +51,7 @@
 					template="layout/edit.xhtml">
 					<ui:define name="label">Name server : </ui:define>
 					<h:inputText id="AddressToPullNameServer" required="true"
-						value="#{tempEmailAddressHelper.utente.serverName}">
+						value="#{addressToPullHome.instance.serverName}">
 						<a:ajax event="blur" render="AddressToPullNameServerField"
 							execute="@this" />
 					</h:inputText>
@@ -67,15 +61,17 @@
 				</div>
 			</rich:panel>
 			<div class="actionButtons">
-				<h:commandButton value="connect"
-					action="#{tempEmailAddressHelper.importAddresses}">
-					<f:param name="permanentUsersUserIdnr"
-						value="#{permanentUserHome.instance.userIdnr}" />
-				</h:commandButton>
-
+				<h:commandButton id="save" value="SaveNConnect"
+					action="#{addressToPullHome.persist}"
+					disabled="#{!addressToPullHome.wired}"
+					rendered="#{!addressToPullHome.managed}" />
+				<h:commandButton id="update" value="Save"
+					action="#{addressToPullHome.update}"
+					rendered="#{addressToPullHome.managed}" />
+				<h:commandButton id="delete" value="Delete"
+					action="#{addressToPullHome.remove}" immediate="true"
+					rendered="#{addressToPullHome.managed}" />
 			</div>
-
 		</h:form>
-		<!-- 		</rich:tabPanel> -->
 	</ui:define>
 </ui:composition>

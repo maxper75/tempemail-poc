@@ -281,8 +281,7 @@
 						value="There are no dbmailMailboxeses associated with this dbmailUsers."
 						rendered="#{empty permanentUserHome.dbmailMailboxeses}" />
 
-					<rich:dataTable
-						value="#{permanentUserHome.dbmailMailboxeses}"
+					<rich:dataTable value="#{permanentUserHome.dbmailMailboxeses}"
 						var="_dbmailMailboxes"
 						rendered="#{not empty permanentUserHome.instance.dbmailMailboxeses}"
 						rowClasses="rvgRowOne,rvgRowTwo" id="dbmailMailboxesesTable">
@@ -370,8 +369,7 @@
 						value="There are no dbmailSievescriptses associated with this dbmailUsers."
 						rendered="#{empty permanentUserHome.dbmailSievescriptses}" />
 
-					<rich:dataTable
-						value="#{permanentUserHome.dbmailSievescriptses}"
+					<rich:dataTable value="#{permanentUserHome.dbmailSievescriptses}"
 						var="_dbmailSievescripts"
 						rendered="#{not empty permanentUserHome.dbmailSievescriptses}"
 						rowClasses="rvgRowOne,rvgRowTwo" id="dbmailSievescriptsesTable">
@@ -477,8 +475,7 @@
 						value="There are no TempEmailAddresses associated with this User"
 						rendered="#{empty permanentUserHome.tempEmailAddresses}" />
 
-					<rich:dataTable
-						value="#{permanentUserHome.tempEmailAddresses}"
+					<rich:dataTable value="#{permanentUserHome.tempEmailAddresses}"
 						var="_tempEmailAddress"
 						rendered="#{not empty permanentUserHome.tempEmailAddresses}"
 						rowClasses="rvgRowOne,rvgRowTwo" id="TempEmailAddressesTable">
@@ -512,8 +509,8 @@
 					</rich:dataTable>
 
 					<div class="actionButtons">
-					<s:button value="import vcf" view="/VCF.xhtml"
-							propagation="end" includePageParams="false">
+						<s:button value="import vcf" view="/VCF.xhtml" propagation="end"
+							includePageParams="false">
 							<f:param name="permanentUsersUserIdnr"
 								value="#{permanentUserHome.instance.userIdnr}" />
 						</s:button>
@@ -523,7 +520,8 @@
 								value="#{permanentUserHome.instance.userIdnr}" />
 						</s:button>
 						<h:commandButton action="#{permanentUserHelper.generateSieveRule}"
-							value="Generate sieve rule" disabled="#{not permanentUserHome.instance.dirty}"/>
+							value="Generate sieve rule"
+							disabled="#{not permanentUserHome.instance.dirty}" />
 						<s:button value="Add tempEmailAddress"
 							view="/TempEmailAddressEdit.xhtml" propagation="end"
 							includePageParams="false">
@@ -538,9 +536,53 @@
 			<!-- /codice aggiunto -->
 			<!--/ tempemailAddresses -->
 
+
+
+
+			<!-- codice aggiunto -->
+			<!-- Addresstopull -->
+
+			<rich:tab>
+				<f:facet name="header">
+					<h:panelGroup>#{messages['AddresstoPull.list']}</h:panelGroup>
+				</f:facet>
+				<h:form styleClass="association" id="addressesToPullChildren">
+
+					<h:outputText
+						value="There are no AddressToPull associated with this User"
+						rendered="#{empty permanentUserHome.addressesToPull}" />
+
+					<rich:dataTable value="#{permanentUserHome.addressesToPull}"
+						var="_addressToPull"
+						rendered="#{not empty permanentUserHome.addressesToPull}"
+						rowClasses="rvgRowOne,rvgRowTwo" id="addressesToPullTable">
+						<rich:column sortBy="#{_addressToPull.email}">
+							<f:facet name="header">#{messages['AddressToPull.nominativo.label']}</f:facet>
+							<h:outputText value="#{_addressToPull.email}" />
+						</rich:column>
+						<rich:column sortBy="#{_addressToPull.imapORimaps}">
+							<f:facet name="header">#{messages['AddressToPull.imaporimaps.label']}</f:facet>
+							<h:outputText value="#{_addressToPull.imapORimaps}" />
+						</rich:column>
+						<rich:column sortBy="#{_addressToPull.serverName}">
+							<f:facet name="header">#{messages['AddressToPull.ServerName.label']}</f:facet>
+							<h:outputText value="#{_addressToPull.serverName}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">#{messages['AddressToPull.connect.label']}</f:facet>
+							<h:commandButton
+								action="#{tempEmailAddressHelper.importAddressesFromUser(_addressToPull)}"
+								value="Connect">
+								<f:param name="permanentUsersUserIdnr"
+									value="#{permanentUserHome.instance.userIdnr}" />
+							</h:commandButton>
+						</rich:column>
+					</rich:dataTable>
+				</h:form>
+			</rich:tab>
+
+
 		</rich:tabPanel>
-
-
 		<div class="actionButtons">
 
 			<s:button view="/DbmailUsersEdit.xhtml" id="edit" value="Edit" />

@@ -1,5 +1,6 @@
 package it.i_node.tempemail.action;
 
+import it.i_node.tempemail.model.AddressToPull;
 import it.i_node.tempemail.model.DbmailAcl;
 import it.i_node.tempemail.model.DbmailFilters;
 import it.i_node.tempemail.model.DbmailMailboxes;
@@ -60,7 +61,10 @@ public class PermanentUserHome extends EntityHome<PermanentUser>{
 
 
 
-	
+	public List<AddressToPull> getAddressesToPull() {
+		return getInstance() == null ? null : new ArrayList<AddressToPull>(
+				getInstance().getAddressesToPull());
+	}
 
 	public List<TempEmailAddress> getTempEmailAddresses() {
 		return getInstance() == null ? null : new ArrayList<TempEmailAddress>(
