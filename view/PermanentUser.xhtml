@@ -492,15 +492,9 @@
 							<h:outputText
 								value="#{tempEmailAddressHelper.getRetentionPolicyString(_tempEmailAddress)}" />
 						</rich:column>
-
 						<rich:column>
 							<f:facet name="header">#{messages['TempEmailAddresses.Edit.label']}</f:facet>
-							<s:button value="edit tempEmailAddress"
-								view="/TempEmailAddressEdit.xhtml">
-								<f:param name="tempEmailAddressId"
-									value="#{_tempEmailAddress.id}" />
-							</s:button>
-							<s:button value="delete tempEmailAddress"
+							<s:button value="editNdelete tempEmailAddress"
 								view="/TempEmailAddressEdit.xhtml">
 								<f:param name="tempEmailAddressId"
 									value="#{_tempEmailAddress.id}" />
@@ -509,8 +503,14 @@
 					</rich:dataTable>
 
 					<div class="actionButtons">
-						<s:button value="import vcf" view="/VCF.xhtml" propagation="end"
-							includePageParams="false">
+						<s:fileUpload data="#{fileVcf.data}" accept="vfc"
+							contentType="#{fileVcf.contentType}"
+							fileName="#{fileVcf.filename}" fileSize="#{fileVcf.size}">
+							<f:param name="permanentUsersUserIdnr"
+								value="#{permanentUserHome.instance.userIdnr}" />
+						</s:fileUpload>
+						<s:button value="import local vcf" view="/VCF.xhtml"
+							propagation="end" includePageParams="false">
 							<f:param name="permanentUsersUserIdnr"
 								value="#{permanentUserHome.instance.userIdnr}" />
 						</s:button>

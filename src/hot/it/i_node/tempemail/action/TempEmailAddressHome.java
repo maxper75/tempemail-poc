@@ -58,7 +58,7 @@ public class TempEmailAddressHome extends EntityHome<TempEmailAddress> {
 	public boolean isWired() {
 		return true;
 	}
-//	public PermanentUser getPermanentUser(){
-//		return getInstance()== null? null: getInstance().getPermanentUser();
-//	}
+	public PermanentUser getPermanentUser(){
+		return getInstance()== null? null: getInstance().getPermanentUser();
+	}
 }

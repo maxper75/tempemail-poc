@@ -43,14 +43,14 @@ public class TempEmailAddressHelper {
 	private List <TempEmailAddress> add2import= new  ArrayList<TempEmailAddress>();
 	private AddressToPull utente = new AddressToPull();
 	private Map <TempEmailAddress,Integer> imported2Retention = new HashMap<TempEmailAddress, Integer>();
-	private String pathname;
-
-	public String getPathname() {
-		return pathname;
-	}
-	public void setPathname(String pathname) {
-		this.pathname = pathname;
-	}
+//	private String pathname;
+//
+//	public String getPathname() {
+//		return pathname;
+//	}
+//	public void setPathname(String pathname) {
+//		this.pathname = pathname;
+//	}
 	public AddressToPull getUtente() {
 		return utente;
 	}

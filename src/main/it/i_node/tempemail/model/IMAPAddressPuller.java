@@ -40,33 +40,6 @@ public class IMAPAddressPuller {
 	public IMAPAddressPuller() {
 
 	}
-
-	public void checkNupdate(List<TempEmailAddress> exsistingAddresses,TempEmailAddress tea, Map <String,TempEmailAddress> address2tempEmail,PermanentUser puser){
-//		if(exsistingAddresses.contains(tea)){// se recipient è già presente nella mailbox
-//			
-//			//address tra gli esistenti == address dei sent
-//			TempEmailAddress exsistingAddress = 
-//					exsistingAddresses.get(exsistingAddresses.indexOf(tea));
-//			//aggiorno il nome	
-//			if(tea.getName()!=null && exsistingAddress.getName()== null ){
-//				exsistingAddress.setName(tea.getName());	
-//			}
-//			//aggiungo alla mappa l'indirizzo degli esistenti
-//			address2tempEmail.put(exsistingAddress.getEmailAddress(), exsistingAddress);
-//
-//		}
-//		else{//	Altrimenti se non è già presente nella mailbox	
-//							
-//			if (!address2tempEmail.containsKey(tea.getEmailAddress())){
-//				tea.setPermanentUser(puser);
-//				address2tempEmail.put(tea.getEmailAddress(),tea);
-//
-//			}
-//			else if (tea.getName()!= null && address2tempEmail.get(tea.getEmailAddress()).getName()== null)
-//				address2tempEmail.get(tea.getEmailAddress())
-//				.setName(tea.getName());		
-//		}	
-	}
 	/**
 	 * @param: Utente da cui importare gli address
 	 * @return: hashSet con tutti gli indirizzi( TempEmailAddress da importare
@@ -136,57 +109,6 @@ public class IMAPAddressPuller {
 		
 	}
 	
-	public Set<TempEmailAddress> addressFromVcf(String pathname) throws MessagingException, IOException {
-		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
-		//addresses della tempMailbox : già esistenti
-		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
-				puh.getInstance().getTempEmailAddresses());
-		Map <String,TempEmailAddress> address2tempEmail = new HashMap<String,TempEmailAddress>();
-		File file = new File(pathname);
-		VCard vcard = Ezvcard.parse(file).first();
-		for (Email em: vcard.getEmails()){
-			TempEmailAddress tea = new TempEmailAddress();
-			tea.setEmailAddress(em.getValue());
-			tea.setName(vcard.getFormattedName().getValue());
-			tea.setPermanentUser(puh.getInstance());
-			tea.setRetentionDays(0);
-			checkNupdate(exsistingAddresses, tea, address2tempEmail,puh.getInstance());
-		}
-		fillMapExsisting( exsistingAddresses, address2tempEmail);
-		return	new HashSet<TempEmailAddress>(address2tempEmail.values());
-	}
-/**
- * metodo non completo
- * @throws IOException 
- * 
- * 
- * doc: http://stackoverflow.com/questions/13008943/icefaces-seam-file-upload-component-not-uploading-files
- * doc: https://ez-vcard.googlecode.com/svn/javadocs/latest/ezvcard/io/text/VCardReader.html
- * doc: http://facestutorials.icefaces.org/tutorial/inputFile-tutorial.html
- */	
-	public Set<TempEmailAddress> uploadVcf(InputStream in) throws IOException{
-		PermanentUserHome puh = (PermanentUserHome) Component.getInstance(PermanentUserHome.class);
-		Map <String,TempEmailAddress> address2tempEmail = new HashMap<String,TempEmailAddress>();
-		BufferedInputStream buffer = new BufferedInputStream(in);
-		Reader inreader = null;
-		BufferedReader bufferReader = new BufferedReader(inreader);
 
-		VCardReader vcardReader = new VCardReader(in);// InputStream in: the input stream to read the vcards from
-		VCard vcard;
-		while ((vcard = vcardReader.readNext()) != null){
-			for (Email em: vcard.getEmails()){
-			TempEmailAddress tea = new TempEmailAddress();
-			tea.setEmailAddress(em.getValue());
-			tea.setName(vcard.getFormattedName().getValue());
-			tea.setPermanentUser(puh.getInstance());
-			tea.setRetentionDays(0);// default
-			address2tempEmail.put(tea.getEmailAddress(), tea);
-			}
-		}
-		buffer.close();
-		vcardReader.close();
-		return new HashSet<TempEmailAddress>(address2tempEmail.values());
-	}
-	
 
 }
