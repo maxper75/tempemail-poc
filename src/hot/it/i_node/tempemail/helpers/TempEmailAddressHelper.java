@@ -3,8 +3,11 @@ package it.i_node.tempemail.helpers;
 import it.i_node.tempemail.action.PermanentUserHome;
 import it.i_node.tempemail.action.TempEmailAddressHome;
 import it.i_node.tempemail.model.AddressToPull;
+import it.i_node.tempemail.model.FileVcf;
 import it.i_node.tempemail.model.IMAPAddressPuller;
+import it.i_node.tempemail.model.PermanentUser;
 import it.i_node.tempemail.model.TempEmailAddress;
+import it.i_node.tempemail.model.VcfUpload;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -41,22 +43,17 @@ public class TempEmailAddressHelper {
 	 */
 	private Integer retentionPolicy;
 	private List <TempEmailAddress> add2import= new  ArrayList<TempEmailAddress>();
-	private AddressToPull utente = new AddressToPull();
 	private Map <TempEmailAddress,Integer> imported2Retention = new HashMap<TempEmailAddress, Integer>();
-//	private String pathname;
-//
-//	public String getPathname() {
-//		return pathname;
-//	}
-//	public void setPathname(String pathname) {
-//		this.pathname = pathname;
-//	}
-	public AddressToPull getUtente() {
-		return utente;
+	private Importer importer;
+	private FileVcf file;
+	
+	public FileVcf getFile() {
+		return file;
 	}
-	public void setUtente(AddressToPull utente) {
-		this.utente = utente;
+	public void setFile(FileVcf file) {
+		this.file = file;
 	}
+	
 	@Create
 	public void init(){
 		//viene invocato dopo ogni creazione di una nuova TempEmailAddress instance
@@ -92,9 +89,6 @@ public class TempEmailAddressHelper {
 
 		if(retentionPolicy<1)//0 oppure -1
 			teah.getInstance().setRetentionDays(retentionPolicy);
-
-
-
 		return teah.persist();
 	}
 	@SuppressWarnings("unused")
@@ -111,7 +105,7 @@ public class TempEmailAddressHelper {
 					//altrimenti è stato già settato dalla form
 
 					if (tea.getId()>0)
-						
+
 						em.merge(tea);//verificare
 					//teah.update();
 					else
@@ -166,33 +160,7 @@ public class TempEmailAddressHelper {
 		return "removed";
 	}
 
-	/**
-	 * metodo per importare addresses da utente AddressToPull
-	 * (viene richiamato dal pulsante "connect" dalla vista tempmailbox
-	 * */
-	public String importAddresses() throws MessagingException{
-		IMAPAddressPuller puller = new IMAPAddressPuller();
-		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressesFromSentFolder(utente)));//contiene indirizzi scaricati e già esistenti nella tmailbox
-		if (!add2import.isEmpty())
-			fillMap(add2import);		
-		return "needRetention";
-	}
-	public void fillMap(List <TempEmailAddress> teaList){
-		//tealist not empty (test in importAddresses)
-		for(TempEmailAddress tea: add2import){
-			//impostato di defaul il valore di retention Policy a 0
-			imported2Retention.put(tea,getRetentionPolicyFromRetentionDays(tea));
-		}
-
-	}
-	public String importAddressesFromUser(AddressToPull topull) throws MessagingException{
-		if(topull!= null){
-			setUtente(topull);
-			return importAddresses();
-		}
-		return "nullUser";
-
-	}
+	
 	public Integer getRetentionPolicyFromRetentionDays(TempEmailAddress tea){
 		if (tea.getRetentionDays()!=null)	{
 			switch(tea.getRetentionDays()){
@@ -206,35 +174,53 @@ public class TempEmailAddressHelper {
 			}
 		}
 		return 0;//default se non esiste retentiondays
-
 	}
-	public String alreadyInMailbox(TempEmailAddress tea){
-		PermanentUserHome puh =(PermanentUserHome) Component.getInstance(PermanentUserHome.class);
-		List<TempEmailAddress> exsistingAddresses = new ArrayList<TempEmailAddress>(
-				puh.getInstance().getTempEmailAddresses());
-		if(exsistingAddresses.contains(tea)) return "X";
-		return "";
+	
+	/**---------------------metodi per importare liste di TempEmailAddresses---------------------------**/
+	/**
+	 * metodo per importare addresses da utente AddressToPull
+	 * (viene richiamato dal pulsante "connect" dalla vista tempmailbox
+	 * @throws Exception 
+	 * */
+	public String importAddressesFromUser(AddressToPull user) throws Exception{
+		importer = new IMAPAddressPuller();
+		((IMAPAddressPuller) importer).setUtente(user);
+		return anyImport(importer);
+		}
+	
+	/**
+	 * metodo per importare addresses da file .vcf
+	 * @throws Exception 
+	 * */
+	//contentType="#{file.contentType}"
+	//fileName="#{file.filename}" fileSize="#{fileVcf.size}"
+	public String importVcf() throws Exception{
+		importer = new VcfUpload();	
+		((VcfUpload) importer).setFile(file);
+		return anyImport(importer);
 	}
-
-	public String importVcf () throws IOException, MessagingException{
-//		IMAPAddressPuller puller = new IMAPAddressPuller();
-//		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf(pathname)));
-//		if (!add2import.isEmpty())
-//			fillMap(add2import);	
+	/**
+	 *metodo di supporto per inserimento lista di TempEmailAddresses
+	 *chiede all'importer di estrarre la lista di TempEmailAddresses e si occupa dei
+	 *vari check 
+	 * */
+	public String anyImport(Importer importer) throws Exception{
+		setAdd2import(new ArrayList<TempEmailAddress>(importer.importAddresses()));//contiene indirizzi scaricati e già esistenti nella tmailbox
+		if (!add2import.isEmpty())
+			fillMap(add2import);		
 		return "needRetention";
+		
+	}
+	/**
+	 * metodo di supporto per inserimento lista di TempEmauilAddresses
+	 * riempe la mappa imported2retention, e mostra la potenziale rubrica dell'utente
+	 * */
+	public void fillMap(List <TempEmailAddress> teaList){
+		//tealist not empty (test in importAddresses)
+		for(TempEmailAddress tea: add2import){
+			//impostato di defaul il valore di retention Policy a 0
+			imported2Retention.put(tea,getRetentionPolicyFromRetentionDays(tea));
+		}
 
 	}
-	//	public String importVcfTest () throws IOException, MessagingException{
-	//		IMAPAddressPuller puller = new IMAPAddressPuller();
-	//		setAdd2import(new ArrayList<TempEmailAddress>(puller.addressFromVcf("/home/bcovella/Scaricati/sample.vcf")));
-	//		if (!add2import.isEmpty())
-	//			fillMap(add2import);	
-	//		return "needRetention";
-	//
-	//	}
-
-
-
-
-
 }

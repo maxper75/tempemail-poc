@@ -28,7 +28,7 @@
 
 				<s:decorate id="AddressToPullEmailField"
 					template="layout/edit.xhtml">
-					<ui:define name="label">Emai:</ui:define>
+					<ui:define name="label">Email:</ui:define>
 					<h:inputText id="AddressToPullEmail" required="true"
 						converterMessage="Name must be a String"
 						value="#{addressToPullHome.instance.email}">
@@ -61,7 +61,7 @@
 				</div>
 			</rich:panel>
 			<div class="actionButtons">
-				<h:commandButton id="save" value="SaveNConnect"
+				<h:commandButton id="save" value="Save"
 					action="#{addressToPullHome.persist}"
 					disabled="#{!addressToPullHome.wired}"
 					rendered="#{!addressToPullHome.managed}" />

@@ -60,6 +60,9 @@ public class AddressToPullHome extends EntityHome<AddressToPull>{
 	public PermanentUser getPermanentUser() {
 		return getInstance() == null? null : getInstance().getPermanentUser();
 	}
+	public boolean isIdDefined() {
+		return (getAddressToPullId() != null);
 
+	}
 
 }

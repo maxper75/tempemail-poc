@@ -3,16 +3,19 @@
 	xsi:schemaLocation="http://jboss.org/schema/seam/pages http://jboss.org/schema/seam/pages-2.3.xsd"
 	no-conversation-view-id="/TempMailboxList.xhtml" login-required="true">
 
-	
-	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
+	<begin-conversation join="true" flush-mode="MANUAL" />
+	<action execute="#{addressToPullHome.wire}" />
 
-<!-- 	<navigation from-action="#{tempEmailAddressHelper.importAddresses}"> -->
-<!-- 		<rule if-outcome="needRetention"> -->
-<!-- 			<end-conversation /> -->
-<!-- 			<redirect view-id="/IMAPAddressPuller.xhtml" /> -->
-<!-- 		</rule> -->
-<!-- 	</navigation> -->
-	
+	<param name="permanentUsersUserIdnr" value="#{permanentUserHome.permanentUserUserIdnr}" />
+	<param name="addressToPullId" value="#{addressToPullHome.id}" />
+
+	<!-- <navigation from-action="#{tempEmailAddressHelper.importAddresses}"> -->
+	<!-- <rule if-outcome="needRetention"> -->
+	<!-- <end-conversation /> -->
+	<!-- <redirect view-id="/IMAPAddressPuller.xhtml" /> -->
+	<!-- </rule> -->
+	<!-- </navigation> -->
+
 	<navigation from-action="#{addressToPullHome.persist}">
 		<rule if-outcome="persisted">
 			<end-conversation />
@@ -31,6 +34,6 @@
 			<redirect view-id="/PermanentUser.xhtml" />
 		</rule>
 	</navigation>
-	
+
 
 </page>
